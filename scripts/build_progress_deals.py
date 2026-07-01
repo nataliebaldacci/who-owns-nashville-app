@@ -83,13 +83,29 @@ def best_loan(deal_label, first_dt):
             "instrument":str(r["instrument"]),
             "url_kbra":(None if pd.isna(r["url_kbra"]) else str(r["url_kbra"]))}
 
+# EDGAR SEC ABS-15G filings — match each deal to the filing recorded nearest its DOT date.
+# Filings are by Progress depositor CIK (deal_hint is blank), so nearest-date is the honest link.
+EDG=f"{ROOT}/00_ORGANIZED/04_Who_Finances/EDGAR_SFR_ALL_Securitizations_MASTER.csv"
+ed=pd.read_csv(EDG,dtype=str)
+ed=ed[ed["sponsor_depositor"].str.contains("Progress",case=False,na=False)].copy()
+ed["fd"]=pd.to_datetime(ed["filed"],errors="coerce")
+ed=ed.dropna(subset=["fd","filing_url"]).sort_values("fd")
+# depositor CIK browse page (operator-level, shows all that depositor's filings)
+sc=pd.read_excel(X,sheet_name="SEC_Depositor_Crosswalk")
+depos=[str(u) for u in sc[sc["operator"].str.contains("Progress",case=False,na=False)]["edgar_abs15g_url"].dropna()]
+depo_default=depos[0] if depos else ""
+def edgar_for(deal_label, first_dt):
+    if ed.empty: return depo_default
+    i=(ed["fd"]-first_dt).abs().idxmin()
+    return str(ed.loc[i,"filing_url"])
+
 # deal order by first recording date
 order=prog.groupby("deal")["dt"].min().sort_values()
 parcels=[]  # [lat,lon,deal_idx,date,value,address]
 deals=[]
 for di,(deal,first) in enumerate(order.items()):
     g=prog[prog["deal"]==deal]
-    tot=0
+    tot=0; qc={}
     for _,r in g.iterrows():
         c=geo.get(r["pk"])
         if not c: continue
@@ -97,12 +113,16 @@ for di,(deal,first) in enumerate(order.items()):
         try: v=int(float(v))
         except: v=None
         if v: tot+=v
+        instr=str(r.get("Instrument","") or "").strip(); u=str(r.get("url","") or "").strip()
+        if instr and u and instr not in qc: qc[instr]=(u, r["dt"].strftime("%b %d, %Y") if pd.notna(r["dt"]) else "")
         parcels.append([round(c[0],6),round(c[1],6),di,r["dt"].strftime("%b %Y"),v,addr.get(r["pk"],""),
-                        apnmap.get(r["pk"],""), str(r.get("Instrument","") or "").strip(), str(r.get("url","") or "").strip()])
+                        apnmap.get(r["pk"],""), instr, u])
     e={"idx":di,"deal":deal,"date":first.strftime("%b %Y"),
        "iso":first.strftime("%Y-%m"),"n":int(len(g)),"appraised_total":tot}
     e.update(pmap.get(dnum(deal) or -1,{}))
     e.update(best_loan(deal,first))
+    e["edgar_url"]=edgar_for(deal, first)
+    e["qc_deeds"]=[{"i":k,"u":v[0],"d":v[1]} for k,v in list(qc.items())[:20]]
     deals.append(e)
 
 json.dump({"cols":["lat","lon","deal_idx","date","value","address","apn","instrument","deed_url"],

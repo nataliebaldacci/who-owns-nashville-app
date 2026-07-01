@@ -32,8 +32,9 @@
   #ramp{display:flex;height:8px;border-radius:3px;overflow:hidden;margin-top:8px}#ramp div{flex:1}
   #rampLbl{display:flex;justify-content:space-between;font-size:9px;color:#8a94a0;margin-top:2px}
   .pp{font-size:12px;line-height:1.4}.pp b{color:var(--navy)}.pp a{color:#2c6e78;font-weight:600}
-  #tblOverlay{position:fixed;inset:0;background:#0007;z-index:2000;display:none;align-items:center;justify-content:center}
-  #tblCard{background:#fff;border-radius:8px;width:min(1100px,94vw);max-height:88vh;display:flex;flex-direction:column;overflow:hidden}
+  #tblOverlay,#qcOverlay{position:fixed;inset:0;background:#0007;z-index:2000;display:none;align-items:center;justify-content:center}
+  #tblCard,#qcCard{background:#fff;border-radius:8px;width:min(1100px,94vw);max-height:88vh;display:flex;flex-direction:column;overflow:hidden}
+  #qcCard{width:min(720px,94vw)}
   #tblHead{padding:12px 16px;background:var(--navy);color:#fff;display:flex;justify-content:space-between;align-items:center;font-size:14px}
   #tblClose{cursor:pointer;font-size:16px}
   #tblWrap{overflow:auto}
@@ -57,6 +58,7 @@
     <div id="tblWrap"><table id="dealsTable"></table></div>
   </div>
 </div>
+<div id="qcOverlay"><div id="qcCard"></div></div>
 <div id="story">
   <div class="cell"><div class="dealname" id="s_deal">—</div><div class="dealsub" id="s_dealsub"></div><div class="dealsub" id="s_links" style="margin-top:3px"></div></div>
   <div class="cell"><div class="big" id="s_homes">0</div><div class="lbl">Homes in <b>this deal</b></div></div>
@@ -146,9 +148,12 @@ function draw(){
   // visible deed + rating hyperlinks for this deal
   const dotURL=e.instrument?('https://www.davidsonportal.com/gis/file.php?file='+String(e.instrument).replace(/\D/g,'')):'';
   const kU=e.url_kbra&&e.url_kbra!=='nan'?e.url_kbra:'';
+  const eU=e.edgar_url&&e.edgar_url!=='nan'?e.edgar_url:'';
+  const nqc=(e.qc_deeds||[]).length;
+  const A=(u,t)=>u?`<a href="${u}" target="_blank" style="color:#2c6e78;font-weight:700">${t}</a>`:'';
   document.getElementById('s_links').innerHTML=[
-    dotURL?`<a href="${dotURL}" target="_blank" style="color:#2c6e78;font-weight:700">📄 Recorded DOT ↗</a>`:'',
-    kU?`<a href="${kU}" target="_blank" style="color:#2c6e78;font-weight:700">KBRA rating ↗</a>`:''
+    A(dotURL,'📄 Recorded DOT ↗'), A(kU,'KBRA ↗'), A(eU,'SEC EDGAR ↗'),
+    nqc?`<a href="#" onclick="showQC(${cur});return false" style="color:#b5560f;font-weight:700">📜 ${nqc} quitclaim deeds ↗</a>`:''
   ].filter(Boolean).join(' · ')||'<span style="color:#b0b8c0">no deed link</span>';
   document.getElementById('dateLbl').textContent=e.date;
 }
@@ -169,6 +174,17 @@ function buildTable(){
   });
   document.getElementById('dealsTable').innerHTML=h+'</tbody>';
 }
+// quitclaim deed history popup for a deal
+window.showQC=function(di){
+  const e=D.deals[di];
+  let h=`<div id="tblHead"><b>Quitclaim deed history — Progress ${e.deal_name&&e.deal_name!=='nan'?e.deal_name.replace(/Progress Residential /i,''):e.deal} (${e.date})</b><span id="qcClose">✕</span></div>`;
+  h+='<div id="tblWrap"><table id="dealsTable"><thead><tr><th class="l">Quitclaim instrument</th><th class="l">Recorded</th><th>Deed image</th></tr></thead><tbody>';
+  (e.qc_deeds||[]).forEach(q=>{h+=`<tr><td class="l"><b>${q.i}</b></td><td class="l">${q.d||''}</td><td><a href="${q.u}" target="_blank">📄 open deed ↗</a></td></tr>`;});
+  h+='</tbody></table></div>';
+  const c=document.getElementById('qcCard'); c.innerHTML=h;
+  document.getElementById('qcOverlay').style.display='flex';
+  document.getElementById('qcClose').onclick=()=>document.getElementById('qcOverlay').style.display='none';
+};
 document.getElementById('tblBtn').onclick=()=>{buildTable();document.getElementById('tblOverlay').style.display='flex';};
 document.getElementById('tblClose').onclick=()=>document.getElementById('tblOverlay').style.display='none';
 document.getElementById('tblOverlay').onclick=e=>{if(e.target.id==='tblOverlay')e.target.style.display='none';};
