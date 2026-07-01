@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Owner Profile — Who Owns Nashville?</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  :root{--navy:#1c458c;--gold:#f0af1e;--ink:#1a3a5c}
+  body{margin:0;font-family:Garamond,'EB Garamond',Georgia,serif;color:#222;background:#f7f5f1}
+  header{background:var(--navy);color:#fff;padding:18px 26px;border-bottom:4px solid var(--gold)}
+  header .kick{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700}
+  header h1{margin:3px 0 0;font-size:26px}
+  .wrap{max-width:1080px;margin:0 auto;padding:18px 22px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .stats{grid-column:1/3;display:flex;gap:26px;flex-wrap:wrap;background:#fff;border:1px solid #e3ddd3;border-radius:8px;padding:14px 20px}
+  .stat b{display:block;font-size:26px;color:var(--navy);font-weight:800}
+  .stat span{font-size:12px;color:#777;text-transform:uppercase;letter-spacing:1px}
+  .card{background:#fff;border:1px solid #e3ddd3;border-radius:8px;padding:14px 18px}
+  .card h2{margin:0 0 8px;font-size:15px;color:var(--navy);border-bottom:2px solid #eee;padding-bottom:5px}
+  .chip{display:inline-block;background:#eef4fb;border:1px solid #d5e2f2;border-radius:12px;padding:2px 10px;margin:2px;font-size:12px}
+  a{color:var(--navy);font-weight:600}
+  .lnk{display:inline-block;margin:4px 10px 4px 0;padding:6px 12px;background:var(--navy);color:#fff;border-radius:5px;text-decoration:none;font-size:12px}
+  #map{grid-column:1/3;height:420px;border-radius:8px;border:1px solid #e3ddd3}
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  th,td{text-align:left;padding:4px 8px;border-bottom:1px solid #eee}
+  th{color:var(--navy)}
+  .muted{color:#888;font-size:12px}
+</style>
+</head>
+<body>
+<header><div class="kick">Who Owns Nashville? &middot; Owner Profile</div><h1 id="ownerName">Loading…</h1></header>
+<div class="wrap" id="wrap"></div>
+<script>
+const params=new URLSearchParams(location.search);
+const id=params.get('id')||'1';
+const money=v=>v?('$'+Number(v).toLocaleString()):'';
+fetch(`data/owners/${id}.json`).then(r=>r.json()).then(d=>{
+  document.getElementById('ownerName').textContent=d.name;
+  const w=document.getElementById('wrap');
+  const status=(d.primary_sos_status||'')+(d.primary_foreign_state?(' · '+d.primary_foreign_state):'');
+  w.innerHTML=`
+    <div class="stats">
+      <div class="stat"><b>${d.parcel_count.toLocaleString()}</b><span>Parcels</span></div>
+      <div class="stat"><b>${d.entity_count}</b><span>Corporate entities</span></div>
+      <div class="stat"><b>${(d.principal_offices||[]).length}</b><span>Principal offices</span></div>
+      <div class="stat"><b>${d.brand||'—'}</b><span>Operator brand</span></div>
+      <div class="stat"><b style="font-size:15px;">${status||'—'}</b><span>TN SOS status</span></div>
+    </div>
+    <div class="card"><h2>Registered agents &amp; principal offices (TN SOS)</h2>
+      <div><b>Principal office(s):</b><br>${(d.principal_offices||[]).map(p=>'<div class="chip">'+p+'</div>').join('')||'<span class="muted">not yet resolved</span>'}</div>
+      <div style="margin-top:8px;"><b>Registered agent(s):</b><br>${(d.registered_agents||[]).map(p=>'<div class="chip">'+p+'</div>').join('')||'<span class="muted">—</span>'}</div>
+      <div style="margin-top:10px;">
+        <a class="lnk" href="${d.opencorporates}" target="_blank" rel="noopener">OpenCorporates ↗</a>
+        <a class="lnk" href="https://tncab.tnsos.gov/portal/business-entity-search" target="_blank" rel="noopener">TN SOS search ↗</a>
+      </div>
+    </div>
+    <div class="card"><h2>Owner names on record (${d.owner_names.length})</h2>
+      <div style="max-height:200px;overflow:auto;">${d.owner_names.map(n=>'<div class="chip">'+n+'</div>').join('')}</div>
+    </div>
+    <div id="map"></div>
+    <div class="card" style="grid-column:1/3;"><h2>Parcels held (${d.parcel_count.toLocaleString()})</h2>
+      <div style="max-height:340px;overflow:auto;"><table><thead><tr><th>Parcel ID</th><th>Property address</th></tr></thead>
+      <tbody>${d.parcels.map(p=>`<tr><td>${p.parcel_id}</td><td>${p.address||''}</td></tr>`).join('')}</tbody></table></div>
+    </div>`;
+  // mini map
+  const m=L.map('map').setView([36.166,-86.784],10);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap, © CARTO'}).addTo(m);
+  const pts=d.parcels.filter(p=>p.lat&&p.lon).map(p=>L.circleMarker([+p.lat,+p.lon],{radius:4,fillColor:'#cf307a',color:'#333',weight:.4,fillOpacity:.8}).bindPopup(p.address||p.parcel_id));
+  if(pts.length){const g=L.featureGroup(pts).addTo(m);try{m.fitBounds(g.getBounds().pad(0.1));}catch(e){}}
+}).catch(e=>{document.getElementById('ownerName').textContent='Owner '+id+' not found';});
+</script>
+</body>
+</html>
