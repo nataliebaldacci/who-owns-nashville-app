@@ -41,9 +41,43 @@ for nm,s in sos.items():
     if not po or AGENT.search(s['po']) or AGENT.search(po): continue
     if nm in name_parcels: po_groups.setdefault(po,[]).append(nm)
 for po,names in po_groups.items():
+    pbrands={name_brand[n] for n in names if name_brand.get(n) and name_brand[n]!='nan'}
+    if len(pbrands)>=2: continue                    # PO shared by multiple operators
+    if len(pbrands)==0 and len(names)>30: continue  # unbranded PO mega-hub = shared registered office
     for i in range(len(names)):
         for j in range(i+1,len(names)): G.add_edge(names[i],names[j])
 # also exact-name derivatives already same node; connected components:
+# --- mailing-address bridge: link shells sharing a CLEAN (single-operator, non-agent) owner address ---
+STOP=re.compile(r'\b(STREET|ST|AVENUE|AVE|ROAD|RD|DRIVE|DR|BOULEVARD|BLVD|LANE|LN|COURT|CT|SUITE|STE|FLOOR|FL|UNIT|APT|PMB|BLDG|PARKWAY|PKWY|PLACE|PL|CIRCLE|CIR|WAY|N|S|E|W|NORTH|SOUTH|EAST|WEST)\b')
+def akey(a1, zc):
+    u=re.sub(r'[^A-Z0-9 ]',' ',str(a1).upper())
+    m=re.search(r'BOX\s*([0-9]+)',u)
+    base='PO BOX '+m.group(1) if m else re.sub(r'\s+',' ',STOP.sub(' ',u)).strip()
+    z=re.sub(r'[^0-9]','',str(zc))[:5]
+    return (base+' '+z).strip()
+# per-name representative owner address + shared-agent flag + brand, from OOS
+addr_of={}; agent_addr_flag={}
+oo=o.drop_duplicates('nname')
+for _,r in oo.iterrows():
+    addr_of[r['nname']]=akey(r['address1'], r['PostalCode'])
+    agent_addr_flag[r['nname']]=(str(r['is_shared_agent'])=='True') or bool(AGENT.search(str(r['address1']).upper()))
+# group names by address; a clean address = not agent-marked and not hosting 2+ distinct brands
+from collections import defaultdict
+addr_names=defaultdict(list); addr_brands=defaultdict(set); addr_agentish=defaultdict(bool)
+for nm in name_parcels:
+    ak=addr_of.get(nm,'')
+    if not ak: continue
+    addr_names[ak].append(nm)
+    if name_brand.get(nm) and name_brand[nm]!='nan': addr_brands[ak].add(name_brand[nm])
+    if agent_addr_flag.get(nm): addr_agentish[ak]=True
+for ak,names in addr_names.items():
+    if len(names)<2: continue
+    nb=len(addr_brands[ak]); nn=len(names)
+    if nb>=2: continue                 # multi-operator hub (e.g. Ryan box: Progress+Tricon+Invitation)
+    if nb==0 and nn>30: continue       # unbranded mega-hub = shared agent/mgmt (Soddy Daisy etc.)
+    for i in range(len(names)):
+        for j in range(i+1,len(names)): G.add_edge(names[i],names[j])
+
 comp=list(nx.connected_components(G))
 comp.sort(key=lambda c: sum(len(name_parcels.get(n,[])) for n in c), reverse=True)
 
