@@ -58,9 +58,9 @@
   </div>
 </div>
 <div id="story">
-  <div class="cell"><div class="dealname" id="s_deal">—</div><div class="dealsub" id="s_dealsub"></div></div>
-  <div class="cell"><div class="big" id="s_homes">0</div><div class="lbl">Homes pledged (cumulative)</div></div>
-  <div class="cell"><div class="big" id="s_value">$0</div><div class="lbl">Appraised value pledged</div></div>
+  <div class="cell"><div class="dealname" id="s_deal">—</div><div class="dealsub" id="s_dealsub"></div><div class="dealsub" id="s_links" style="margin-top:3px"></div></div>
+  <div class="cell"><div class="big" id="s_homes">0</div><div class="lbl">Homes in <b>this deal</b></div></div>
+  <div class="cell"><div class="big" id="s_value">$0</div><div class="lbl">Appraised (this deal)</div></div>
   <div class="cell"><div class="big" id="s_loan">—</div><div class="lbl">Deal bond size</div></div>
   <div class="cell"><div class="lender" id="s_lender">—</div><div class="lbl">Lender / originator</div></div>
   <div class="cell"><div class="big" id="s_income">—</div><div class="lbl">Median tract income</div></div>
@@ -135,13 +135,21 @@ function draw(){
   const e=D.deals[cur],$=(i,v)=>document.getElementById(i).textContent=v;
   const M=v=>v==null?'—':'$'+Number(v).toLocaleString(),Mn=v=>v?'$'+(v/1e6).toFixed(0)+'M':'—';
   $('s_deal','Progress '+(e.deal_name&&e.deal_name!=='nan'?e.deal_name.replace(/Progress Residential /i,''):e.deal));
-  $('s_dealsub',e.date+' · '+e.n+' homes recorded'+(e.davidson_share!=null?(' · Davidson = '+e.davidson_share+'% of deal'):''));
-  $('s_homes',shown.toLocaleString());
-  $('s_value','$'+(cumVal/1e6).toFixed(1)+'M');
+  $('s_dealsub',e.date+(e.davidson_share!=null?(' · Davidson = '+e.davidson_share+'% of the deal'):'')
+    +' · running total '+shown.toLocaleString()+' homes / $'+(cumVal/1e6).toFixed(0)+'M');
+  $('s_homes',e.n.toLocaleString());                             // THIS deal
+  $('s_value','$'+((e.appraised_total||0)/1e6).toFixed(1)+'M');  // THIS deal
   $('s_loan',e.loan_amount?Mn(e.loan_amount):'—');
   $('s_lender',cleanLender(e.lender));
   $('s_income',M(e.med_tract_income));
   $('s_burden',e.pct_cost_burden!=null?e.pct_cost_burden+'%':'—');
+  // visible deed + rating hyperlinks for this deal
+  const dotURL=e.instrument?('https://www.davidsonportal.com/gis/file.php?file='+String(e.instrument).replace(/\D/g,'')):'';
+  const kU=e.url_kbra&&e.url_kbra!=='nan'?e.url_kbra:'';
+  document.getElementById('s_links').innerHTML=[
+    dotURL?`<a href="${dotURL}" target="_blank" style="color:#2c6e78;font-weight:700">📄 Recorded DOT ↗</a>`:'',
+    kU?`<a href="${kU}" target="_blank" style="color:#2c6e78;font-weight:700">KBRA rating ↗</a>`:''
+  ].filter(Boolean).join(' · ')||'<span style="color:#b0b8c0">no deed link</span>';
   document.getElementById('dateLbl').textContent=e.date;
 }
 // ---- deals table (large transactions) ----
