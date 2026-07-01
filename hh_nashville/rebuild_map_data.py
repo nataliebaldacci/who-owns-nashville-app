@@ -21,25 +21,28 @@ for row in csv.DictReader(open(MASTER)):
 
 COL={'Progress Residential':'#ff7f0e','American Homes 4 Rent':'#1f77b4','Amherst Residential':'#8dcaf0',
  'Starwood Capital Group':'#17becf','Tricon Residential':'#2ca02c','Invitation Homes':'#e377c2',
- 'VineBrook Homes':'#9467bd','FirstKey Homes':'#008080','Rithm Capital':'#d62728','Maymont Homes':'#bcbd22',
- 'Opendoor (iBuyer)':'#7570b3','Other corporate':'#c9ced6'}
-LANDLORDS=set(k for k in COL if k not in ('Other corporate',))
+ 'VineBrook Homes':'#9467bd','FirstKey Homes':'#008080','Rithm Capital':'#d62728','Brookfield':'#bcbd22',
+ 'Opendoor (iBuyer)':'#7570b3','Regent Homes':'#c49c48','Other corporate':'#c9ced6'}
+LANDLORDS=set(k for k in COL if k not in ('Other corporate','Opendoor (iBuyer)','Regent Homes'))
 # owner-name -> operator (first match wins)
 RULES=[
  (re.compile(r'LEGACY SOUTH'),'Other corporate'),
  (re.compile(r'HOME PARTNERS|\bHPA\b'),'Tricon Residential'),
  (re.compile(r'\bSFR JV\b|TRICON SFR|C O TRICON|TAH HOLDING'),'Tricon Residential'),
  (re.compile(r'\bBAF\b|\bALTO\b|MESA VERDE|ARVM|VM MASTER|VM PRONTO|MUPR|\bSAFARI\b|ARMM|\bEPH\b|LAMCO|RH PARTNERS|AMHERST|\bCBAR\b|SRMZ|\bAMNL\b|MAIN STREET RENEWAL'),'Amherst Residential'),
- (re.compile(r'SFR XII|YAMASA|\bPROGRESS\b|\bPR BORROWER\b|SFR INVESTMENTS V|FREO PROGRESS|PRETIUM|RESIDENTIAL HOME (OWNER|BUYER|NASHVILLE)|\bFYR\b'),'Progress Residential'),
+ (re.compile(r'RESIDENTIAL HOME BUYER'),'Brookfield'),   # Brookfield (per user 2026-07-01) — NOT Progress
+ (re.compile(r'SFR XII|YAMASA|\bPROGRESS\b|\bPR BORROWER\b|SFR INVESTMENTS V|FREO PROGRESS|PRETIUM|RESIDENTIAL HOME (OWNER|NASHVILLE)|\bFYR\b'),'Progress Residential'),
  (re.compile(r'\bAMH\b|AH4R|AMERICAN HOMES 4 RENT'),'American Homes 4 Rent'),
  (re.compile(r'STAR \d{4}.*SFR|STARWOOD'),'Starwood Capital Group'),
  (re.compile(r'INVITATION|RESICAP TENN'),'Invitation Homes'),
  (re.compile(r'VINEBROOK|VB TAH'),'VineBrook Homes'),
  (re.compile(r'FKH SFR|FIRSTKEY'),'FirstKey Homes'),
  (re.compile(r'RITHM|NEW RESIDENTIAL BORROWER'),'Rithm Capital'),
- (re.compile(r'MAYMONT|CONREX'),'Maymont Homes'),
+ (re.compile(r'MAYMONT|CONREX'),'Brookfield'),
  (re.compile(r'OPENDOOR|OFFERPAD'),'Opendoor (iBuyer)'),
+ (re.compile(r'REGENT HOMES|\bREGENT\b'),'Regent Homes'),
 ]
+BUILDER_BRANDS={'Regent Homes'}  # operators we add as builders (not landlords)
 RES=re.compile(r'SINGLE FAMILY|CONDO|DUPLEX|ZERO LOT|TOWNH|APARTMENT|MOBILE|MANUFACTURED|RESIDENT|TRIPLEX|QUAD|DORMITOR')
 COM=re.compile(r'OFFICE|RETAIL|STORE|HOTEL|MOTEL|WAREHOUSE|PARKING|BUSINESS|INDUSTRIAL|DISTRIBUTION|TERMINAL|RESTAURANT|SHOPPING|\bBANK\b|COMMERCIAL|\bGAS\b|\bAUTO|MEDICAL|THEATER|CHURCH|SCHOOL|CLUB')
 
@@ -71,8 +74,10 @@ for row in base['rows']:
 base['cols']=C; base['rows']=new
 
 lc=Counter(r[biI] for r in new)
-order=['Progress Residential','American Homes 4 Rent','Amherst Residential','Starwood Capital Group','Tricon Residential','Invitation Homes','VineBrook Homes','FirstKey Homes','Rithm Capital','Maymont Homes']
+order=['Progress Residential','American Homes 4 Rent','Amherst Residential','Starwood Capital Group','Tricon Residential','Invitation Homes','VineBrook Homes','FirstKey Homes','Rithm Capital','Brookfield']
 builders=[L for L in base['legend'] if L.get('type')=='Builder']
+if lc.get('Regent Homes') and not any(L['brand']=='Regent Homes' for L in builders):
+    builders.append({'brand':'Regent Homes','color':COL['Regent Homes'],'n':0,'type':'Builder'})
 ib=[{'brand':'Opendoor (iBuyer)','color':COL['Opendoor (iBuyer)'],'n':lc.get('Opendoor (iBuyer)',0),'type':'iBuyer'}] if lc.get('Opendoor (iBuyer)',0) else []
 base['legend']=[{'brand':b,'color':COL[b],'n':lc.get(b,0),'type':'Landlord'} for b in order if lc.get(b,0)] \
              + [dict(L,n=lc.get(L['brand'],0)) for L in builders] \

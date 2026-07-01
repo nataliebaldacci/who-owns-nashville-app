@@ -70,8 +70,11 @@
 .legGroup.grp{cursor:pointer;display:flex;justify-content:space-between;align-items:center}
 .legGroup .gtgl{font-size:9px;font-weight:400;color:#8a94a0;text-transform:none;border:1px solid #d4cfc4;border-radius:3px;padding:0 4px}
 .legGroup.goff{opacity:.55}
-#methods{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);z-index:450;background:#fffef8;border:1px solid var(--bd);border-radius:4px;padding:4px 11px;font-size:9.5px;color:#6b7683;max-width:60vw;font-style:italic;line-height:1.3;text-align:center}
-#methods b{font-style:normal;color:var(--navy)}
+#timeline{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);z-index:700;background:#fff;border:1px solid var(--bd);border-radius:7px;box-shadow:0 3px 12px #0002;padding:7px 14px;display:flex;align-items:center;gap:11px;width:min(560px,80vw)}
+#tlplay{font-family:inherit;font-size:13px;cursor:pointer;border:1px solid var(--navy);background:var(--navy);color:#fff;border-radius:5px;padding:3px 12px;white-space:nowrap}
+#tlyear{font-weight:700;color:var(--navy);min-width:40px;text-align:center;font-size:15px}
+#tlslider{flex:1}
+#timeline .tlnote{font-size:9px;color:#8a94a0;max-width:110px;line-height:1.15}
 </style>
 </head>
 <body>
@@ -92,7 +95,7 @@
     </div>
     <label id="baseTog"><input type="checkbox" id="showBase"/> Show all parcels (zoom in)</label>
     <div id="status">loading…</div>
-    <div id="methods"><b>Sources &amp; method:</b> Owner, address, and land use from Metro Nashville Cadastral (ArcGIS Cadastral_Layers/MapServer/4); assessment class from ParcelHistory Assessment History (MapServer/6). Corporate owners are grouped into operators by owner name, shared mailing address, and Tennessee Secretary of State registered agent and principal office, following the Horizontal Holdings method (Shelton &amp; Seymour 2024). Non-residential parcels are excluded by land use. Records current to 2026; last accessed July 1, 2026.</div>
+    <div id="timeline"><button id="tlplay">▶ Play</button><span id="tlyear">2026</span><input id="tlslider" type="range" min="2009" max="2026" value="2026" step="1"/><span class="tlnote">homes appear the year the operator bought them</span></div>
     <div id="tractLegend"></div>
   </div>
 </div>
@@ -223,7 +226,7 @@ fetch('https://nataliebaldacci.github.io/SFR_Nashville/data/Davidson_County_Boun
   }).catch(()=>{});
 
 const baseCanvas=L.canvas({padding:.5});
-let BASE=null, CORP=null, corpLayer=L.layerGroup().addTo(m), baseLayer=L.layerGroup(), isolate=null;
+let BASE=null, CORP=null, corpLayer=L.layerGroup().addTo(m), baseLayer=L.layerGroup(), isolate=null, curYear=2026;
 
 // ---- corporate layer (colored, clickable) ----
 function drawCorp(){
@@ -243,7 +246,8 @@ function drawCorp(){
         structure_type:r[idx.structure_type],land_use:r[idx.land_use],zoning:r[idx.zoning],du_count:r[idx.du_count],assess_class:r[idx.assess_class],sale_price:r[idx.sale_price],sale_date:r[idx.sale_date]}),{maxWidth:380}).openPopup());
     corpLayer.addLayer(mk); n++;
   };
-  const keep=r=>{const b=r[idx.brand]; if(hiddenTypes.has(brandType[b]))return false; if(isolate&&b!==isolate)return false; if(activeZip&&!ptInGeom(r[idx.lat],r[idx.lon],activeZip))return false; return true;};
+  const keep=r=>{const b=r[idx.brand]; if(hiddenTypes.has(brandType[b]))return false; if(isolate&&b!==isolate)return false; if(activeZip&&!ptInGeom(r[idx.lat],r[idx.lon],activeZip))return false;
+    const _m=String(r[idx.sale_date]||'').match(/(19|20)\d\d/); const _ay=_m?+_m[0]:(+r[idx.year_built]||0); if(_ay>curYear)return false; return true;};
   // only branded operators render; "Other corporate" is hidden
   CORP.rows.forEach(r=>{if(keep(r)&&r[idx.brand]!=='Other corporate')mkOne(r);});
   status.textContent=n.toLocaleString()+' corporate parcels'+(activeZip?' in ZIP':'');
@@ -342,6 +346,21 @@ fetch('data/citywide_corp.json?v='+Date.now()).then(r=>r.json()).then(j=>{CORP=j
   return fetch('data/citywide_base.json?v='+Date.now());
 }).then(r=>r.json()).then(j=>{BASE=j;status.textContent=CORP.rows.length.toLocaleString()+' corporate · '+BASE.lat.length.toLocaleString()+' total parcels';})
 .catch(e=>{status.textContent='load error';});
+
+// ---- timeline animation ----
+(function(){
+  const sl=document.getElementById('tlslider'),yl=document.getElementById('tlyear'),pb=document.getElementById('tlplay');
+  function setYear(y){curYear=+y;yl.textContent=y;sl.value=y;if(CORP)drawCorp();}
+  sl.addEventListener('input',()=>setYear(sl.value));
+  let t=null;
+  function stop(){clearInterval(t);t=null;pb.textContent='\u25B6 Play';}
+  pb.addEventListener('click',()=>{
+    if(t){stop();return;}
+    pb.textContent='\u275A\u275A Pause';
+    if(+sl.value>=2026) setYear(2009);
+    t=setInterval(()=>{let y=+sl.value; if(y>=2026){stop();return;} setYear(y+1);},700);
+  });
+})();
 </script>
 </body>
 </html>
