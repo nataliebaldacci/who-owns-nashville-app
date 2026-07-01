@@ -1,0 +1,1040 @@
+/* ── Content pages (leaderboard, owner profiles, about, etc.) ── */
+
+html,
+body.content-page {
+  height: auto;
+  overflow: auto;
+}
+
+/* Header on content pages: site name is a link back to map */
+header .site-name,
+header a.site-name {
+  text-decoration: none;
+  color: var(--pico-color);
+}
+
+.header-nav {
+  margin-left: auto;
+  display: flex;
+  gap: 1.2rem;
+}
+
+.header-nav a {
+  font-size: 0.85rem;
+  color: var(--pico-muted-color);
+  text-decoration: none;
+}
+
+.header-nav a:hover { color: var(--pico-primary); }
+
+footer nav {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.last-updated {
+  font-size: 0.72rem;
+  color: var(--pico-muted-color);
+  opacity: 0.6;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ── Main content area ───────────────────────────────────────── */
+/* Pico classless sets display:grid on <main>;
+   map CSS sets overflow:hidden + flex sizing — undo both for content pages */
+body.content-page main {
+  display: block;
+  overflow: visible;
+  flex: unset;
+  height: auto;
+}
+
+.content-main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+}
+
+.content-main h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.content-main h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 2rem 0 0.75rem;
+}
+
+.lead {
+  font-size: 1rem;
+  color: var(--pico-muted-color);
+  margin-bottom: 1.5rem;
+}
+
+.lead .muted { color: #94a3b8; }
+
+/* ── Breadcrumb ──────────────────────────────────────────────── */
+.breadcrumb {
+  font-size: 0.85rem;
+  color: var(--pico-muted-color);
+  margin-bottom: 1rem;
+}
+
+/* ── Leaderboard subnav (hub page) ───────────────────────────── */
+.leaderboard-subnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  align-items: baseline;
+  margin: 0.25rem 0 2rem;
+  padding: 0.75rem 1rem;
+  background: var(--pico-card-background-color, #f8fafc);
+  border: 1px solid var(--pico-muted-border-color, #e2e8f0);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.subnav-group {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.subnav-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--pico-muted-color);
+  white-space: nowrap;
+}
+
+.subnav-current {
+  font-weight: 600;
+  color: var(--pico-color);
+}
+
+.leaderboard-subnav a {
+  color: var(--pico-primary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.leaderboard-subnav a:hover { text-decoration: underline; }
+
+/* ── Tables ─────────────────────────────────────────────────── */
+.table-scroll {
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--pico-muted-color);
+  border-bottom: 2px solid #e2e8f0;
+  padding: 0.5rem 0.75rem;
+}
+
+td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #f1f5f9;
+  color: var(--pico-color);
+  vertical-align: top;
+}
+
+tr:last-child td { border-bottom: none; }
+
+tr:hover td { background: #f8fafc; }
+
+th.num, td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+th.related-col, td.num.related-col {
+  width: 4rem;
+}
+
+tr.owner-main-row td {
+  border-bottom: none;
+  padding-bottom: 0.25rem;
+}
+
+tr.owner-badges-row-tr td {
+  padding-top: 0;
+  padding-bottom: 0.75rem;
+}
+
+tr.owner-badges-row-tr:hover td,
+tr.owner-main-row:hover + tr.owner-badges-row-tr td {
+  background: #f8fafc;
+}
+
+td.rank {
+  color: var(--pico-muted-color);
+  font-size: 0.8rem;
+  width: 2.5rem;
+}
+
+td.owner-cell a {
+  font-weight: 500;
+  color: var(--pico-primary);
+  text-decoration: none;
+}
+
+.owner-name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.1rem;
+}
+
+.leaderboard-badges-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+}
+
+.badge-institutional {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: #b45309; /* Darkened from #d97706 for 4.75:1 contrast */
+  color: #fff;
+  margin-right: 0.35rem;
+}
+
+.leaderboard-badges-row .badge-corporate,
+.leaderboard-badges-row .badge-institutional,
+.leaderboard-badges-row .badge-state {
+  font-size: 0.65rem;
+  padding: 0.05rem 0.4rem;
+  margin-bottom: 0;
+}
+
+.alt-names {
+  font-size: 0.78rem;
+  color: var(--pico-muted-color);
+  margin-top: 0.15rem;
+}
+
+td.county-cell {
+  color: var(--pico-muted-color);
+  font-size: 0.82rem;
+}
+
+td.owner-record {
+  font-size: 0.82rem;
+  color: var(--pico-muted-color);
+}
+
+td.flags-cell {
+  white-space: nowrap;
+}
+
+td.flags-cell .badge-corporate,
+td.flags-cell .badge-institutional,
+td.flags-cell .badge-state {
+  display: block;
+  margin-bottom: 0.2rem;
+  width: fit-content;
+}
+
+/* ── State badge ─────────────────────────────────────────────── */
+.badge-state {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  background: #e2e8f0;
+  color: #334155; /* Darkened from #475569 for better contrast */
+  white-space: nowrap;
+}
+
+/* ── Owner profile ───────────────────────────────────────────── */
+.owner-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.owner-header h1 { margin-bottom: 0.15rem; }
+
+.owner-quicknav {
+  display: flex;
+  gap: 1.1rem;
+  flex-wrap: wrap;
+  margin: 0.2rem 0 0;
+}
+
+.owner-quicknav a {
+  font-size: 0.82rem;
+  color: var(--pico-primary);
+  text-decoration: none;
+}
+
+.owner-quicknav a:hover { text-decoration: underline; }
+
+.alt-name-list {
+  list-style: none;
+  margin: 0.25rem 0 0;
+  padding: 0;
+  font-size: 0.85rem;
+  color: var(--pico-muted-color);
+}
+
+.alt-name-list li + li { margin-top: 0.15rem; }
+
+/* AKA section — fuller list below the fold */
+.aka-list {
+  columns: 2;
+  column-gap: 2rem;
+  margin: 0 0 1.5rem 0;
+  font-size: 0.875rem;
+}
+
+.aka-list li { break-inside: avoid; margin-bottom: 0.2rem; }
+
+@media (max-width: 640px) { .aka-list { columns: 1; } }
+
+.owner-flags {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 0.35rem;
+  padding-top: 0.4rem;
+}
+
+.owner-badges-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: -0.5rem 0 1.5rem; /* pull up closer to stats row */
+}
+
+.owner-badges-row .badge-corporate,
+.owner-badges-row .badge-institutional,
+.owner-badges-row .badge-state {
+  margin-bottom: 0;
+}
+
+/* ── Stats row ───────────────────────────────────────────────── */
+.stats-row {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding: 1rem 0;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 1.5rem;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--pico-color);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  color: var(--pico-muted-color);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ── Profile section labels (County Tax Parcel, SOS, Neighborhood) ── */
+.profile-section-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--pico-muted-color);
+  margin: 1.5rem 0 0.4rem;
+}
+
+.src-ref {
+  font-weight: 400;
+  font-size: 0.78rem;
+}
+
+.src-ref a {
+  color: var(--pico-muted-color);
+  text-decoration: none;
+}
+
+.src-ref a:hover { color: var(--pico-primary); }
+
+.cap-note {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--pico-muted-color);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ── Profile definition list ─────────────────────────────────── */
+.profile-dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 1.25rem;
+  row-gap: 0.3rem;
+  font-size: 0.875rem;
+  margin: 0 0 1.25rem 0;
+}
+
+.profile-dl dt {
+  color: var(--pico-muted-color);
+  white-space: nowrap;
+}
+
+.profile-dl dd { margin: 0; }
+
+/* Mailing address list inside profile-dl */
+.address-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.85rem;
+}
+
+.address-list li + li { margin-top: 0.15rem; }
+
+/* ── SOS status warn ─────────────────────────────────────────── */
+.sos-status-warn {
+  color: #b45309;
+  font-weight: 600;
+}
+
+/* ── Neighborhood list ───────────────────────────────────────── */
+.neighborhood-scroll {
+  max-height: 16.5rem; /* ~10 rows */
+  overflow-y: auto;
+  margin-bottom: 1.25rem;
+  border: 1px solid #f1f5f9;
+  border-radius: 4px;
+}
+
+.neighborhood-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.875rem;
+}
+
+.neighborhood-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.2rem 0.5rem;
+  border-bottom: 1px solid #f1f5f9;
+  gap: 0.75rem;
+}
+
+.neighborhood-list li:last-child { border-bottom: none; }
+
+.nbhd-name {
+  color: var(--pico-color);
+  flex: 1;
+}
+
+.nbhd-count {
+  color: var(--pico-muted-color);
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.nbhd-map-link {
+  font-size: 0.78rem;
+  color: var(--pico-muted-color);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nbhd-map-link:hover { color: var(--pico-primary); }
+
+/* ── RA list (registered agents) ─────────────────────────────── */
+.ra-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.85rem;
+}
+
+.ra-list li + li { margin-top: 0.2rem; }
+
+.ra-name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.2rem;
+}
+
+.ra-address-small {
+  font-size: 0.8rem;
+  color: var(--pico-muted-color);
+}
+
+.ra-index-badges {
+  margin-left: 0.25rem;
+  display: inline-flex;
+  gap: 2px;
+  vertical-align: middle;
+}
+
+.agent-composition-bar {
+  display: inline-flex;
+  width: 40px;
+  height: 8px;
+  border-radius: 2px;
+  overflow: hidden;
+  background: #f1f5f9;
+  vertical-align: middle;
+  margin-left: 0.5rem;
+  border: 1px solid #e2e8f0;
+}
+
+.agent-composition-bar span {
+  height: 100%;
+}
+
+.agent-composition-bar .seg-corp { background: #dc2626; }
+.agent-composition-bar .seg-inst { background: #d97706; }
+.agent-composition-bar .seg-other { background: #e2e8f0; }
+
+.agent-address-sub {
+  font-size: 0.95rem;
+  color: var(--pico-muted-color);
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+}
+
+.agent-group-link {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.agent-group-link p { margin: 0; }
+
+.ra-accounts-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.ra-accounts-list li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.ra-accounts-list li:last-child { border-bottom: none; }
+
+.view-toggle {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.toggle-btn {
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  text-decoration: none;
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid transparent;
+}
+
+.toggle-btn:hover {
+  background: #e2e8f0;
+}
+
+.toggle-btn.active {
+  background: white;
+  color: var(--pico-primary);
+  border-color: #cbd5e1;
+  font-weight: 600;
+  cursor: default;
+}
+
+/* ── Parcel table cap note ───────────────────────────────────── */
+.table-cap-note {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--pico-muted-color);
+}
+
+.table-cap-msg {
+  font-size: 0.85rem;
+  color: var(--pico-muted-color);
+  margin-bottom: 0.75rem;
+}
+
+/* ── Sources footnote ────────────────────────────────────────── */
+.sources-footnote {
+  font-size: 0.82rem;
+  color: var(--pico-muted-color);
+  margin-top: 1.5rem;
+}
+
+.sources-footnote a {
+  color: var(--pico-muted-color);
+  text-decoration: none;
+}
+
+.sources-footnote a:hover { color: var(--pico-primary); }
+
+/* ── Scroll box (addresses, RAs, officers) ───────────────────── */
+.scroll-box {
+  max-height: 10rem;
+  overflow-y: auto;
+  border: 1px solid #f1f5f9;
+  border-radius: 4px;
+  padding: 0.2rem 0;
+}
+
+.scroll-box .address-list,
+.scroll-box .ra-list {
+  padding: 0 0.5rem;
+}
+
+.scroll-box .address-list li,
+.scroll-box .ra-list li {
+  padding: 0.15rem 0;
+}
+
+/* Officers box — slightly taller */
+.officer-box {
+  max-height: 13rem;
+  margin-bottom: 1.25rem;
+}
+
+/* ── Officer list ─────────────────────────────────────────────── */
+.officer-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0.5rem;
+  font-size: 0.875rem;
+}
+
+.officer-list li {
+  padding: 0.2rem 0;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  align-items: baseline;
+}
+
+.officer-list li:last-child { border-bottom: none; }
+
+.officer-role {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--pico-muted-color);
+  white-space: nowrap;
+}
+
+.officer-name {
+  color: var(--pico-color);
+}
+
+.officer-loc {
+  font-size: 0.82rem;
+  color: var(--pico-muted-color);
+}
+
+/* ── Geo title row (area name + map link) ────────────────────── */
+.geo-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.geo-title-name {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.geo-title-row h1 { margin-bottom: 0; }
+
+.geo-map-link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--pico-primary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.geo-map-link:hover { text-decoration: underline; }
+
+/* ── Small map link (parcel table) ───────────────────────────── */
+.map-link-small {
+  font-size: 0.78rem;
+  color: var(--pico-muted-color);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.map-link-small:hover { color: var(--pico-primary); }
+
+/* ── Map link ────────────────────────────────────────────────── */
+.map-link {
+  display: inline-block;
+  margin-bottom: 1.75rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--pico-primary);
+  text-decoration: none;
+}
+
+.map-link:hover { text-decoration: underline; }
+
+td.map-link-cell {
+  white-space: nowrap;
+  text-align: right;
+}
+
+td.map-link-cell a {
+  font-size: 0.8rem;
+  color: var(--pico-muted-color);
+  text-decoration: none;
+}
+
+td.map-link-cell a:hover { color: var(--pico-primary); }
+
+/* ── Prose pages (about, methodology, faq) ──────────────────── */
+.content-prose p,
+.content-prose ul,
+.content-prose ol {
+  max-width: 680px;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.content-prose ul,
+.content-prose ol {
+  padding-left: 1.5rem;
+}
+
+.content-prose li { margin-bottom: 0.35rem; }
+
+.content-prose details {
+  max-width: 680px;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 0.75rem 0;
+}
+
+.content-prose details:first-of-type { border-top: 1px solid #e2e8f0; }
+
+.content-prose details summary {
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.content-prose details summary::-webkit-details-marker { display: none; }
+
+.content-prose details summary::after {
+  content: '+';
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: var(--pico-muted-color);
+  flex: 0 0 auto;
+}
+
+.content-prose details[open] summary::after { content: '−'; }
+
+.content-prose details p {
+  margin-top: 0.75rem;
+  margin-bottom: 0;
+  color: var(--pico-muted-color);
+}
+
+/* ── FAQ static items (same visual rhythm as details/summary) ── */
+.content-prose .faq-item {
+  max-width: 680px;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 0.75rem 0;
+}
+
+.content-prose .faq-item:first-of-type { border-top: 1px solid #e2e8f0; }
+
+.content-prose .faq-q {
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+.content-prose .faq-item p {
+  margin-top: 0.75rem;
+  margin-bottom: 0;
+  color: var(--pico-muted-color);
+}
+
+/* ── Mobile ─────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .content-main { padding: 1.25rem 1rem 2rem; }
+  .content-main h1 { font-size: 1.4rem; }
+  .stats-row { gap: 1.25rem; }
+  .owner-header { flex-direction: column; }
+}
+
+/* ── Portfolio Analysis ──────────────────────────────────────── */
+.demographics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.demo-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.demo-card h3 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+  color: #475569;
+}
+
+.demo-card p {
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+/* Income buckets bar chart */
+.income-buckets {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.bucket-row {
+  display: grid;
+  grid-template-columns: 5rem 1fr 2.5rem;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+}
+
+.bucket-label {
+  color: #64748b;
+  text-align: right;
+}
+
+.bucket-bar-bg {
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.bucket-bar {
+  height: 100%;
+  background: var(--pico-primary);
+}
+
+.bucket-count {
+  color: #94a3b8;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Market share box */
+.market-share-box {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.market-share-box .small {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-bottom: 0.4rem;
+}
+
+.market-share-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.8rem;
+}
+
+.market-share-list li {
+  margin-bottom: 0.2rem;
+}
+
+/* Portfolio maps */
+.portfolio-maps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.map-container {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.5rem;
+  background: #fff;
+}
+
+.map-container h4 {
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  color: #64748b;
+}
+
+.map-container img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  display: block;
+}
+
+.demo-marker {
+  display: inline-block;
+  font-size: 0.8rem;
+  margin-left: 0.2rem;
+  vertical-align: middle;
+  cursor: help;
+  filter: grayscale(1) opacity(0.6);
+  transition: filter 0.2s;
+}
+
+.demo-marker:hover {
+  filter: grayscale(0) opacity(1);
+}
+
+/* Income distribution spark bar — inline in owner name rows */
+.income-spark {
+  display: inline-flex;
+  width: 40px;
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+  vertical-align: middle;
+  margin-left: 0.35rem;
+  gap: 1px;
+  flex-shrink: 0;
+  opacity: 0.75;
+  cursor: help;
+  transition: opacity 0.15s;
+}
+.income-spark:hover { opacity: 1; }
+.income-spark span { height: 100%; min-width: 1px; }
+
+/* Racial composition stacked bar */
+.race-bar {
+  display: flex;
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 0.75rem 0;
+  gap: 1px;
+}
+.race-segment { height: 100%; }
+
+.race-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  font-size: 0.75rem;
+  color: #475569;
+}
+.race-legend-item { display: flex; align-items: center; gap: 0.3rem; }
+.race-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* Vulnerability stats row */
+.vuln-stats {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e2e8f0;
+}
+.vuln-stat { font-size: 0.8rem; color: #475569; }
+.vuln-stat strong { display: block; font-size: 1rem; color: #1e293b; }
+
+/* Sub-filter navigation (County Home Types, etc.) */
+.sub-filter-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  align-items: baseline;
+  margin: 0.25rem 0 1.5rem;
+  padding: 0.6rem 1rem;
+  background: var(--pico-card-background-color, #f8fafc);
+  border: 1px solid var(--pico-muted-border-color, #e2e8f0);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+.sub-filter-nav a {
+  color: var(--pico-primary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.sub-filter-nav a:hover { text-decoration: underline; }
+.sub-filter-current {
+  font-weight: 600;
+  color: var(--pico-color);
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .demographics-grid,
+  .portfolio-maps {
+    grid-template-columns: 1fr;
+  }
+}

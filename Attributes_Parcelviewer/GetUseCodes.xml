@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfAnyType xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://maps.nashville.gov/">
+  <anyType xsi:type="LandUse">
+    <UseCode>039</UseCode>
+    <UseDescription>APARTMENT: HIGH RISE (3 STORIES OR GREATER)</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>038</UseCode>
+    <UseDescription>APARTMENT: LOW RISE (BUILT SINCE 1960)</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>037</UseCode>
+    <UseDescription>APARTMENT: WALK UP (BUILT PRIOR TO 1960)
+A</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>041</UseCode>
+    <UseDescription>AUTO DEALER</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>042</UseCode>
+    <UseDescription>AUTO REPAIR/BODY SHOP</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>031</UseCode>
+    <UseDescription>BRANCH FINANCIAL INSTITUTION</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>075</UseCode>
+    <UseDescription>BUSINESS CENTER</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>061</UseCode>
+    <UseDescription>CAMP GROUND</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>047</UseCode>
+    <UseDescription>CAR WASH</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>091</UseCode>
+    <UseDescription>CHURCH</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>098</UseCode>
+    <UseDescription>CLUB/UNION HALL/LODGE</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>036</UseCode>
+    <UseDescription>CONDOMINIUM OFC  OR OTHER COM CONDO</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>036</UseCode>
+    <UseDescription>CONDOMINIUM OFC OR OTHER COM CONDO</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>045</UseCode>
+    <UseDescription>CONVENIENCE MARKET WITH GAS</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>029</UseCode>
+    <UseDescription>CONVENIENCE MARKET WITHOUT GAS</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>027</UseCode>
+    <UseDescription>DAY CARE CENTER</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>026</UseCode>
+    <UseDescription>DEPARTMENT STORE</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>067</UseCode>
+    <UseDescription>DOCK/MARINA</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>017</UseCode>
+    <UseDescription>DORMITORY/BOARDING HOUSE</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>082</UseCode>
+    <UseDescription>DUPLEX</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>012</UseCode>
+    <UseDescription>DUPLEX</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>028</UseCode>
+    <UseDescription>ENCLOSED MALL</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>069</UseCode>
+    <UseDescription>EVENT CENTER</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>090</UseCode>
+    <UseDescription>EXEMPT VACANT LAND</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>085</UseCode>
+    <UseDescription>FARM BUILDINGS ONLY</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>052</UseCode>
+    <UseDescription>FAST FOOD</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>005</UseCode>
+    <UseDescription>FEDERAL OTHER THAN OFC, SCHOOL, HOSP, PARK</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>007</UseCode>
+    <UseDescription>FIRE STATION</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>057</UseCode>
+    <UseDescription>GOLF COURSE/DRIVING RANGE</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>066</UseCode>
+    <UseDescription>GREENHOUSE/NURSERY</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>072</UseCode>
+    <UseDescription>HEAVY MANUFACTURING</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>094</UseCode>
+    <UseDescription>HOSPITAL OR CLINIC</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>059</UseCode>
+    <UseDescription>HOTEL/MOTEL</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>006</UseCode>
+    <UseDescription>LIBRARY</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>071</UseCode>
+    <UseDescription>LIGHT MANUFACTURING</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>073</UseCode>
+    <UseDescription>LUMBER YARD/SAWMILL</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>034</UseCode>
+    <UseDescription>MEDICAL OFFICE (ONE OR TWO STORIES)</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>035</UseCode>
+    <UseDescription>MEDICAL OFFICE (THREE STORIES OR GREATER)</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>002</UseCode>
+    <UseDescription>METRO OTHER THAN OFC, SCHOOL,HOSP, OR PARK</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>076</UseCode>
+    <UseDescription>MINERAL PROCESSING</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>046</UseCode>
+    <UseDescription>MINI LUBE</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>063</UseCode>
+    <UseDescription>MINI WAREHOUSE</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>088</UseCode>
+    <UseDescription>MOBILE HOME</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>018</UseCode>
+    <UseDescription>MOBILE HOME</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>062</UseCode>
+    <UseDescription>MOBILE HOME PARK</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>096</UseCode>
+    <UseDescription>MORTUARY/CEMETERY</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>099</UseCode>
+    <UseDescription>MUSEUM OR OTHER CULTURAL ORG.</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>021</UseCode>
+    <UseDescription>NEIGHBORHOOD SUPERMARKET (FREE STANDING)</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>053</UseCode>
+    <UseDescription>NIGHTCLUB/LOUNGE</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>097</UseCode>
+    <UseDescription>NON-PROFIT CHARITABLE SERVICE</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>095</UseCode>
+    <UseDescription>NURSING HOME</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>033</UseCode>
+    <UseDescription>OFFICE BLDG (3 OR MORE STORIES)</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>032</UseCode>
+    <UseDescription>OFFICE BLDG (ONE OR TWO STORIES)</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>025</UseCode>
+    <UseDescription>ONE STORY GENERAL RETAIL STORE</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>078</UseCode>
+    <UseDescription>OPEN STORAGE</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>074</UseCode>
+    <UseDescription>PACKING PLANT/FOOD PROCESSING</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>001</UseCode>
+    <UseDescription>PARK OR RECREATION</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>049</UseCode>
+    <UseDescription>PARKING GARAGE</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>048</UseCode>
+    <UseDescription>PARKING LOT</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>092</UseCode>
+    <UseDescription>PARSONAGE</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>008</UseCode>
+    <UseDescription>POLICE SUB STATION</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>014</UseCode>
+    <UseDescription>QUADPLEX</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>058</UseCode>
+    <UseDescription>RECORDING STUDIO</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>056</UseCode>
+    <UseDescription>RECREATIONAL</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>019</UseCode>
+    <UseDescription>RESIDENTIAL COMBO/MISC</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>015</UseCode>
+    <UseDescription>RESIDENTIAL CONDO</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>086</UseCode>
+    <UseDescription>RESIDENTIAL CONDO</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>051</UseCode>
+    <UseDescription>RESTURANT/CAFETERIA</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>089</UseCode>
+    <UseDescription>RURAL COMBO</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>003</UseCode>
+    <UseDescription>SATELLITE CITY OTHER THAN OFC, SCHOOL, HOSP, PARK</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>093</UseCode>
+    <UseDescription>SCHOOL OR COLLEGE</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>044</UseCode>
+    <UseDescription>SELF SERVICE STATION (GAS ONLY)</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>043</UseCode>
+    <UseDescription>SERVICE STATION FULL SERVICE</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>023</UseCode>
+    <UseDescription>SHOPPING CENTER</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>011</UseCode>
+    <UseDescription>SINGLE FAMILY</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>081</UseCode>
+    <UseDescription>SINGLE FAMILY</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>024</UseCode>
+    <UseDescription>SMALL SERVICE SHOP</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>064</UseCode>
+    <UseDescription>SMALL WAREHOUSE</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>004</UseCode>
+    <UseDescription>STATE OTHER THAN OFC, SCHOOL, HOSP, OR PARK</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>022</UseCode>
+    <UseDescription>STRIP SHOPPING CENTER</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>077</UseCode>
+    <UseDescription>TERMINAL/DISTRIBUTION WAREHOUSE</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>077</UseCode>
+    <UseDescription>TERMINAL/DISTRIBUTION WARHOUSE</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>054</UseCode>
+    <UseDescription>THEATER/AUDITORIUM</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>055</UseCode>
+    <UseDescription>TRANSMITTING TOWERS</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>013</UseCode>
+    <UseDescription>TRIPLEX</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>020</UseCode>
+    <UseDescription>VACANT COMMERCIAL LAND</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>070</UseCode>
+    <UseDescription>VACANT INDUSTRIAL LAND</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>010</UseCode>
+    <UseDescription>VACANT RESIDENTIAL LAND</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>010</UseCode>
+    <UseDescription>VACANT RESIENTIAL LAND</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>80M</UseCode>
+    <UseDescription>VACANT RURAL LAND</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>080</UseCode>
+    <UseDescription>VACANT RURAL LAND</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>030</UseCode>
+    <UseDescription>VACANT ZONED MULTI FAMILY</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>065</UseCode>
+    <UseDescription>WHOLESALE OUTLET</UseDescription>
+  </anyType>
+  <anyType xsi:type="LandUse">
+    <UseCode>016</UseCode>
+    <UseDescription>ZERO LOT LINE</UseDescription>
+  </anyType>
+</ArrayOfAnyType>

@@ -1,0 +1,14 @@
+# data & builds (kept local)
+data/
+dumps/*.dump
+dumps/*.json
+libpostal-master/
+*.parquet
+node_modules/
+web/frontend/data/json/
+__pycache__/
+*.pyc
+.env
+.DS_Store
+# scraper session profile
+**/chrome_profile/

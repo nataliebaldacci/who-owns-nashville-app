@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About — Who Owns Atlanta?</title>
+  <meta name="description" content="About Who Owns Atlanta? — a public tool for exploring property ownership across Fulton and DeKalb counties.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/content.css">
+</head>
+<body class="content-page">
+  <header>
+    <a href="/" class="site-name">Who Owns Atlanta?</a>
+    <nav class="header-nav">
+      <a href="/l/">Leaderboards</a>
+      <a href="/numbers/">By the Numbers</a>
+    </nav>
+  </header>
+
+  <main class="content-main content-prose">
+    <h1>About</h1>
+
+    <p>
+      Who Owns Atlanta? is a public tool for exploring property ownership in the City of Atlanta with views into Fulton and DeKalb counties as well. 
+      Locate any address (search in the City of Atlanta) to find who owns it, their portfolio and follow the ownership network across the area.</p>
+
+    <p>The project grew out of a simple question - how prolific are landlords large and small? Tax records list an LLC. The LLC has no obvious face. This site tries to connect those dots.</p>
+
+    <h2>What it covers</h2>
+    <p>600k+ parcels across Fulton and DeKalb counties, sourced from publicly available county tax records. Ownership is grouped into clusters — networks of entities that share addresses, registered agents, or other identifiers — so that related LLCs and shell companies appear together rather than separately.</p>
+
+    <h2>What it doesn't cover</h2>
+    <p>Municipal boundaries don't match county lines. All Atlanta addresses fall inside Fulton and DeKalb, requring inclusion. 
+      Other metro counties (Clayton, Gwinnett, Cobb, etc.) are not included in this version. Corporate flag coverage has known gaps — see the <a href="/methodology/">Methodology</a> page for details.</p>
+
+    <h2>Data freshness</h2>
+    <p>Tax Parcel, business, and demographic data may be updated periodically as government agencies publish new extracts. The dates of the most recent pipeline run is noted on the <a href="/l/">Leaderboards</a>; 
+      dates for individual files are in the <a href="/faq/#data-sources">FAQ</a> .
+    </p>
+
+    <h2>Contact</h2>
+    <p>
+      For questions, corrections, or tips — email <a href="mailto:info@who-owns-atlanta.org">info@who-owns-atlanta.org</a> or find us on <a href="https://bsky.app/profile/who-owns-atlanta.org" target="_blank" rel="noopener noreferrer">Bluesky</a>.
+      To report a data error, clustering bug, or technical issue, open an issue on <a href="https://github.com/Who-Owns-Atlanta/who-owns-atlanta" target="_blank" rel="noopener noreferrer">GitHub</a>.
+    </p>
+    <p>
+      <em>Note:</em> Taylor Shelton and Eric Seymour were neither consulted about nor are they involved with this project.
+    </p>
+  </main>
+
+  <footer>
+    <nav>
+      <a href="/l/">Leaderboards</a>
+      <a href="/numbers/">By the Numbers</a>
+      <a href="/about/">About</a>
+      <a href="/methodology/">Methodology</a>
+      <a href="/faq/">FAQ</a>
+    </nav>
+    <div class="last-updated">
+      Last updated: 2026-02-28 23:59
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,514 @@
+html,
+body {
+  height: 100dvh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
+}
+
+#mainWindow {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  height: calc(100% - 75px);
+}
+
+#leftPane {
+  flex: 0 0 30%;
+  margin: 0;
+  color: #000000;
+  overflow: auto;
+  background-color: #e7e7e7;
+  border: 1px solid #bdbdbd;
+  z-index: 3;
+}
+
+#leftPaneCollapse {
+  --calcite-button-corner-radius: 10px;
+  --calcite-button-background-color: #ffffff;
+  --calcite-button-border-color: #bdbdbd;
+  --calcite-button-text-color: #bdbdbd;
+  position: absolute;
+  top: 50%;
+  left: calc(0% + 8px);
+  transform: translate(-50%, -50%);
+}
+
+#viewDiv {
+  flex-grow: 1;
+  position: relative;
+  border: 1px solid #bdbdbd;
+}
+
+#rightPane {
+  height: 100%;
+  flex: 1;
+  overflow-x: auto;
+}
+
+#header {
+  height: 75px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  vertical-align: middle;
+  justify-content: space-between;
+  background-color: #0076ce;
+}
+
+#headerLeft {
+  display: flex;
+  flex-direction: row;
+  vertical-align: middle;
+}
+
+#headerRight {
+  display: flex;
+  flex-direction: row;
+  vertical-align: middle;
+  padding-right: 25px;
+}
+
+#headerRightMobile {
+  display: flex;
+  flex-direction: row;
+  vertical-align: middle;
+  padding-right: 25px;
+}
+
+.headerButton {
+  --calcite-action-background-color: #076fe5;
+  --calcite-action-background-color-hover: #005eca;
+  --calcite-action-background-color-press: #005eca;
+  --calcite-color-focus: #ffffff;
+  --calcite-action-text-color: #ffffff;
+  --calcite-action-text-color-press: #ffffff;
+  --calcite-action-corner-radius: 5px;
+  padding: 21.5px 5px;
+  margin: 0px;
+}
+
+.headerButton[active] {
+  --calcite-action-background-color: #005eca;
+
+}
+
+#mobileToolbar {
+  -webkit-box-shadow: 0px 0px 1px 1px #bdbdbd;
+  -moz-box-shadow: 0px 0px 1px 1px #bdbdbd;
+  -o-box-shadow: 0px 0px 1px 1px #bdbdbd;
+  box-shadow: 0px 0px 1px 1px #bdbdbd;
+}
+
+#logo {
+  padding: 10px;
+  max-height: 55px;
+  width: auto;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+#title {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 24pt;
+  color: #ffffff;
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.accordion {
+  background-color: #e7e7e7;
+  color: #000000;
+  cursor: pointer;
+  width: 100%;
+  height: 70%;
+  text-align: left;
+}
+
+.element {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 12pt;
+  --calcite-internal-accordion-item-padding: 15px;
+}
+
+.selectParcelPrompt {
+  font-style: italic;
+}
+
+.tableGrayRow {
+  --calcite-table-row-background: #e7e7e7;
+}
+
+#divGeneralInfo a {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.tableBtnsContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.printTableButton {
+  padding-bottom: 5px;
+  padding-right: 5px;
+  display: none;
+}
+
+.exportButton {
+  padding-bottom: 5px;
+  display: none;
+}
+
+#viewAllPermitsLink {
+  display: none;
+}
+
+#leftToolbar {
+  -webkit-box-shadow: 0px 0px 1px 1px #bdbdbd;
+  -moz-box-shadow: 0px 0px 1px 1px #bdbdbd;
+  -o-box-shadow: 0px 0px 1px 1px #bdbdbd;
+  box-shadow: 0px 0px 1px 1px #bdbdbd;
+}
+
+#divBasemap {
+  width: 100%;
+  height: auto;
+}
+
+#divLayerList {
+  width: 100%;
+  height: auto;
+}
+
+#layerList {
+  height: 100%;
+  width: 100%;
+}
+
+#basemapComponent {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+
+#divSplashScreen {
+  position: absolute;
+  padding: 20px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  max-height: 80%;
+  background-color: #ffffff;
+  z-index: 10;
+  overflow: auto;
+  border: 2px solid #bdbdbd;
+  font: 8pt;
+}
+
+#logoSplash {
+  padding: 10px;
+  max-height: 100px;
+  width: auto;
+  object-fit: contain;
+}
+
+#splashText {
+  border: none;
+  padding-bottom: 10px;
+  font-size: 10pt;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 5;
+}
+
+#divToolbar {
+  -webkit-box-shadow: 0px 0px 1px 1px #bdbdbd;
+  -moz-box-shadow: 0px 0px 1px 1px #bdbdbd;
+  -o-box-shadow: 0px 0px 1px 1px #bdbdbd;
+  box-shadow: 0px 0px 1px 1px #bdbdbd;
+}
+
+#legend {
+  max-height: 180px;
+  overflow: auto;
+  border: #bdbdbd 1px solid;
+}
+
+.dialog {
+  --calcite-dialog-offset-y: 75px;
+  --calcite-dialog-size-y: 50vh;
+  --calcite-dialog-size-x: 35vw;
+  --calcite-dialog-background-color: #ffffff;
+  --calcite-color-background: #ffffff;
+  --calcite-dialog-background-color: #ffffff;
+  --calcite-dialog-header-background-color: #076fe5;
+  --calcite-dialog-heading-text-color: #ffffff;
+  --calcite-dialog-header-action-background-color: #076fe5;
+  --calcite-dialog-header-action-text-color: #ffffff;
+  --calcite-dialog-header-action-background-color-hover: #005eca;
+  --calcite-dialog-header-action-background-color-press: #005eca;
+  --calcite-dialog-header-action-text-color-press: #ffffff;
+  --calcite-color-focus: #ffffff;
+}
+
+#searchDialog {
+  height: auto;
+}
+
+#androidSearchDialog {
+  display: none;
+  background-color: white;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 40vh;
+  z-index: 5;
+}
+
+#androidHeaderContainer {
+  background-color: #076fe5;
+  display: flex;
+  justify-content: space-between;
+}
+
+#androidHeader {
+  color: white;
+  padding-left: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  height: 25px;
+}
+
+#androidSearchClose {
+  --calcite-action-background-color: #076fe5;
+  --calcite-action-text-color: #ffffff;
+  --calcite-action-background-color-hover: #005eca;
+  --calcite-action-background-color-press: #005eca;
+  --calcite-action-text-color-press: #ffffff;
+  --calcite-color-focus: #ffffff;
+}
+
+#androidSearchDialogBody {
+  height: calc(100% - 45px);
+  padding: 10px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+#streetviewDialog,
+#contactUsDialog,
+#coordinatesDialog {
+  --calcite-dialog-size-y: auto;
+}
+
+#streetviewSegControl {
+  --calcite-color-focus: #005eca;
+}
+
+#coordinatesText {
+  text-align: center;
+  font-size: 16px;
+  cursor: text;
+}
+
+#searchTabs {
+  flex: 0 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.searchInputContainer {
+  display: flex;
+  flex-direction: column;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+}
+
+.searchInputContainer label,
+p {
+  vertical-align: middle;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  font-size: 12pt;
+}
+
+.searchInputContainer input {
+  margin: 2px;
+  height: 24px;
+  vertical-align: middle;
+}
+
+#searchComponent {
+  width: 100%;
+}
+
+.arcgis-search {
+  width: 100%;
+}
+
+.searchBtnContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+}
+
+.searchButton {
+  --calcite-color-focus: #005eca;
+  --calcite-action-text-color: #005eca;
+}
+
+.shapeLabel {
+  width: 400px;
+  font-size: 12pt;
+  overflow-wrap: break-word;
+}
+
+:host([floating]) .container {
+  --tw-shadow: none;
+  --tw-shadow-colored: none;
+  box-shadow: none;
+}
+
+#resultsDiv {
+  flex: 0 0 auto;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px 5px;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+#resultsBtnsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.resultsBtn {
+  padding-right: 5px;
+  --calcite-color-focus: #005eca;
+  --calcite-action-text-color: #005eca;
+}
+
+#resultsParentDiv {
+  display: none;
+  flex-direction: column;
+}
+
+#gridDiv {
+  flex: 1 1 auto;
+}
+
+#grid {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#grid calcite-table-cell {
+  --calcite-internal-table-cell-font-size: var(--calcite-font-size--2);
+}
+
+#grid calcite-table-row {
+  --calcite-color-focus: #005eca;
+  --calcite-action-text-color: #005eca;
+}
+
+#loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 500000;
+  display: none;
+}
+
+@media all and (max-width: 900px) {
+  .dialog {
+    --calcite-dialog-offset-y: 150px;
+    --calcite-dialog-size-x: 50vw;
+  }
+
+  label {
+    font-size: 10pt;
+  }
+
+  #leftPane {
+    flex: 0 0 40%;
+  }
+
+  #leftToolbar {
+    display: none;
+  }
+
+  #divSplashScreen {
+    width: 80%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@media all and (max-width: 600px) {
+  .dialog {
+    --calcite-dialog-size-x: 75vw;
+  }
+
+  label {
+    font-size: 8pt;
+  }
+
+  td {
+    font-size: 10pt;
+  }
+
+  #mainWindow {
+    flex-direction: column-reverse;
+  }
+
+  #leftPane {
+    flex: 0 30%;
+  }
+
+  #leftPaneCollapse {
+    left: 50%;
+    top: calc(100% - 8px);
+  }
+
+  #title {
+    font-size: 16pt;
+  }
+}
+
+@media all and (max-width: 400px) {
+  #recCount {
+    visibility: hidden;
+  }
+
+  #title {
+    font-size: 12pt;
+  }
+
+  #splashText {
+    font-size: 8pt;
+  }
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Icon Preview</title>
+  <style>
+    body { background: #888; font-family: sans-serif; padding: 40px; display: flex; flex-direction: column; gap: 48px; }
+    section { display: flex; flex-direction: column; gap: 16px; }
+    h2 { color: #fff; margin: 0; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+    .row { display: flex; align-items: flex-end; gap: 32px; flex-wrap: wrap; }
+    .swatch { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .swatch span { color: #eee; font-size: 11px; }
+    /* Show transparency by checkerboard */
+    .checker { background-image:
+      linear-gradient(45deg, #aaa 25%, transparent 25%),
+      linear-gradient(-45deg, #aaa 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #aaa 75%),
+      linear-gradient(-45deg, transparent 75%, #aaa 75%);
+      background-size: 12px 12px;
+      background-position: 0 0, 0 6px, 6px -6px, -6px 0px;
+      background-color: #eee;
+      padding: 8px;
+      border-radius: 4px;
+    }
+    .on-white { background: #fff; padding: 8px; border-radius: 4px; }
+    .on-dark  { background: #111; padding: 8px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+  <section>
+    <h2>Background variants — 512px</h2>
+    <div class="row">
+      <div class="swatch"><img src="icons/icon-512-on-navy.png" width="256" height="256"><span>navy + light-blue outline</span></div>
+      <div class="swatch"><img src="icons/icon-512-on-blue.png" width="256" height="256"><span>ATL blue + light-blue outline</span></div>
+      <div class="swatch"><img src="icons/icon-512-on-navy-amb.png" width="256" height="256"><span>navy + amber outline</span></div>
+      <div class="swatch"><img src="icons/icon-512-on-blue-amb.png" width="256" height="256"><span>ATL blue + amber outline</span></div>
+    </div>
+    <div class="row">
+      <div class="swatch"><div class="checker"><img src="icons/icon-512-transparent.png" width="256" height="256"></div><span>transparent + light-blue outline</span></div>
+      <div class="swatch"><div class="on-white"><img src="icons/icon-512-transparent.png" width="256" height="256"></div><span>transparent on white</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Rounded-square — Apple / social profile crop</h2>
+    <div class="row">
+      <div class="swatch">
+        <div style="padding:0; overflow:hidden; width:256px; height:256px; border-radius:56px;">
+          <img src="icons/icon-512-on-navy.png" width="256" height="256">
+        </div><span>navy rounded</span>
+      </div>
+      <div class="swatch">
+        <div style="padding:0; overflow:hidden; width:256px; height:256px; border-radius:56px;">
+          <img src="icons/icon-512-on-navy-amb.png" width="256" height="256">
+        </div><span>navy + amber rounded</span>
+      </div>
+      <div class="swatch">
+        <div style="padding:0; overflow:hidden; width:256px; height:256px; border-radius:56px;">
+          <img src="icons/icon-512-on-blue.png" width="256" height="256">
+        </div><span>blue rounded</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Favicons — 32 / 16px</h2>
+    <div class="row">
+      <div class="swatch"><div class="checker"><img src="icons/favicon-32.png" width="64" height="64"></div><span>32px @2×</span></div>
+      <div class="swatch"><div class="checker"><img src="icons/favicon-32.png" width="32" height="32"></div><span>32px</span></div>
+      <div class="swatch"><div class="checker"><img src="icons/favicon-16.png" width="32" height="32"></div><span>16px @2×</span></div>
+      <div class="swatch"><div class="checker"><img src="icons/favicon-16.png" width="16" height="16"></div><span>16px</span></div>
+    </div>
+  </section>
+
+</body>
+</html>

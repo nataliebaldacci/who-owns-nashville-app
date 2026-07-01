@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfAnyType xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://maps.nashville.gov/">
+  <anyType xsi:type="Zoning">
+    <Zone>AG</Zone>
+    <ZoneDescription>AGRICULTURAL</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>AR2A</Zone>
+    <ZoneDescription>AGRICULTURAL</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>CA</Zone>
+    <ZoneDescription>COMMERCIAL, ATTRACTION</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>CA-NS</Zone>
+    <ZoneDescription>COMMERCIAL, ATTRACTION, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>CC</Zone>
+    <ZoneDescription>COMMERCIAL, CORE</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>CF</Zone>
+    <ZoneDescription>COMMERCIAL, CORE FRAME</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>CF-NS</Zone>
+    <ZoneDescription>COMMERCIAL, CORE FRAME, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>CL</Zone>
+    <ZoneDescription>COMMERCIAL, LIMITED</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>CL-A</Zone>
+    <ZoneDescription>COMMERCIAL, LIMITED, ALT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>CL-A-NS</Zone>
+    <ZoneDescription>COMMERCIAL, LIMITED, ALT, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>CL-NS</Zone>
+    <ZoneDescription>COMMERCIAL, LIMITED, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>CN</Zone>
+    <ZoneDescription>COMMERCIAL, NEIGHBORHOOD</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>CN-A</Zone>
+    <ZoneDescription>COMMERCIAL, NEIGHBORHOOD, ALT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>CN-A-NS</Zone>
+    <ZoneDescription>COMMERCIAL, NEIGHBORHOOD, ALT, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>CN-NS</Zone>
+    <ZoneDescription>COMMERCIAL, NEIGHBORHOOD, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>CS</Zone>
+    <ZoneDescription>COMMERCIAL, SERVICE</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>CS-A</Zone>
+    <ZoneDescription>COMMERCIAL, SERVICE, ALT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>CS-A-NS</Zone>
+    <ZoneDescription>COMMERCIAL, SERVICE, ALT, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>CS-NS</Zone>
+    <ZoneDescription>COMMERCIAL, SERVICE, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>DTC</Zone>
+    <ZoneDescription>DOWNTOWN CODE</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>IG</Zone>
+    <ZoneDescription>INDUSTRIAL, GENERAL</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>IR</Zone>
+    <ZoneDescription>INDUSTRIAL, RESTRICTIVE</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>IWD</Zone>
+    <ZoneDescription>INDUSTRIAL, WAREHOUSING/DISTRIBUTION</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>MHP</Zone>
+    <ZoneDescription>MOBILE HOME PARK</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>MUG</Zone>
+    <ZoneDescription>MIXED USE, GENERAL</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>MUG-A</Zone>
+    <ZoneDescription>MIXED USE, GENERAL, ALT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>MUG-A-NS</Zone>
+    <ZoneDescription>MIXED USE, GENERAL, ALT, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>MUG-NS</Zone>
+    <ZoneDescription>MIXED USE, GENERAL, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>MUI</Zone>
+    <ZoneDescription>MIXED USE, INTENSIVE</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>MUI-A</Zone>
+    <ZoneDescription>MIXED USE, INTENSIVE, ALT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>MUI-A-NS</Zone>
+    <ZoneDescription>MIXED USE, INTENSIVE, ALT, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>MUI-NS</Zone>
+    <ZoneDescription>MIXED USE, INTENSIVE, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>MUL</Zone>
+    <ZoneDescription>MIXED USE, LIMITED</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>MUL-A</Zone>
+    <ZoneDescription>MIXED USE, LIMITED, ALT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>MUL-A-NS</Zone>
+    <ZoneDescription>MIXED USE, LIMITED, ALT, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>MUL-NS</Zone>
+    <ZoneDescription>MIXED USE, LIMITED, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>MUN</Zone>
+    <ZoneDescription>MIXED USE, NEIGHBORHOOD</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>MUN-A</Zone>
+    <ZoneDescription>MIXED USE, NEIGHBORHOOD, ALT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>MUN-A-NS</Zone>
+    <ZoneDescription>MIXED USE, NEIGHBORHOOD, ALT, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>MUN-NS</Zone>
+    <ZoneDescription>MIXED USE, NEIGHBORHOOD, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>OG</Zone>
+    <ZoneDescription>OFFICE, GENERAL</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>OG-NS</Zone>
+    <ZoneDescription>OFFICE, GENERAL, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>OL</Zone>
+    <ZoneDescription>OFFICE, LIMITED</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>ON</Zone>
+    <ZoneDescription>OFFICE, NEIGHBORHOOD</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>OR20</Zone>
+    <ZoneDescription>OFFICE/RESIDENTIAL, 20 UNITS PER ACRE</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>OR20-A</Zone>
+    <ZoneDescription>OFFICE/RESIDENTIAL, 20 UNITS PER ACRE, ALT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>OR20-A-NS</Zone>
+    <ZoneDescription>OFFICE/RESIDENTIAL, 20 UNITS PER ACRE, ALT, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>OR20-NS</Zone>
+    <ZoneDescription>OFFICE/RESIDENTIAL, 20 UNITS PER ACRE, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>OR40</Zone>
+    <ZoneDescription>OFFICE/RESIDENTIAL, 40 UNITS PER ACRE</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>OR40-A</Zone>
+    <ZoneDescription>OFFICE/RESIDENTIAL, 40 UNITS PER ACRE, ALT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>OR40-A-NS</Zone>
+    <ZoneDescription>OFFICE/RESIDENTIAL, 40 UNITS PER ACRE, ALT, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>OR40-NS</Zone>
+    <ZoneDescription>OFFICE/RESIDENTIAL, 40 UNITS PER ACRE, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>ORI</Zone>
+    <ZoneDescription>OFFICE/RESIDENTIAL, INTENSIVE</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>ORI-A</Zone>
+    <ZoneDescription>OFFICE/RESIDENTIAL, INTENSIVE, ALT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>ORI-A-NS</Zone>
+    <ZoneDescription>OFFICE/RESIDENTIAL, INTENSIVE, ALT, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>ORI-NS</Zone>
+    <ZoneDescription>OFFICE/RESIDENTIAL, INTENSIVE, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>R10</Zone>
+    <ZoneDescription>ONE&amp;TWO FAMILY 10,000 SQUARE FOOT LOT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>R15</Zone>
+    <ZoneDescription>ONE&amp;TWO FAMILY 15,000 SQUARE FOOT LOT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>R20</Zone>
+    <ZoneDescription>ONE&amp;TWO FAMILY 20,000 SQUARE FOOT LOT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>R30</Zone>
+    <ZoneDescription>ONE&amp;TWO FAMILY 30,000 SQUARE FOOT LOT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>R40</Zone>
+    <ZoneDescription>ONE&amp;TWO FAMILY 40,000 SQUARE FOOT LOT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>R6</Zone>
+    <ZoneDescription>ONE&amp;TWO FAMILY 6,000 SQUARE FOOT LOT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>R6-A</Zone>
+    <ZoneDescription>ONE&amp;TWO FAMILY 6,000 SQUARE FOOT LOT, ALT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>R8</Zone>
+    <ZoneDescription>ONE&amp;TWO FAMILY 8,000 SQUARE FOOT LOT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>R8-A</Zone>
+    <ZoneDescription>ONE&amp;TWO FAMILY 8,000 SQUARE FOOT LOT, ALT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>R80</Zone>
+    <ZoneDescription>ONE&amp;TWO FAMILY 80,000 SQUARE FOOT LOT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM100</Zone>
+    <ZoneDescription>MULTIFAMILY 100 UNITS PER ACRE</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM100-A</Zone>
+    <ZoneDescription>MULTIFAMILY 100 UNITS PER ACRE, ALT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM100-A-NS</Zone>
+    <ZoneDescription>MULTIFAMILY 100 UNITS PER ACRE, ALT, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM15</Zone>
+    <ZoneDescription>MULTIFAMILY 15 UNITS PER ACRE</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM15-A</Zone>
+    <ZoneDescription>MULTIFAMILY 15 UNITS PER ACRE, ALT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM15-A-NS</Zone>
+    <ZoneDescription>MULTIFAMILY 15 UNITS PER ACRE, ALT, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM15-NS</Zone>
+    <ZoneDescription>MULTIFAMILY 15 UNITS PER ACRE, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM2</Zone>
+    <ZoneDescription>MULTIFAMILY 2 UNITS PER ACRE</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM2-NS</Zone>
+    <ZoneDescription>MULTIFAMILY 2 UNITS PER ACRE, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM20</Zone>
+    <ZoneDescription>MULTIFAMILY 20 UNITS PER ACRE</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM20-A</Zone>
+    <ZoneDescription>MULTIFAMILY 20 UNITS PER ACRE, ALT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM20-A-NS</Zone>
+    <ZoneDescription>MULTIFAMILY 20 UNITS PER ACRE, ALT, NOT STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM20-NS</Zone>
+    <ZoneDescription>MULTIFAMILY 20 UNITS PER ACRE, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM4</Zone>
+    <ZoneDescription>MULTIFAMILY 4 UNITS PER ACRE</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM4-NS</Zone>
+    <ZoneDescription>MULTIFAMILY 4 UNITS PER ACRE</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM40</Zone>
+    <ZoneDescription>MULTIFAMILY 40 UNITS PER ACRE</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM40-A</Zone>
+    <ZoneDescription>MULTIFAMILY 40 UNITS PERACRE, ALT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM40-A-NS</Zone>
+    <ZoneDescription>MULTIFAMILY 40 UNITS PER ACRE, ALT, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM40-NS</Zone>
+    <ZoneDescription>MULTIFAMILY 40 UNITS PER ACRE, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM6</Zone>
+    <ZoneDescription>MULTIFAMILY 6 UNITS PER ACRE</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM6-NS</Zone>
+    <ZoneDescription>MULTIFAMILY 6 UNITS PER ACRE, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM60</Zone>
+    <ZoneDescription>MULTIFAMILY 60 UNITS PER ACRE</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM60-A</Zone>
+    <ZoneDescription>MULTIFAMILY 60 UNITS PER ACRE, ALT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM60-A-NS</Zone>
+    <ZoneDescription>MULTIFAMILY 60 UNITS PER ACRE, ALT, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM60-NS</Zone>
+    <ZoneDescription>MULTIFAMILY 60 UNITS PER ACRE, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM80</Zone>
+    <ZoneDescription>MULTIFAMILY 80 UNITS PER ACRE</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM80-A</Zone>
+    <ZoneDescription>MULTIFAMILY 80 UNITS PER ACRE, ALT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM80-A-NS</Zone>
+    <ZoneDescription>MULTIFAMILY 80 UNITS PER ACRE, ALT, NOT STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM9</Zone>
+    <ZoneDescription>MULTIFAMILY 9 UNITS PER ACRE</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM9-A</Zone>
+    <ZoneDescription>MULTIFAMILY 9 UNITS PER ACRE, ALT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM9-A-NS</Zone>
+    <ZoneDescription>MULTIFAMILY 9 UNITS PER ACRE, ALT, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RM9-NS</Zone>
+    <ZoneDescription>MULTIFAMILY 9 UNITS PER ACRE, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RS10</Zone>
+    <ZoneDescription>SINGLE FAMILY 10,000 SQUARE FOOT LOT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RS15</Zone>
+    <ZoneDescription>SINGLE FAMILY 15,000 SQUARE FOOT LOT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RS20</Zone>
+    <ZoneDescription>SINGLE FAMILY 20,000 SQUARE FOOT LOT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RS3.75</Zone>
+    <ZoneDescription>SINGLE FAMILY 3,750 SQUARE FOOT LOT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RS3.75-A</Zone>
+    <ZoneDescription>SINGLE FAMILY 3,750 SQUARE FOOT LOT,  ALT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RS30</Zone>
+    <ZoneDescription>SINGLE FAMILY 30,000 SQUARE FOOT LOT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RS40</Zone>
+    <ZoneDescription>SINGLE FAMILY 40,000 SQUARE FOOT LOT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RS5</Zone>
+    <ZoneDescription>SINGLE FAMILY 5,000 SQUARE FOOT LOT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RS5-A</Zone>
+    <ZoneDescription>SINGLE FAMILY 5,000 SQUARE FOOT LOT, ALT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RS7.5</Zone>
+    <ZoneDescription>SINGLE FAMILY 7,500 SQUARE FOOT LOT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RS7.5-A</Zone>
+    <ZoneDescription>SINGLE FAMILY 7,500 SQUARE FOOT LOT, ALT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>RS80</Zone>
+    <ZoneDescription>SINGLE FAMILY 80,000 SQUARE FOOT LOT</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>SCC</Zone>
+    <ZoneDescription>SHOPPING CENTER, COMMUNITY</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>SCC-NS</Zone>
+    <ZoneDescription>SHOPPING CENTER, COMMUNITY, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>SCN</Zone>
+    <ZoneDescription>SHOPPING CENTER, NEIGHBORHOOD</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>SCN-NS</Zone>
+    <ZoneDescription>SHOPPING CENTER, NEIGHBORHOOD, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>SCR</Zone>
+    <ZoneDescription>SHOPPING CENTER, REGIONAL</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>SCR-NS</Zone>
+    <ZoneDescription>SHOPPING CENTER, REGIONAL, NO STR</ZoneDescription>
+  </anyType>
+  <anyType xsi:type="Zoning">
+    <Zone>SP</Zone>
+    <ZoneDescription>SPECIFIC PLAN</ZoneDescription>
+  </anyType>
+</ArrayOfAnyType>
