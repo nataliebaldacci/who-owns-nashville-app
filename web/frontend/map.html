@@ -20,24 +20,32 @@
   #acDrop .ac:hover{background:#eef2f8}
   #acDrop .ac .nm{font-weight:600}
   #acDrop .ac .p{color:#6b7683;font-variant-numeric:tabular-nums;white-space:nowrap}
-  #tractLegend{position:absolute;bottom:26px;left:8px;background:#fffe;border:1px solid var(--bd);border-radius:4px;padding:7px 9px;font-size:10.5px;color:#20303f;z-index:500;display:none;line-height:1.5}
+  #tractLegend{position:absolute;bottom:44px;left:8px;background:#fffe;border:1px solid var(--bd);border-radius:4px;padding:7px 9px;font-size:10.5px;color:#20303f;z-index:500;display:none;line-height:1.5}
   #tractLegend b{display:block;margin-bottom:3px;color:var(--navy)}
   #tractLegend i{display:inline-block;width:14px;height:10px;margin-right:4px;vertical-align:middle}
   #q{flex:1;padding:8px 12px;border:none;border-radius:4px;font-size:13px}
   #go{padding:8px 14px;border:none;border-radius:4px;background:var(--orange);color:#fff;font-weight:700;cursor:pointer}
   #hint{font-size:11px;opacity:.75;white-space:nowrap}
-  #mainWindow{display:flex;height:calc(100% - 60px)}
-  #leftPane{flex:0 0 300px;max-width:300px;overflow:auto;background:var(--panel);border-right:1px solid var(--bd);box-sizing:border-box;padding:12px 14px}
-  #viewDiv{flex:1;position:relative}
+  #mainWindow{position:relative;height:calc(100% - 60px)}
+  #viewDiv{position:absolute;inset:0}
   #map{position:absolute;inset:0}
-  h2{font-size:11.5px;color:var(--navy);text-transform:uppercase;letter-spacing:1px;font-weight:700;border-bottom:2px solid var(--orange);padding-bottom:4px;display:inline-block;margin:4px 0 8px}
-  .leg{display:flex;align-items:center;gap:8px;font-size:12px;padding:3px 0;cursor:pointer;user-select:none}
-  .leg .sw{width:12px;height:12px;border-radius:50%;flex:0 0 auto;border:1px solid #0003}
-  .leg .n{margin-left:auto;color:#6b7683;font-variant-numeric:tabular-nums}
-  .leg.off{opacity:.35}
-  .tog{display:flex;align-items:center;gap:8px;font-size:12.5px;margin:6px 0 12px;cursor:pointer}
-  .stat{font-size:12px;color:#4a5560;margin:2px 0}
-  .stat b{color:var(--navy)}
+  /* Security-for-Sale style legend card */
+  /* vertical operator legend, right side */
+  #legendCard{position:absolute;top:184px;right:10px;z-index:600;background:#fff;border:1px solid var(--bd);border-radius:6px;box-shadow:0 4px 14px #0002;padding:10px 12px 9px;width:184px;max-height:calc(100% - 200px);overflow:auto}
+  #legendTitle{font-family:'Source Serif 4',Georgia,serif;font-weight:700;font-size:12.5px;color:var(--navy);margin:0 16px 8px 0;line-height:1.25}
+  #legendTitle small{display:block;font-family:'Inter';font-size:9.5px;font-weight:400}
+  #legendSwatches{display:flex;flex-direction:column;gap:4px}
+  .legGroup{font-size:9px;text-transform:uppercase;letter-spacing:.7px;color:var(--navy);font-weight:700;margin:8px 0 2px;border-bottom:1px solid #eef0f3;padding-bottom:2px}
+  .legGroup:first-child{margin-top:0}
+  .sw2{cursor:pointer;user-select:none;display:flex;align-items:center;gap:7px}
+  .sw2 .bar{width:20px;height:11px;border-radius:2px;flex:0 0 auto}
+  .sw2 .lab{font-size:10.5px;color:#3a4652;line-height:1.12}
+  .sw2.faded{opacity:.28}
+  #legendNote{font-size:9.5px;color:#8a94a0;margin-top:8px}
+  #legendSwatches .cnt{color:#8a94a0;font-weight:400;font-variant-numeric:tabular-nums}
+  #zipBox{position:absolute;top:12px;left:12px;z-index:600;background:#fff;border:1px solid var(--bd);border-radius:6px;box-shadow:0 2px 8px #0002;padding:6px 8px}
+  #zipBox input{border:none;font-size:12.5px;padding:3px 4px;width:150px;outline:none}
+  #baseTog{position:absolute;bottom:8px;left:8px;z-index:600;background:#fffe;border:1px solid var(--bd);border-radius:4px;padding:5px 8px;font-size:11px;color:#4a5560;display:flex;align-items:center;gap:6px;cursor:pointer}
   #status{position:absolute;bottom:8px;right:8px;background:#fffd;border:1px solid var(--bd);border-radius:4px;padding:4px 10px;font-size:11px;color:#4a5560;z-index:500}
   .pp{font-family:'Open Sans','Inter',sans-serif;font-size:12px;line-height:1.45;max-width:360px}
   .pp-h{font-weight:700;color:var(--navy);font-size:13px}
@@ -48,27 +56,46 @@
   .pp-l b{color:var(--navy)}
   .pp-l a{color:var(--navy);text-decoration:none;font-weight:600}
   .pp-l a:hover{color:var(--orange);text-decoration:underline}
+  .pp-d{display:grid;grid-template-columns:1fr 1fr;gap:2px 12px;margin:2px 0 6px;border-top:1px solid #eef0f3;border-bottom:1px solid #eef0f3;padding:5px 0}
+  .pp-d>div{display:flex;justify-content:space-between;font-size:11.5px}
+  .pp-d span{color:#6b7683}
+  .pp-d b{color:var(--navy)}
   .pp-own{display:block;margin-top:6px;background:var(--navy);color:#fff!important;text-align:center;padding:6px;border-radius:3px;font-weight:700;text-decoration:none}
   .pp-own:hover{background:var(--orange)}
+  .homeMarker{background:none;border:none}
+  .homeMarker svg{filter:drop-shadow(0 .5px .5px rgba(0,0,0,.3))}
+  #legendCard.collapsed #legendSwatches,#legendCard.collapsed #legendNote{display:none}
+  #legendToggle{position:absolute;top:8px;right:10px;cursor:pointer;color:#8a94a0;font-size:13px;font-weight:700;user-select:none}
+  #legendTitle{cursor:pointer}
 </style>
 </head>
 <body>
 <div id="header">
   <div class="brand">Who Owns Nashville?<small>Parcel Map · Davidson County</small></div>
-  <div id="searchWrap"><input id="q" placeholder="Search owner, address, or APN…" autocomplete="off"/><button id="go">Find</button><div id="acDrop"></div></div>
-  <div id="hint">238,961 parcels · 47,319 corporate</div>
+  <div id="searchWrap"><input id="q" placeholder="Search owner, address, ZIP, or APN…" autocomplete="off"/><button id="go">Find</button><div id="acDrop"></div></div>
+  <div id="hint">238,961 parcels · 50,447 corporate</div>
 </div>
 <div id="mainWindow">
-  <div id="leftPane">
-    <h2>Operators</h2>
-    <div id="legend"></div>
-    <label class="tog"><input type="checkbox" id="showBase"/> Show all parcels (gray, zoom in)</label>
-    <div class="stat" id="sel"></div>
+  <div id="viewDiv">
+    <div id="map"></div>
+    <div id="zipBox"><input id="zipInput" placeholder="Search by ZIP code" autocomplete="off"/></div>
+    <div id="legendCard">
+      <span id="legendToggle" title="Collapse / expand">▾</span>
+      <div id="legendTitle">Corporate-owned homes<small>Davidson County · click an operator to filter</small></div>
+      <div id="legendSwatches"></div>
+      <div id="legendNote">Click an operator to filter · each dot is one corporate-owned parcel</div>
+    </div>
+    <label id="baseTog"><input type="checkbox" id="showBase"/> Show all parcels (zoom in)</label>
+    <div id="status">loading…</div>
+    <div id="tractLegend"></div>
   </div>
-  <div id="viewDiv"><div id="map"></div><div id="status">loading…</div><div id="tractLegend"></div></div>
 </div>
 <script>
 const status=document.getElementById('status');
+// house glyph (used when a single operator is isolated)
+const houseSVG=f=>"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='16' height='16'><path d='M12 3 L21 11 L18.5 11 L18.5 20 L14 20 L14 14 L10 14 L10 20 L5.5 20 L5.5 11 L3 11 Z' fill='"+f+"' stroke='rgba(0,0,0,.45)' stroke-width='1.2'/></svg>";
+const _iconCache={};
+function houseIcon(color){if(!_iconCache[color])_iconCache[color]=L.divIcon({html:houseSVG(color),className:'homeMarker',iconSize:[16,16],iconAnchor:[8,14],popupAnchor:[0,-12]});return _iconCache[color];}
 const PATRIOT="5D050659143EB96630FB38B91DE12E40&SECRETKEY=A92169630C9BC3C00A1C0F9F140E6DAEC21C8E62DCFF9FC443FB1BE70DDF6AA4268527B9DDE2ECC2C7EE9BB5BF728C06F0DF4019BBECDEBD2A6DD0BBE28A419D8F929E1F3E8DF478E56619995BEFCA8E369276689D791197DC1284F14B3252DBFB2A19A2E451EEA832D6D96488DDC673EBA4B37BD741223B656A793D93209C0F";
 const esc=s=>String(s==null?'':s);
 function toolkit(o){ // {apn,parid,acct,lat,lon,address,brand,owner,cid,market_value}
@@ -78,6 +105,18 @@ function toolkit(o){ // {apn,parid,acct,lat,lon,address,brand,owner,cid,market_v
   let h='<div class="pp"><div class="pp-h">'+esc(o.address||apn)+'</div>';
   h+='<div class="pp-s">APN <code>'+apn+'</code>'+(o.brand?(' · '+esc(o.brand)):'')+'</div>';
   if(apn) h+='<img class="pp-img" src="https://image-cdn.spatialest.com/image/tn-davidson-images/med/Images/'+apn+'_1.jpg" onerror="this.style.display=\'none\'" loading="lazy"/>';
+  const dd=[];
+  if(o.year_built) dd.push(['Year built',esc(o.year_built)]);
+  if(o.structure_type) dd.push(['Structure type',esc(o.structure_type)]);
+  if(o.land_use) dd.push(['Land use',esc(o.land_use)]);
+  if(o.zoning) dd.push(['Zoning',esc(o.zoning)]);
+  if(o.du_count) dd.push(['Dwelling units',esc(o.du_count)]);
+  if(o.assess_class) dd.push(['Assess. class',esc(o.assess_class)+(o.assess_class!=='R'?' ⚠️ non-residential':'')]);
+  if(o.beds!=null) dd.push(['Beds / Baths',esc(o.beds)+' / '+esc(o.bath!=null?o.bath:'—')]);
+  if(o.sqft) dd.push(['Sq ft',Number(o.sqft).toLocaleString()]);
+  if(o.value) dd.push(['Appraised value','$'+Number(o.value).toLocaleString()]);
+  if(o.sale_price) dd.push(['Last sale','$'+Number(o.sale_price).toLocaleString()+(o.sale_date?(' · '+esc(o.sale_date)):'')]);
+  if(dd.length) h+='<div class="pp-d">'+dd.map(x=>'<div><span>'+x[0]+'</span><b>'+x[1]+'</b></div>').join('')+'</div>';
   h+='<div class="pp-l">'+[A("https://maps.nashville.gov/ParcelViewer/?parcelID="+apn,'Parcel Viewer'),
       A(card,'Property Card'),A("https://davidson-tn-citizen.comper.info/template.aspx?propertyID="+apn,'Comper'),
       A("https://portal.patriotproperties.com/?APIKEY="+PATRIOT+"&LAT="+lat+"&LONG="+lon,'Aerial'),
@@ -109,8 +148,12 @@ tl.innerHTML='<b>Median HH income (2024)</b>'+[['#ffffd4','<$60k'],['#fee391','$
 tracts.on('add',()=>tl.style.display='block'); tracts.on('remove',()=>tl.style.display='none');
 const council=L.geoJSON(null,{style:{color:'#7a3908',weight:1.3,fill:false},onEachFeature:(f,l)=>l.bindTooltip('Council District '+(f.properties.DISTRICT||''),{sticky:true})});
 fetch("https://services2.arcgis.com/HdTo6HJqh92wn4D8/arcgis/rest/services/2022_Council_Districts_(Future)_view/FeatureServer/0/query?where=1%3D1&outFields=DISTRICT&returnGeometry=true&outSR=4326&f=geojson").then(r=>r.json()).then(gj=>council.addData(gj)).catch(()=>{});
+const ZIPGEO={}; let activeZip=null;
 const zips=L.geoJSON(null,{style:{color:'#406a64',weight:1,fill:false,dashArray:'3,3'},onEachFeature:(f,l)=>l.bindTooltip('Zip '+(f.properties.ZipCode||''),{sticky:true})});
-fetch("https://services2.arcgis.com/HdTo6HJqh92wn4D8/arcgis/rest/services/Zip_Code_Boundaries_Vw/FeatureServer/0/query?where=1%3D1&outFields=ZipCode&returnGeometry=true&outSR=4326&f=geojson").then(r=>r.json()).then(gj=>zips.addData(gj)).catch(()=>{});
+fetch("https://services2.arcgis.com/HdTo6HJqh92wn4D8/arcgis/rest/services/Zip_Code_Boundaries_Vw/FeatureServer/0/query?where=1%3D1&outFields=ZipCode&returnGeometry=true&outSR=4326&f=geojson").then(r=>r.json()).then(gj=>{zips.addData(gj);gj.features.forEach(f=>{const z=String(f.properties.ZipCode||'').trim();if(z)ZIPGEO[z]=f.geometry;});}).catch(()=>{});
+// point-in-polygon (ray casting) for zip filtering
+function ptInRing(lat,lon,ring){let inside=false;for(let i=0,j=ring.length-1;i<ring.length;j=i++){const xi=ring[i][0],yi=ring[i][1],xj=ring[j][0],yj=ring[j][1];if(((yi>lat)!=(yj>lat))&&(lon<(xj-xi)*(lat-yi)/(yj-yi)+xi))inside=!inside;}return inside;}
+function ptInGeom(lat,lon,g){if(!g)return true;const polys=g.type==='Polygon'?[g.coordinates]:g.coordinates;for(const poly of polys){if(ptInRing(lat,lon,poly[0])){let hole=false;for(let k=1;k<poly.length;k++)if(ptInRing(lat,lon,poly[k])){hole=true;break;}if(!hole)return true;}}return false;}
 L.control.layers({'Gray':gray,'Aerial':aerial,'Streets':streets},
   {'Census tracts (income)':tracts,'Council districts':council,'Zip codes':zips},
   {position:'topright',collapsed:false}).addTo(m);
@@ -129,6 +172,17 @@ qEl.addEventListener('input',()=>{
 });
 drop.addEventListener('click',e=>{const el=e.target.closest('.ac');if(el)location.href='owner.html?id='+el.getAttribute('data-id');});
 document.addEventListener('click',e=>{if(!e.target.closest('#searchWrap'))drop.style.display='none';});
+
+// ---- ZIP box (Security-for-Sale style) ----
+document.getElementById('zipInput').addEventListener('keydown',e=>{
+  if(e.key!=='Enter') return;
+  const z=e.target.value.replace(/\D/g,'');
+  if(!z){ activeZip=null; zips.remove(); drawCorp(); return; }
+  if(z.length!==5){ status.textContent='Enter a 5-digit ZIP'; return; }
+  const g=ZIPGEO[z];
+  if(g){ activeZip=g; zips.addTo(m); drawCorp(); try{m.fitBounds(L.geoJSON(g).getBounds().pad(0.05));}catch(_){}}
+  else status.textContent='ZIP '+z+' not found (zip layer still loading?)';
+});
 m.createPane('mask'); const _mp=m.getPane('mask'); _mp.style.zIndex=350; _mp.style.pointerEvents='none';
 fetch('https://nataliebaldacci.github.io/SFR_Nashville/data/Davidson_County_Boundary.geojson').then(r=>r.json())
   .then(gj=>{const f=gj.features.find(x=>x.properties.OBJECTID===4); if(!f) return;
@@ -140,20 +194,30 @@ fetch('https://nataliebaldacci.github.io/SFR_Nashville/data/Davidson_County_Boun
   }).catch(()=>{});
 
 const baseCanvas=L.canvas({padding:.5});
-let BASE=null, CORP=null, corpLayer=L.layerGroup().addTo(m), baseLayer=L.layerGroup(), off=new Set();
+let BASE=null, CORP=null, corpLayer=L.layerGroup().addTo(m), baseLayer=L.layerGroup(), isolate=null;
 
 // ---- corporate layer (colored, clickable) ----
 function drawCorp(){
   corpLayer.clearLayers();
   const idx={}; CORP.cols.forEach((c,i)=>idx[c]=i);
-  CORP.rows.forEach(r=>{
-    const brand=r[idx.brand]; if(off.has(brand)) return;
-    const mk=L.circleMarker([r[idx.lat],r[idx.lon]],{radius:3.5,color:'#fff',weight:.4,fillColor:r[idx.color],fillOpacity:.9});
+  let n=0;
+  // branded operators = clean colored dots; unbranded "Other corporate" = faint background dots
+  const mkOne=r=>{
+    const brand=r[idx.brand];
+    const other=(brand==='Other corporate');
+    const mk = other
+      ? L.circleMarker([r[idx.lat],r[idx.lon]],{radius:1.7,color:r[idx.color],weight:0,fillColor:r[idx.color],fillOpacity:.22})
+      : L.circleMarker([r[idx.lat],r[idx.lon]],{radius:4,color:'#ffffff',weight:.6,fillColor:r[idx.color],fillOpacity:.92});
     mk.on('click',()=>mk.bindPopup(toolkit({lat:r[idx.lat],lon:r[idx.lon],apn:r[idx.apn],parid:r[idx.parid],
-        acct:r[idx.acct],brand:brand,owner:r[idx.owner],cid:r[idx.cid]}),{maxWidth:380}).openPopup());
-    corpLayer.addLayer(mk);
-  });
-  status.textContent=CORP.rows.length.toLocaleString()+' corporate parcels';
+        acct:r[idx.acct],brand:brand,owner:r[idx.owner],cid:r[idx.cid],address:r[idx.address],value:r[idx.value],
+        beds:r[idx.beds],bath:r[idx.bath],sqft:r[idx.sqft],year_built:r[idx.year_built],
+        structure_type:r[idx.structure_type],land_use:r[idx.land_use],zoning:r[idx.zoning],du_count:r[idx.du_count],assess_class:r[idx.assess_class],sale_price:r[idx.sale_price],sale_date:r[idx.sale_date]}),{maxWidth:380}).openPopup());
+    corpLayer.addLayer(mk); n++;
+  };
+  const keep=r=>{const b=r[idx.brand]; if(isolate&&b!==isolate)return false; if(activeZip&&!ptInGeom(r[idx.lat],r[idx.lon],activeZip))return false; return true;};
+  // only branded operators render; "Other corporate" is hidden
+  CORP.rows.forEach(r=>{if(keep(r)&&r[idx.brand]!=='Other corporate')mkOne(r);});
+  status.textContent=n.toLocaleString()+' corporate parcels'+(activeZip?' in ZIP':'');
 }
 // ---- base layer (gray, viewport-culled, click-nearest) ----
 function drawBase(){
@@ -183,15 +247,43 @@ m.on('moveend',()=>{if(document.getElementById('showBase').checked) drawBase();}
 document.getElementById('showBase').addEventListener('change',drawBase);
 
 // ---- legend ----
+(function(){const c=document.getElementById('legendCard'),t=document.getElementById('legendToggle'),ti=document.getElementById('legendTitle');
+  const tog=()=>{c.classList.toggle('collapsed');t.textContent=c.classList.contains('collapsed')?'▸':'▾';};
+  t.onclick=tog; ti.onclick=tog;})();
 function buildLegend(){
-  const L2=document.getElementById('legend');
-  L2.innerHTML=CORP.legend.map(g=>`<div class="leg" data-b="${esc(g.brand)}"><span class="sw" style="background:${g.color}"></span>${esc(g.brand).replace(/ \(.*\)/,'')}<span class="n">${g.n.toLocaleString()}</span></div>`).join('');
-  L2.querySelectorAll('.leg').forEach(el=>el.onclick=()=>{const b=el.getAttribute('data-b');if(off.has(b)){off.delete(b);el.classList.remove('off');}else{off.add(b);el.classList.add('off');}drawCorp();});
+  const el=document.getElementById('legendSwatches');
+  const order=['Landlord','Builder','iBuyer','Other'];
+  const byType={}; CORP.legend.forEach(g=>{(byType[g.type]=byType[g.type]||[]).push(g);});
+  const sw=g=>`<div class="sw2" data-b="${esc(g.brand)}" title="${g.n.toLocaleString()} parcels"><div class="bar" style="background:${g.color}"></div><div class="lab">${esc(g.brand)} <span class="cnt">(${g.n.toLocaleString()})</span></div></div>`;
+  let html='';
+  order.forEach(t=>{ if(!byType[t]) return;
+    if(t!=='Other') html+=`<div class="legGroup">${t}s</div>`;
+    else html+=`<div class="legGroup">Other</div>`;
+    html+=byType[t].map(sw).join('');
+  });
+  el.innerHTML=html;
+  el.querySelectorAll('.sw2').forEach(s=>s.onclick=()=>setIsolate(s.getAttribute('data-b')));
+}
+function setIsolate(b){
+  isolate=(isolate===b)?null:b;
+  document.querySelectorAll('#legendSwatches .sw2').forEach(s=>s.classList.toggle('faded', isolate && s.getAttribute('data-b')!==isolate));
+  document.getElementById('legendTitle').innerHTML = (isolate
+    ? esc(isolate).replace(/ \(.*\)/,'').replace(/ \[.*\]/,'')+' homes'
+    : 'Corporate-owned homes')+'<small>Davidson County · click an operator to filter</small>';
+  drawCorp();
 }
 // ---- search: APN or address ----
 async function search(){
-  const q=document.getElementById('q').value.trim(); if(!q) return;
+  const q=document.getElementById('q').value.trim();
+  if(!q){ if(activeZip){activeZip=null;drawCorp();zips.remove();} return; }
   const digits=q.replace(/\D/g,'');
+  if(digits.length===5){ // ZIP filter
+    const g=ZIPGEO[digits];
+    if(g){ activeZip=g; drawCorp(); zips.addTo(m);
+      try{m.fitBounds(L.geoJSON(g).getBounds().pad(0.05));}catch(e){}
+    } else status.textContent='ZIP '+digits+' not found — is the Zip layer loaded?';
+    return;
+  }
   if(digits.length>=9 && digits.length<=11){ // APN lookup in base
     const apn=digits.padStart(11,'0'); let hit=-1;
     for(let i=0;i<BASE.apn.length;i++){if(BASE.apn[i]===apn){hit=i;break;}}
@@ -213,9 +305,9 @@ document.getElementById('q').addEventListener('keydown',e=>{if(e.key==='Enter')s
 
 // ---- load ----
 status.textContent='loading corporate parcels…';
-fetch('data/citywide_corp.json').then(r=>r.json()).then(j=>{CORP=j;buildLegend();drawCorp();
+fetch('data/citywide_corp.json?v='+Date.now()).then(r=>r.json()).then(j=>{CORP=j;buildLegend();drawCorp();
   status.textContent='loading all parcels…';
-  return fetch('data/citywide_base.json');
+  return fetch('data/citywide_base.json?v='+Date.now());
 }).then(r=>r.json()).then(j=>{BASE=j;status.textContent=CORP.rows.length.toLocaleString()+' corporate · '+BASE.lat.length.toLocaleString()+' total parcels';})
 .catch(e=>{status.textContent='load error';});
 </script>

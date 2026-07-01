@@ -3,18 +3,20 @@
 <head>
 <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Owner Profile — Who Owns Nashville?</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%231f3a5f'/%3E%3Cpath d='M16 6 L26 14 L23 14 L23 25 L18 25 L18 18 L14 18 L14 25 L9 25 L9 14 L6 14 Z' fill='%23e07a33'/%3E%3C/svg%3E"/>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%231f3a5f'/%3E%3Cpath d='M16 6 L26 14 L23 14 L23 25 L18 25 L18 18 L14 18 L14 25 L9 25 L9 14 L6 14 Z' fill='%233f7d74'/%3E%3C/svg%3E"/>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
 <style>
   /* ParcelViewer app-shell + Nashville Unified Housing Strategy palette */
-  :root{--navy:#1f3a5f;--navy-dk:#152a45;--orange:#e07a33;--green:#5b9d43;--ltblue:#6ba3d6;--teal:#134e4e;--midteal:#4f9c9a;--panel:#e5eaf1;--bd:#cdd6e3;--ink:#1f3a5f;--rowhi:#eef2f8}
+  :root{--navy:#1f3a5f;--navy-dk:#152a45;--orange:#3f7d74;--green:#5b9d43;--ltblue:#6ba3d6;--teal:#134e4e;--midteal:#4f9c9a;--panel:#e5eaf1;--bd:#cdd6e3;--ink:#1f3a5f;--rowhi:#eef2f8}
   html,body{height:100dvh;width:100vw;margin:0;padding:0;font-family:'Open Sans','Inter',-apple-system,'Segoe UI',sans-serif;overflow:hidden;color:#20303f}
   #header{height:64px;width:100%;display:flex;align-items:center;justify-content:space-between;background:var(--navy);color:#fff;box-sizing:border-box;padding:0 22px;border-bottom:3px solid var(--orange)}
   #header .brand{font-family:'Open Sans','Inter',sans-serif;font-size:22px;font-weight:700;letter-spacing:.2px}
   #header .brand small{display:block;font-size:10.5px;font-weight:400;opacity:.85;letter-spacing:1px;text-transform:uppercase}
-  #header .sub{font-size:13px;opacity:.92}
+  #header .sub{font-size:13px;opacity:.92;display:flex;align-items:center;gap:14px}
+  #header .navlink{color:#fff;text-decoration:none;font-size:12.5px;font-weight:600;background:rgba(255,255,255,.14);padding:6px 12px;border-radius:4px;white-space:nowrap}
+  #header .navlink:hover{background:var(--orange)}
   #mainWindow{display:flex;flex-direction:row;height:calc(100% - 64px)}
   #leftPane{flex:0 0 35%;max-width:490px;overflow:auto;background:var(--panel);border-right:1px solid var(--bd);box-sizing:border-box}
   #viewDiv{flex:1;position:relative}
@@ -84,13 +86,13 @@
   .hllink:hover{color:var(--orange);text-decoration:underline}
   .chip.hllink{font-weight:400}
   .homeMarker{background:none;border:none}
-  .homeMarker svg{filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.35))}
+  .homeMarker svg{filter:drop-shadow(0 .5px .5px rgba(0,0,0,.25))}
 </style>
 </head>
 <body>
 <div id="header">
-  <div class="brand">Who Owns Nashville?<small>Corporate Ownership Explorer</small></div>
-  <div class="sub" id="hdrSub"></div>
+  <a class="brand" href="map.html" style="text-decoration:none;color:#fff">Who Owns Nashville?<small>Corporate Ownership Explorer</small></a>
+  <div class="sub"><span id="hdrSub"></span><a class="navlink" href="map.html">← Map</a><a class="navlink" href="map.html">Search all owners</a></div>
 </div>
 <div id="mainWindow">
   <div id="leftPane"><div id="panel">Loading…</div></div>
@@ -151,13 +153,13 @@ function scatterSVG(parcels){
   if(d1>d0) g+='<line x1="'+sx(d0)+'" y1="'+sy(d0)+'" x2="'+sx(d1)+'" y2="'+sy(d1)+'" stroke="#b58676" stroke-dasharray="4,3" stroke-width="1"/>';
   ticks(x0,x1,5).forEach(v=>{g+='<line x1="'+sx(v)+'" y1="'+(H-B)+'" x2="'+sx(v)+'" y2="'+(H-B+3)+'" stroke="#9aa5b1"/><text x="'+sx(v)+'" y="'+(H-B+13)+'" text-anchor="middle" fill="#6b7683">'+v+'</text>';});
   ticks(y0,y1,5).forEach(v=>{g+='<line x1="'+(L-3)+'" y1="'+sy(v)+'" x2="'+L+'" y2="'+sy(v)+'" stroke="#9aa5b1"/><text x="'+(L-5)+'" y="'+(sy(v)+3)+'" text-anchor="end" fill="#6b7683">'+v+'</text>';});
-  pts.forEach(p=>{g+='<circle cx="'+sx(p[1]).toFixed(1)+'" cy="'+sy(p[0]).toFixed(1)+'" r="3" fill="#e07a33" fill-opacity="0.55" stroke="#b3560f" stroke-width="0.4"><title>'+p[2]+' — acquired '+p[1]+', built '+p[0]+'</title></circle>';});
+  pts.forEach(p=>{g+='<circle cx="'+sx(p[1]).toFixed(1)+'" cy="'+sy(p[0]).toFixed(1)+'" r="3" fill="#3a6a92" fill-opacity="0.55" stroke="#1f3a5f" stroke-width="0.4"><title>'+p[2]+' — acquired '+p[1]+', built '+p[0]+'</title></circle>';});
   g+='<text x="'+((L+W-R)/2)+'" y="'+(H-2)+'" text-anchor="middle" fill="#4a5560" font-weight="600">Year acquired →</text>';
   g+='<text transform="translate(11,'+((T+H-B)/2)+') rotate(-90)" text-anchor="middle" fill="#4a5560" font-weight="600">Year built →</text>';
   return g+'</svg>';
 }
 function raceBar(pf){
-  const seg=[['Black',pf.pct_black,'#6a51a3'],['White',pf.pct_white,'#9aa5b1'],['Hispanic',pf.pct_hispanic,'#e07a33'],['Asian',pf.pct_asian,'#5b9d43']];
+  const seg=[['Black',pf.pct_black,'#6a51a3'],['White',pf.pct_white,'#9aa5b1'],['Hispanic',pf.pct_hispanic,'#c9a24b'],['Asian',pf.pct_asian,'#5b9d43']];
   const known=seg.reduce((s,x)=>s+(x[1]||0),0); const other=Math.max(0,100-known);
   const all=seg.concat([['Other',other,'#cdd6e3']]);
   return '<div class="race">'+all.map(x=>`<i style="width:${Math.max(0,x[1]||0)}%;background:${x[2]}"></i>`).join('')+'</div>'
@@ -296,9 +298,12 @@ fetch(`data/owners/${id}.json`).then(r=>r.json()).then(d=>{
     return h+'</div>';
   }
   // Little house markers, one per parcel (orange default, navy when highlighted)
-  const house=(f,s,w,h)=>"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='"+w+"' height='"+h+"'><path d='M12 3 L21 11 L18.5 11 L18.5 20 L14 20 L14 14 L10 14 L10 20 L5.5 20 L5.5 11 L3 11 Z' fill='"+f+"' stroke='"+s+"' stroke-width='1'/></svg>";
-  const homeIcon=L.divIcon({html:house('#e07a33','#7a3908',18,18),className:'homeMarker',iconSize:[18,18],iconAnchor:[9,16],popupAnchor:[0,-14]});
-  const homeIconHi=L.divIcon({html:house('#1f3a5f','#0d1c30',24,24),className:'homeMarker hi',iconSize:[24,24],iconAnchor:[12,21],popupAnchor:[0,-18]});
+  const house=(f,s,w,h)=>"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='"+w+"' height='"+h+"'><path d='M12 3 L21 11 L18.5 11 L18.5 20 L14 20 L14 14 L10 14 L10 20 L5.5 20 L5.5 11 L3 11 Z' fill='"+f+"' stroke='"+s+"' stroke-width='1.2'/></svg>";
+  // operator brand palette (matches the citywide map) — houses take the owner's color
+  const BRANDCOLOR={"Progress Residential":"#e07a33","American Homes 4 Rent":"#1f3a5f","Amherst Residential":"#4f9c9a","Invitation Homes":"#cf307a","Tricon Residential":"#5b9d43","Starwood Capital Group":"#6ba3d6","FirstKey Homes (Cerberus)":"#134e4e","Rithm Capital":"#9b2a23","Maymont Homes (Brookfield)":"#7f6000","Homeward (Blackstone)":"#b07aa1","Bluerock Homes":"#c0504d","Opendoor (iBuyer)":"#3aa0a0","Zillow Offers (iBuyer)":"#6a8ec9","Offerpad (iBuyer)":"#c05a9a","Meritage Homes (Builder)":"#b3a07a","PulteGroup (Builder)":"#8a7d5a","D.R. Horton (Builder)":"#7d7355","Beazer Homes (Builder)":"#9c8a6b","Ole South (Local Builder)":"#a89968"};
+  const brandFill='#3a6a92';  // fixed calm blue — no orange, no per-owner color flip
+  const homeIcon=L.divIcon({html:house(brandFill,'rgba(0,0,0,.45)',12,12),className:'homeMarker',iconSize:[12,12],iconAnchor:[6,11],popupAnchor:[0,-10]});
+  const homeIconHi=L.divIcon({html:house('#1f3a5f','#0d1c30',17,17),className:'homeMarker hi',iconSize:[17,17],iconAnchor:[8,15],popupAnchor:[0,-13]});
   const markers=[];
   d.parcels.filter(p=>p.lat&&p.lon).forEach(p=>{const mk=L.marker([+p.lat,+p.lon],{icon:homeIcon}).bindPopup(popupHTML(p),{maxWidth:380});mk._pid=String(p.parcel_id);markers.push(mk);});
   if(markers.length){const g=L.featureGroup(markers).addTo(m);try{m.fitBounds(g.getBounds().pad(0.06));}catch(e){}}
