@@ -67,6 +67,9 @@
   #legendCard.collapsed #legendSwatches,#legendCard.collapsed #legendNote{display:none}
   #legendToggle{position:absolute;top:8px;right:10px;cursor:pointer;color:#8a94a0;font-size:13px;font-weight:700;user-select:none}
   #legendTitle{cursor:pointer}
+.legGroup.grp{cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.legGroup .gtgl{font-size:9px;font-weight:400;color:#8a94a0;text-transform:none;border:1px solid #d4cfc4;border-radius:3px;padding:0 4px}
+.legGroup.goff{opacity:.55}
 </style>
 </head>
 <body>
@@ -93,9 +96,9 @@
 <script>
 const status=document.getElementById('status');
 // house glyph (used when a single operator is isolated)
-const houseSVG=f=>"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='16' height='16'><path d='M12 3 L21 11 L18.5 11 L18.5 20 L14 20 L14 14 L10 14 L10 20 L5.5 20 L5.5 11 L3 11 Z' fill='"+f+"' stroke='rgba(0,0,0,.45)' stroke-width='1.2'/></svg>";
+const houseSVG=f=>"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='11' height='11'><path d='M12 3 L21 11 L18.5 11 L18.5 20 L14 20 L14 14 L10 14 L10 20 L5.5 20 L5.5 11 L3 11 Z' fill='"+f+"' stroke='rgba(0,0,0,.45)' stroke-width='1.4'/></svg>";
 const _iconCache={};
-function houseIcon(color){if(!_iconCache[color])_iconCache[color]=L.divIcon({html:houseSVG(color),className:'homeMarker',iconSize:[16,16],iconAnchor:[8,14],popupAnchor:[0,-12]});return _iconCache[color];}
+function houseIcon(color){if(!_iconCache[color])_iconCache[color]=L.divIcon({html:houseSVG(color),className:'homeMarker',iconSize:[11,11],iconAnchor:[5.5,10],popupAnchor:[0,-9]});return _iconCache[color];}
 const PATRIOT="5D050659143EB96630FB38B91DE12E40&SECRETKEY=A92169630C9BC3C00A1C0F9F140E6DAEC21C8E62DCFF9FC443FB1BE70DDF6AA4268527B9DDE2ECC2C7EE9BB5BF728C06F0DF4019BBECDEBD2A6DD0BBE28A419D8F929E1F3E8DF478E56619995BEFCA8E369276689D791197DC1284F14B3252DBFB2A19A2E451EEA832D6D96488DDC673EBA4B37BD741223B656A793D93209C0F";
 const esc=s=>String(s==null?'':s);
 function toolkit(o){ // {apn,parid,acct,lat,lon,address,brand,owner,cid,market_value}
@@ -138,13 +141,36 @@ const aerial=L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services
 const streets=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'});
 // ---- overlays (toggle) ----
 m.createPane('tractPane'); m.getPane('tractPane').style.zIndex=360;
-const RAMP=[['#cc4c02',130000],['#fe9929',100000],['#fec44f',80000],['#fee391',60000],['#ffffd4',0]];
-function incColor(v){if(v==null||isNaN(v))return '#e0e0e0';for(const [c,t] of RAMP)if(v>=t)return c;return '#ffffd4';}
-const tracts=L.geoJSON(null,{pane:'tractPane',style:f=>({color:'#fff',weight:.6,fillColor:incColor(f.properties.median_hh_income_Y2024),fillOpacity:.55}),
-  onEachFeature:(f,l)=>l.bindTooltip((f.properties.NAME||'Tract')+': $'+Math.round(f.properties.median_hh_income_Y2024||0).toLocaleString()+' median income',{sticky:true})});
+const METRICS={
+  median_hh_income_Y2024:{label:'Median HH income',fmt:'$',breaks:[60000,80000,100000,130000],
+    colors:['#ffffd4','#fee391','#fec44f','#fe9929','#cc4c02'],legend:['<$60k','$60–80k','$80–100k','$100–130k','$130k+']},
+  median_home_value_Y2024:{label:'Median home value',fmt:'$',breaks:[250000,350000,450000,600000],
+    colors:['#ffffd4','#fee391','#fec44f','#fe9929','#cc4c02'],legend:['<$250k','$250–350k','$350–450k','$450–600k','$600k+']},
+  median_gross_rent_Y2024:{label:'Median gross rent',fmt:'$',breaks:[1100,1400,1700,2100],
+    colors:['#ffffd4','#fee391','#fec44f','#fe9929','#cc4c02'],legend:['<$1.1k','$1.1–1.4k','$1.4–1.7k','$1.7–2.1k','$2.1k+']},
+  pct_renter_occ_Y2024:{label:'Renter share',fmt:'%',breaks:[25,40,55,70],
+    colors:['#eff3ff','#bdd7e7','#6baed6','#3182bd','#08519c'],legend:['<25%','25–40%','40–55%','55–70%','70%+']},
+  pct_renter_cost_burdened_Y2024:{label:'Renter cost burden',fmt:'%',breaks:[35,45,50,55],
+    colors:['#feedde','#fdbe85','#fd8d3c','#e6550d','#a63603'],legend:['<35%','35–45%','45–50%','50–55%','55%+']},
+  h_vacant_pct:{label:'Vacancy rate',fmt:'%',breaks:[5,8,12,18],
+    colors:['#edf8e9','#bae4b3','#74c476','#31a354','#006d2c'],legend:['<5%','5–8%','8–12%','12–18%','18%+']}
+};
+let curMetric='median_hh_income_Y2024';
+function mColor(v,m){const M=METRICS[m];if(v==null||isNaN(v))return '#e0e0e0';let i=0;while(i<M.breaks.length&&v>=M.breaks[i])i++;return M.colors[i];}
+function fmtVal(v,m){if(v==null||isNaN(v))return 'n/a';return METRICS[m].fmt==='$'?'$'+Math.round(v).toLocaleString():Math.round(v)+'%';}
+const tractStyle=f=>({color:'#fff',weight:.6,fillColor:mColor(f.properties[curMetric],curMetric),fillOpacity:.55});
+const tracts=L.geoJSON(null,{pane:'tractPane',style:tractStyle,
+  onEachFeature:(f,l)=>l.bindTooltip(()=>(f.properties.NAME||'Tract')+': '+fmtVal(f.properties[curMetric],curMetric)+' '+METRICS[curMetric].label.toLowerCase(),{sticky:true})});
 fetch('data/overlays/tracts_acs.geojson').then(r=>r.json()).then(gj=>tracts.addData(gj)).catch(()=>{});
 const tl=document.getElementById('tractLegend');
-tl.innerHTML='<b>Median HH income (2024)</b>'+[['#ffffd4','<$60k'],['#fee391','$60–80k'],['#fec44f','$80–100k'],['#fe9929','$100–130k'],['#cc4c02','$130k+']].map(x=>`<div><i style="background:${x[0]}"></i>${x[1]}</div>`).join('');
+function renderTractLegend(){
+  const M=METRICS[curMetric];
+  tl.innerHTML='<b>Census tract (2024)</b><select id="tractMetric" style="width:100%;margin:0 0 5px;font-family:inherit;font-size:10.5px">'
+    +Object.keys(METRICS).map(k=>`<option value="${k}"${k===curMetric?' selected':''}>${METRICS[k].label}</option>`).join('')+'</select>'
+    +M.colors.map((c,i)=>`<div><i style="background:${c}"></i>${M.legend[i]}</div>`).join('');
+  document.getElementById('tractMetric').onchange=e=>{curMetric=e.target.value;tracts.setStyle(tractStyle);renderTractLegend();};
+}
+renderTractLegend();
 tracts.on('add',()=>tl.style.display='block'); tracts.on('remove',()=>tl.style.display='none');
 const council=L.geoJSON(null,{style:{color:'#7a3908',weight:1.3,fill:false},onEachFeature:(f,l)=>l.bindTooltip('Council District '+(f.properties.DISTRICT||''),{sticky:true})});
 fetch("https://services2.arcgis.com/HdTo6HJqh92wn4D8/arcgis/rest/services/2022_Council_Districts_(Future)_view/FeatureServer/0/query?where=1%3D1&outFields=DISTRICT&returnGeometry=true&outSR=4326&f=geojson").then(r=>r.json()).then(gj=>council.addData(gj)).catch(()=>{});
@@ -155,7 +181,7 @@ fetch("https://services2.arcgis.com/HdTo6HJqh92wn4D8/arcgis/rest/services/Zip_Co
 function ptInRing(lat,lon,ring){let inside=false;for(let i=0,j=ring.length-1;i<ring.length;j=i++){const xi=ring[i][0],yi=ring[i][1],xj=ring[j][0],yj=ring[j][1];if(((yi>lat)!=(yj>lat))&&(lon<(xj-xi)*(lat-yi)/(yj-yi)+xi))inside=!inside;}return inside;}
 function ptInGeom(lat,lon,g){if(!g)return true;const polys=g.type==='Polygon'?[g.coordinates]:g.coordinates;for(const poly of polys){if(ptInRing(lat,lon,poly[0])){let hole=false;for(let k=1;k<poly.length;k++)if(ptInRing(lat,lon,poly[k])){hole=true;break;}if(!hole)return true;}}return false;}
 L.control.layers({'Gray':gray,'Aerial':aerial,'Streets':streets},
-  {'Census tracts (income)':tracts,'Council districts':council,'Zip codes':zips},
+  {'Census tracts':tracts,'Council districts':council,'Zip codes':zips},
   {position:'topright',collapsed:false}).addTo(m);
 
 // ---- owner / operator autocomplete search ----
@@ -207,14 +233,14 @@ function drawCorp(){
     const other=(brand==='Other corporate');
     const mk = other
       ? L.circleMarker([r[idx.lat],r[idx.lon]],{radius:1.7,color:r[idx.color],weight:0,fillColor:r[idx.color],fillOpacity:.22})
-      : L.circleMarker([r[idx.lat],r[idx.lon]],{radius:4,color:'#ffffff',weight:.6,fillColor:r[idx.color],fillOpacity:.92});
+      : L.marker([r[idx.lat],r[idx.lon]],{icon:houseIcon(r[idx.color])});
     mk.on('click',()=>mk.bindPopup(toolkit({lat:r[idx.lat],lon:r[idx.lon],apn:r[idx.apn],parid:r[idx.parid],
         acct:r[idx.acct],brand:brand,owner:r[idx.owner],cid:r[idx.cid],address:r[idx.address],value:r[idx.value],
         beds:r[idx.beds],bath:r[idx.bath],sqft:r[idx.sqft],year_built:r[idx.year_built],
         structure_type:r[idx.structure_type],land_use:r[idx.land_use],zoning:r[idx.zoning],du_count:r[idx.du_count],assess_class:r[idx.assess_class],sale_price:r[idx.sale_price],sale_date:r[idx.sale_date]}),{maxWidth:380}).openPopup());
     corpLayer.addLayer(mk); n++;
   };
-  const keep=r=>{const b=r[idx.brand]; if(isolate&&b!==isolate)return false; if(activeZip&&!ptInGeom(r[idx.lat],r[idx.lon],activeZip))return false; return true;};
+  const keep=r=>{const b=r[idx.brand]; if(hiddenTypes.has(brandType[b]))return false; if(isolate&&b!==isolate)return false; if(activeZip&&!ptInGeom(r[idx.lat],r[idx.lon],activeZip))return false; return true;};
   // only branded operators render; "Other corporate" is hidden
   CORP.rows.forEach(r=>{if(keep(r)&&r[idx.brand]!=='Other corporate')mkOne(r);});
   status.textContent=n.toLocaleString()+' corporate parcels'+(activeZip?' in ZIP':'');
@@ -250,19 +276,22 @@ document.getElementById('showBase').addEventListener('change',drawBase);
 (function(){const c=document.getElementById('legendCard'),t=document.getElementById('legendToggle'),ti=document.getElementById('legendTitle');
   const tog=()=>{c.classList.toggle('collapsed');t.textContent=c.classList.contains('collapsed')?'▸':'▾';};
   t.onclick=tog; ti.onclick=tog;})();
+const brandType={}; let hiddenTypes=new Set();
 function buildLegend(){
   const el=document.getElementById('legendSwatches');
   const order=['Landlord','Builder','iBuyer','Other'];
-  const byType={}; CORP.legend.forEach(g=>{(byType[g.type]=byType[g.type]||[]).push(g);});
+  const label={Landlord:'Landlords',Builder:'Builders',iBuyer:'iBuyers',Other:'Other'};
+  const byType={}; CORP.legend.forEach(g=>{(byType[g.type]=byType[g.type]||[]).push(g); brandType[g.brand]=g.type;});
   const sw=g=>`<div class="sw2" data-b="${esc(g.brand)}" title="${g.n.toLocaleString()} parcels"><div class="bar" style="background:${g.color}"></div><div class="lab">${esc(g.brand)} <span class="cnt">(${g.n.toLocaleString()})</span></div></div>`;
   let html='';
   order.forEach(t=>{ if(!byType[t]) return;
-    if(t!=='Other') html+=`<div class="legGroup">${t}s</div>`;
-    else html+=`<div class="legGroup">Other</div>`;
-    html+=byType[t].map(sw).join('');
+    const off=hiddenTypes.has(t);
+    html+=`<div class="legGroup grp${off?' goff':''}" data-type="${t}">${label[t]||t}<span class="gtgl">${off?'show':'hide'}</span></div>`;
+    if(!off) html+=byType[t].map(sw).join('');
   });
   el.innerHTML=html;
   el.querySelectorAll('.sw2').forEach(s=>s.onclick=()=>setIsolate(s.getAttribute('data-b')));
+  el.querySelectorAll('.grp').forEach(g=>g.onclick=()=>{const t=g.getAttribute('data-type');hiddenTypes.has(t)?hiddenTypes.delete(t):hiddenTypes.add(t);buildLegend();drawCorp();});
 }
 function setIsolate(b){
   isolate=(isolate===b)?null:b;

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Progress Residential — securitization timeline</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%231f3a5f'/%3E%3Cpath d='M16 6 L26 14 L23 14 L23 25 L18 25 L18 18 L14 18 L14 25 L9 25 L9 14 L6 14 Z' fill='%233f7d74'/%3E%3C/svg%3E"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#1f3a5f;--bd:#cdd6e3}
+  html,body{height:100dvh;width:100vw;margin:0;padding:0;font-family:'Inter',sans-serif;overflow:hidden;color:#20303f}
+  #header{height:56px;display:flex;align-items:center;gap:14px;background:var(--navy);color:#fff;padding:0 18px;box-sizing:border-box}
+  #header .brand{font-family:'Source Serif 4',Georgia,serif;font-size:18px;font-weight:700}
+  #header .brand small{font-family:'Inter';font-size:9.5px;font-weight:400;opacity:.8;letter-spacing:1px;text-transform:uppercase;display:block}
+  #header a.back{margin-left:auto;color:#fff;text-decoration:none;font-size:12px;font-weight:600;background:rgba(255,255,255,.14);padding:6px 12px;border-radius:4px}
+  #story{height:96px;background:#fff;border-bottom:2px solid #3f7d74;display:flex;align-items:stretch;z-index:5;box-sizing:border-box;overflow-x:auto}
+  #story .cell{flex:1 0 auto;min-width:120px;padding:9px 14px;border-left:1px solid #eef0f3;display:flex;flex-direction:column;justify-content:center}
+  #story .cell:first-child{border-left:none;min-width:210px;background:#f6f9f8}
+  #story .big{font-size:23px;font-weight:800;color:var(--navy);line-height:1.05;font-variant-numeric:tabular-nums}
+  #story .lbl{font-size:9px;text-transform:uppercase;letter-spacing:.6px;color:#8a94a0;margin-top:3px}
+  #story .dealname{font-family:'Source Serif 4',Georgia,serif;font-size:18px;font-weight:700;color:#2c6e78;line-height:1.1}
+  #story .dealsub{font-size:11px;color:#6b7683;margin-top:3px}
+  #story .lender{font-size:12.5px;font-weight:700;color:var(--navy);line-height:1.15}
+  #wrap{position:relative;height:calc(100dvh - 56px - 96px)}
+  #map{position:absolute;inset:0}
+  #ctl{position:absolute;left:12px;bottom:14px;z-index:600;background:#fff;border:1px solid var(--bd);border-radius:8px;box-shadow:0 4px 14px #0002;padding:11px 14px;width:min(620px,92vw)}
+  #row{display:flex;align-items:center;gap:10px}
+  #play{border:none;background:var(--navy);color:#fff;border-radius:4px;width:34px;height:30px;font-size:14px;cursor:pointer}
+  #slider{flex:1}
+  #dateLbl{font-size:12.5px;color:var(--navy);font-weight:700;white-space:nowrap;min-width:96px;text-align:right}
+  #ramp{display:flex;height:8px;border-radius:3px;overflow:hidden;margin-top:8px}#ramp div{flex:1}
+  #rampLbl{display:flex;justify-content:space-between;font-size:9px;color:#8a94a0;margin-top:2px}
+  .pp{font-size:12px;line-height:1.4}.pp b{color:var(--navy)}.pp a{color:#2c6e78;font-weight:600}
+  #tblOverlay{position:fixed;inset:0;background:#0007;z-index:2000;display:none;align-items:center;justify-content:center}
+  #tblCard{background:#fff;border-radius:8px;width:min(1100px,94vw);max-height:88vh;display:flex;flex-direction:column;overflow:hidden}
+  #tblHead{padding:12px 16px;background:var(--navy);color:#fff;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+  #tblClose{cursor:pointer;font-size:16px}
+  #tblWrap{overflow:auto}
+  #dealsTable{border-collapse:collapse;width:100%;font-size:12px}
+  #dealsTable th,#dealsTable td{padding:6px 9px;border-bottom:1px solid #eef0f3;text-align:right;white-space:nowrap}
+  #dealsTable th{position:sticky;top:0;background:#f6f9f8;color:var(--navy);text-align:right;font-weight:700}
+  #dealsTable td:first-child,#dealsTable th:first-child,#dealsTable td.l,#dealsTable th.l{text-align:left}
+  #dealsTable tr:hover td{background:#f6f9f8}
+  #dealsTable a{color:#2c6e78;font-weight:600;text-decoration:none}
+</style>
+</head>
+<body>
+<div id="header">
+  <div class="brand">Progress Residential<small>Securitization timeline · Davidson County</small></div>
+  <button class="back" id="tblBtn" style="border:none;cursor:pointer;font-family:inherit">▤ Deals table</button>
+  <a class="back" href="map.html">← All operators</a>
+</div>
+<div id="tblOverlay">
+  <div id="tblCard">
+    <div id="tblHead"><b>Progress Residential securitization deals — Davidson County collateral</b><span id="tblClose">✕</span></div>
+    <div id="tblWrap"><table id="dealsTable"></table></div>
+  </div>
+</div>
+<div id="story">
+  <div class="cell"><div class="dealname" id="s_deal">—</div><div class="dealsub" id="s_dealsub"></div></div>
+  <div class="cell"><div class="big" id="s_homes">0</div><div class="lbl">Homes pledged (cumulative)</div></div>
+  <div class="cell"><div class="big" id="s_value">$0</div><div class="lbl">Appraised value pledged</div></div>
+  <div class="cell"><div class="big" id="s_loan">—</div><div class="lbl">Deal bond size</div></div>
+  <div class="cell"><div class="lender" id="s_lender">—</div><div class="lbl">Lender / originator</div></div>
+  <div class="cell"><div class="big" id="s_income">—</div><div class="lbl">Median tract income</div></div>
+  <div class="cell"><div class="big" id="s_burden">—</div><div class="lbl">Renter cost-burden</div></div>
+</div>
+<div id="wrap">
+  <div id="map"></div>
+  <div id="ctl">
+    <div id="row">
+      <button id="play">▶</button>
+      <input type="range" id="slider" min="0" max="29" value="29"/>
+      <span id="dateLbl"></span>
+    </div>
+    <div id="ramp"></div>
+    <div id="rampLbl"><span>May 2015 (first deal)</span><span>latest deal</span></div>
+  </div>
+</div>
+<script>
+const map=L.map('map',{preferCanvas:true}).setView([36.11,-86.72],10);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap, © CARTO'}).addTo(map);
+map.createPane('mask');map.getPane('mask').style.zIndex=350;map.getPane('mask').style.pointerEvents='none';
+fetch('https://nataliebaldacci.github.io/SFR_Nashville/data/Davidson_County_Boundary.geojson').then(r=>r.json()).then(gj=>{
+  const f=gj.features.find(x=>x.properties.OBJECTID===4);if(!f)return;
+  L.geoJSON(f,{style:{color:'#1f3a5f',weight:2,fillOpacity:0,dashArray:'4,4'},interactive:false}).addTo(map);
+  const outer=[[85,-180],[85,180],[-85,180],[-85,-180]];
+  const polys=f.geometry.type==='Polygon'?[f.geometry.coordinates]:f.geometry.coordinates;
+  const holes=polys.map(pl=>pl[0].map(c=>[c[1],c[0]]));
+  L.polygon([outer,...holes],{pane:'mask',stroke:false,fillColor:'#e9edf1',fillOpacity:.85,interactive:false}).addTo(map);
+}).catch(()=>{});
+const RAMP=['#f0ebe1','#e5c98a','#d99a4e','#4f9c9a','#2c6e78','#1f3a5f'];
+function dcolor(i,mx){const t=i/(mx||1);return RAMP[Math.min(RAMP.length-1,Math.floor(t*(RAMP.length-1)))];}
+const layer=L.layerGroup().addTo(map);
+let D=null,MX=0,cur=0,timer=null;
+function cleanLender(l){if(!l)return '—';const u=l.toUpperCase();
+  if(u.includes('GOLDMAN'))return 'Goldman Sachs Mortgage';
+  if(u.includes('GERMAN AMERICAN'))return 'German American Capital (Deutsche Bank)';
+  if(u.includes('MORGAN STANLEY'))return 'Morgan Stanley Mortgage';
+  if(u.includes('BARCLAYS'))return 'Barclays Bank';
+  if(u.includes('ROYAL BANK'))return 'Royal Bank of Canada';
+  if(u.includes('WELLS FARGO'))return 'Wells Fargo Bank';
+  if(u.includes('BANK OF AMERICA'))return 'Bank of America';
+  return l.split(' ').slice(0,4).join(' ');}
+fetch('data/progress_deals.json?v='+Date.now()).then(r=>r.json()).then(d=>{
+  D=d;MX=d.deals.length-1;cur=MX;
+  const sl=document.getElementById('slider');sl.max=MX;sl.value=MX;
+  document.getElementById('ramp').innerHTML=RAMP.map(c=>`<div style="background:${c}"></div>`).join('');
+  document.querySelector('#rampLbl span:last-child').textContent=d.deals[MX].date+' (latest)';
+  draw();
+  try{map.fitBounds(L.latLngBounds(d.parcels.map(p=>[p[0],p[1]])).pad(0.05));}catch(e){}
+});
+function draw(){
+  layer.clearLayers();
+  let shown=0,cumVal=0;
+  D.parcels.forEach(p=>{
+    if(p[2]>cur)return;
+    const isNew=(p[2]===cur);
+    if(p[4])cumVal+=p[4];
+    const mk=L.circleMarker([p[0],p[1]],{radius:isNew?5:3.5,color:isNew?'#4a6274':'#ffffff',weight:isNew?.7:.3,opacity:isNew?.7:.5,
+      fillColor:dcolor(p[2],MX),fillOpacity:.88});
+    const apn=(p[6]||'').replace(/[^0-9A-Za-z]/g,''), instr=(p[7]||''), deed=(p[8]||'');
+    const dl=(u,t)=>u?`<a href="${u}" target="_blank" rel="noopener">${t}</a>`:'';
+    mk.bindPopup(`<div class="pp"><b>${p[5]||'Progress home'}</b><br>Deal: <b>Progress ${D.deals[p[2]].deal}</b> (${p[3]})`
+      +(p[4]?`<br>Appraised $${p[4].toLocaleString()}`:'')
+      +(instr?`<br>Quitclaim into SPE: <b>${instr}</b>`:'')
+      +`<div style="margin-top:5px;border-top:1px solid #eef0f3;padding-top:4px">`
+      +[dl(deed,'📄 Quitclaim deed'),
+        dl('https://maps.nashville.gov/ParcelViewer/?parcelID='+apn,'Parcel Viewer'),
+        dl('https://davidson-tn-citizen.comper.info/template.aspx?propertyID='+apn,'Comper')].filter(Boolean).join(' · ')
+      +'</div></div>');
+    layer.addLayer(mk);shown++;
+  });
+  const e=D.deals[cur],$=(i,v)=>document.getElementById(i).textContent=v;
+  const M=v=>v==null?'—':'$'+Number(v).toLocaleString(),Mn=v=>v?'$'+(v/1e6).toFixed(0)+'M':'—';
+  $('s_deal','Progress '+(e.deal_name&&e.deal_name!=='nan'?e.deal_name.replace(/Progress Residential /i,''):e.deal));
+  $('s_dealsub',e.date+' · '+e.n+' homes recorded'+(e.davidson_share!=null?(' · Davidson = '+e.davidson_share+'% of deal'):''));
+  $('s_homes',shown.toLocaleString());
+  $('s_value','$'+(cumVal/1e6).toFixed(1)+'M');
+  $('s_loan',e.loan_amount?Mn(e.loan_amount):'—');
+  $('s_lender',cleanLender(e.lender));
+  $('s_income',M(e.med_tract_income));
+  $('s_burden',e.pct_cost_burden!=null?e.pct_cost_burden+'%':'—');
+  document.getElementById('dateLbl').textContent=e.date;
+}
+// ---- deals table (large transactions) ----
+function buildTable(){
+  const money=v=>v?'$'+Number(v).toLocaleString():'—';
+  const deed=i=>i?`https://www.davidsonportal.com/gis/file.php?file=${String(i).replace(/\D/g,'')}`:'';
+  let h='<thead><tr><th class="l">Deal</th><th>Recorded</th><th>Homes</th><th>Appraised (Davidson)</th>'
+    +'<th>Bond size</th><th>Davidson %</th><th class="l">Lender</th><th class="l">Trustee</th><th>Deed</th><th>Rating</th></tr></thead><tbody>';
+  D.deals.forEach(e=>{
+    const dU=deed(e.instrument), kU=e.url_kbra&&e.url_kbra!=='nan'?e.url_kbra:'';
+    h+=`<tr><td class="l"><b>Progress ${e.deal_name&&e.deal_name!=='nan'?e.deal_name.replace(/Progress Residential /i,''):e.deal}</b></td>`
+      +`<td>${e.date}</td><td>${e.n}</td><td>${money(e.appraised_total)}</td>`
+      +`<td>${money(e.loan_amount)}</td><td>${e.davidson_share!=null?e.davidson_share+'%':'—'}</td>`
+      +`<td class="l">${cleanLender(e.lender)}</td><td class="l">${(e.trustee||'—')}</td>`
+      +`<td>${dU?`<a href="${dU}" target="_blank">📄 DOT</a>`:'—'}</td>`
+      +`<td>${kU?`<a href="${kU}" target="_blank">KBRA</a>`:'—'}</td></tr>`;
+  });
+  document.getElementById('dealsTable').innerHTML=h+'</tbody>';
+}
+document.getElementById('tblBtn').onclick=()=>{buildTable();document.getElementById('tblOverlay').style.display='flex';};
+document.getElementById('tblClose').onclick=()=>document.getElementById('tblOverlay').style.display='none';
+document.getElementById('tblOverlay').onclick=e=>{if(e.target.id==='tblOverlay')e.target.style.display='none';};
+document.getElementById('slider').addEventListener('input',e=>{cur=+e.target.value;draw();});
+document.getElementById('play').onclick=function(){
+  if(timer){clearInterval(timer);timer=null;this.textContent='▶';return;}
+  this.textContent='⏸';if(cur>=MX)cur=0;const b=this;
+  timer=setInterval(()=>{cur++;document.getElementById('slider').value=cur;draw();
+    if(cur>=MX){clearInterval(timer);timer=null;b.textContent='▶';}},750);
+};
+</script>
+</body>
+</html>
