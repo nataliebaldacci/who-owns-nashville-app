@@ -6,34 +6,31 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
-  /* Brookings palette: deep Brookings-blue + bright-blue accent, teal ramp, clean white */
-  :root{--ink:#003A79;--accent:#1d6db5;--teal:#0e87a8;--line:#e2e6ea}
-  body{margin:0;font-family:Garamond,'EB Garamond',Georgia,serif;color:#333;background:#f6f8fa;line-height:1.5}
-  header{background:var(--ink);color:#fff;padding:24px 26px 20px;border-bottom:4px solid var(--teal)}
-  header .kick{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#8fc4e6;font-weight:700}
-  header h1{margin:4px 0 0;font-size:30px;color:#fff}
+  :root{--navy:#1c458c;--gold:#f0af1e}
+  body{margin:0;font-family:Garamond,'EB Garamond',Georgia,serif;color:#222;background:#f7f5f1}
+  header{background:var(--navy);color:#fff;padding:18px 26px;border-bottom:4px solid var(--gold)}
+  header .kick{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700}
+  header h1{margin:3px 0 0;font-size:26px}
   .wrap{max-width:1120px;margin:0 auto;padding:18px 22px}
-  .stats{display:flex;gap:34px;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:8px;padding:16px 24px;margin-bottom:16px}
-  .stat b{display:block;font-size:28px;color:var(--ink);font-weight:700}
-  .stat b.accent{color:var(--accent)}
-  .stat span{font-size:11px;color:#7a8794;text-transform:uppercase;letter-spacing:1px}
+  .stats{display:flex;gap:30px;flex-wrap:wrap;background:#fff;border:1px solid #e3ddd3;border-radius:8px;padding:14px 22px;margin-bottom:16px}
+  .stat b{display:block;font-size:28px;color:var(--navy);font-weight:800}
+  .stat span{font-size:11px;color:#777;text-transform:uppercase;letter-spacing:1px}
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  .card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:16px 20px;margin-bottom:16px}
-  .card h2{margin:0 0 6px;font-size:13px;color:var(--ink);text-transform:uppercase;letter-spacing:1.5px;border-bottom:2px solid var(--teal);padding-bottom:6px}
-  .card h3{margin:12px 0 2px;font-size:13px;color:var(--ink);font-weight:700}
-  .card p{margin:2px 0;font-size:13.5px}
-  .big{font-size:20px;color:var(--accent);font-weight:700}
-  .chip{display:inline-block;background:#eef4fa;border:1px solid #d5e5f2;border-radius:12px;padding:2px 10px;margin:2px;font-size:12px;color:#2b4a66}
-  .lnk{display:inline-block;margin:6px 10px 2px 0;padding:6px 12px;background:var(--ink);color:#fff;border-radius:5px;text-decoration:none;font-size:12px;font-weight:600}
-  .lnk:hover{background:#12293f}
-  a{color:var(--ink)}
-  #map{height:440px;border-radius:8px;border:1px solid var(--line);margin-bottom:16px}
+  .card{background:#fff;border:1px solid #e3ddd3;border-radius:8px;padding:14px 18px;margin-bottom:16px}
+  .card h2{margin:0 0 4px;font-size:13px;color:var(--navy);text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid #eee;padding-bottom:5px}
+  .card h3{margin:12px 0 2px;font-size:13px;color:#333}
+  .card p{margin:2px 0;font-size:13.5px;line-height:1.5}
+  .big{font-size:20px;color:var(--navy);font-weight:700}
+  .chip{display:inline-block;background:#eef4fb;border:1px solid #d5e2f2;border-radius:12px;padding:2px 10px;margin:2px;font-size:12px}
+  .lnk{display:inline-block;margin:6px 10px 2px 0;padding:6px 12px;background:var(--navy);color:#fff;border-radius:5px;text-decoration:none;font-size:12px;font-weight:600}
+  a{color:var(--navy)}
+  #map{height:440px;border-radius:8px;border:1px solid #e3ddd3;margin-bottom:16px}
   table{width:100%;border-collapse:collapse;font-size:12px}
-  th,td{text-align:left;padding:4px 8px;border-bottom:1px solid #efe9df}
-  th{color:var(--ink)}
-  .muted{color:#7a8794;font-size:12px}
-  .kv{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;border-bottom:1px solid #f2efe9}
-  .kv b{color:var(--ink)}
+  th,td{text-align:left;padding:4px 8px;border-bottom:1px solid #eee}
+  th{color:var(--navy)}
+  .muted{color:#888;font-size:12px}
+  .kv{display:flex;justify-content:space-between;font-size:13px;padding:2px 0;border-bottom:1px solid #f2efe9}
+  .kv b{color:var(--navy)}
 </style>
 </head>
 <body>
@@ -50,7 +47,7 @@ fetch(`data/owners/${id}.json`).then(r=>r.json()).then(d=>{
   document.getElementById('wrap').innerHTML=`
    <div class="stats">
      <div class="stat"><b>${d.parcel_count.toLocaleString()}</b><span>Parcels</span></div>
-     <div class="stat"><b class="accent">${d.total_market_value?('$'+(d.total_market_value/1e6).toFixed(1)+'M'):'—'}</b><span>Total market value</span></div>
+     <div class="stat"><b>${d.total_market_value?('$'+(d.total_market_value/1e6).toFixed(1)+'M'):'—'}</b><span>Total market value</span></div>
      <div class="stat"><b>${d.total_acres?d.total_acres.toLocaleString():'—'}</b><span>Acres</span></div>
      <div class="stat"><b>${d.entity_count}</b><span>Corporate entities</span></div>
      <div class="stat"><b>${po.length}</b><span>Principal offices</span></div>
@@ -113,7 +110,7 @@ fetch(`data/owners/${id}.json`).then(r=>r.json()).then(d=>{
 
   const m=L.map('map').setView([36.166,-86.784],10);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap, © CARTO'}).addTo(m);
-  const pts=d.parcels.filter(p=>p.lat&&p.lon).map(p=>L.circleMarker([+p.lat,+p.lon],{radius:4,fillColor:'#1d6db5',color:'#333',weight:.4,fillOpacity:.8}).bindPopup(p.address||p.parcel_id));
+  const pts=d.parcels.filter(p=>p.lat&&p.lon).map(p=>L.circleMarker([+p.lat,+p.lon],{radius:4,fillColor:'#cf307a',color:'#333',weight:.4,fillOpacity:.8}).bindPopup(p.address||p.parcel_id));
   if(pts.length){const g=L.featureGroup(pts).addTo(m);try{m.fitBounds(g.getBounds().pad(0.08));}catch(e){}}
 }).catch(e=>{document.getElementById('ownerName').textContent='Owner '+id+' not found';});
 </script>
