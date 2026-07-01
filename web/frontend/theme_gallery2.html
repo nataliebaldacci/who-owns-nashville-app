@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/>
+<title>Theme Gallery 2 — Who Owns Nashville</title>
+<style>
+  body{margin:0;font-family:Garamond,'EB Garamond',Georgia,serif;background:#e9e6df;color:#222}
+  .lead{max-width:900px;margin:0 auto;padding:24px 20px 8px}
+  .theme{max-width:900px;margin:0 auto 34px;border-radius:10px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.12)}
+  .th-label{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#666;max-width:900px;margin:0 auto;padding:0 22px 4px}
+  .hd{padding:20px 24px}
+  .kick{font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700}
+  .hd h1{margin:3px 0 0;font-size:26px}
+  .body{padding:16px 24px 22px}
+  .stats{display:flex;gap:28px;flex-wrap:wrap;margin-bottom:14px}
+  .stat b{display:block;font-size:26px;font-weight:800}
+  .stat span{font-size:10px;letter-spacing:1px;text-transform:uppercase;opacity:.6}
+  .h2{font-size:12px;letter-spacing:1px;text-transform:uppercase;font-weight:700;margin:6px 0 6px;padding-bottom:4px}
+  .p{font-size:13.5px;margin:2px 0}
+  .chip{display:inline-block;border-radius:12px;padding:2px 10px;margin:2px;font-size:12px}
+  .ramp{display:flex;height:14px;border-radius:3px;overflow:hidden;margin-top:8px;width:260px}
+  .ramp div{flex:1}
+</style></head>
+<body>
+<div class="lead"><h2 style="margin:0">More themes (batch 2)</h2><p style="color:#555;margin:4px 0 16px">Warmer, earthier, and a dark mode. Same card. Tell me the name under the one you like — from either gallery.</p></div>
+<div id="gallery"></div>
+<script>
+const THEMES=[
+ {name:"Warm archival (cream + gold)", bg:"#f7f2e7", text:"#3a2f25", ink:"#5b3a29", accent:"#b5651d", head:"#5b3a29", headText:"#f7f2e7", chip:"#efe6d4", ramp:["#ffffd4","#fee391","#fe9929","#cc4c02","#8c2d04"]},
+ {name:"Terracotta (OrRd)", bg:"#fbf6f1", text:"#3a2b25", ink:"#990000", accent:"#d7301f", head:"#990000", headText:"#fff", chip:"#f6e6dd", ramp:["#fef0d9","#fdbb84","#fc8d59","#d7301f","#990000"]},
+ {name:"Muted sage + terracotta", bg:"#f2f1ea", text:"#2c2c28", ink:"#3d4a3e", accent:"#b5651d", head:"#3d4a3e", headText:"#f2f1ea", chip:"#e6e8df", ramp:["#e8ede6","#a8bda9","#6f8a72","#4c6350","#2f4033"]},
+ {name:"Berry (PuRd)", bg:"#faf5f8", text:"#332430", ink:"#91003f", accent:"#ce1256", head:"#91003f", headText:"#fff", chip:"#f3e6ee", ramp:["#f1eef6","#c994c7","#df65b0","#ce1256","#91003f"]},
+ {name:"Blue-violet (BuPu)", bg:"#f7f7fb", text:"#2a2836", ink:"#6e016b", accent:"#88419d", head:"#4d004b", headText:"#fff", chip:"#eceaf3", ramp:["#edf8fb","#9ebcda","#8c6bb1","#88419d","#6e016b"]},
+ {name:"Earthy brown-teal (BrBG)", bg:"#f7f4ee", text:"#33302a", ink:"#01665e", accent:"#8c510a", head:"#01665e", headText:"#fff", chip:"#e8f0ec", ramp:["#8c510a","#d8b365","#f6e8c3","#5ab4ac","#01665e"]},
+ {name:"Dark mode (charcoal + amber)", bg:"#161616", text:"#e8e4dc", ink:"#f0c95a", accent:"#e8794a", head:"#0e0e0e", headText:"#f0c95a", chip:"#262421", ramp:["#3a3a3a","#7a5a2a","#c98a2a","#f0c95a","#fff2cf"], dark:true},
+ {name:"Slate + coral (cool/warm)", bg:"#f4f5f6", text:"#26303a", ink:"#2b3a4a", accent:"#e05a47", head:"#2b3a4a", headText:"#fff", chip:"#e7ebee", ramp:["#e6ebef","#a9bccb","#5f7d95","#3a556b","#2b3a4a"]},
+];
+document.getElementById('gallery').innerHTML=THEMES.map(t=>`
+ <div class="th-label">${t.name}</div>
+ <div class="theme" style="background:${t.bg};color:${t.text}">
+   <div class="hd" style="background:${t.head};color:${t.headText};border-bottom:4px solid ${t.accent}">
+     <div class="kick" style="color:${t.accent}">Who Owns Nashville? · Owner Profile</div>
+     <h1>Yamasa Co., Ltd</h1></div>
+   <div class="body">
+     <div class="stats">
+       <div class="stat"><b style="color:${t.ink}">1,440</b><span>Parcels</span></div>
+       <div class="stat"><b style="color:${t.accent}">$533.8M</b><span>Total value</span></div>
+       <div class="stat"><b style="color:${t.ink}">135.5</b><span>Acres</span></div>
+       <div class="stat"><b style="color:${t.ink}">148</b><span>Entities</span></div>
+     </div>
+     <div class="h2" style="color:${t.accent};border-bottom:1px solid ${t.dark?'#333':'#e3ddd3'}">Nashville Portfolio Analysis</div>
+     <div class="p">Across their 1,408 parcels, avg neighborhood median income is <b style="color:${t.accent}">$86,951</b>.</div>
+     <div class="p">Their neighborhoods average <b>33% Black</b>, 45% White, 16% Hispanic. Home value <b style="color:${t.accent}">$334,744</b>.</div>
+     <div class="p">${["FREO Tennessee, LLC","Progress Nashville, LLC","PR Borrower 26, LLC"].map(n=>`<span class="chip" style="background:${t.chip};color:${t.ink}">${n}</span>`).join('')}</div>
+     <div class="ramp">${t.ramp.map(c=>`<div style="background:${c}"></div>`).join('')}</div>
+   </div>
+ </div>`).join('');
+</script>
+</body></html>
