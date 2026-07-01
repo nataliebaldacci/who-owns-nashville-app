@@ -111,28 +111,48 @@ def portfolio(pids):
                 if 0<v<10_000_000: vals[c].append(v)
     def avg(c): return round(sum(vals[c])/len(vals[c])) if vals[c] else None
     n=len(vals['bg_median_hh_income'])
+    # Distribution bins (Datawrapper small-multiple style), Davidson-relative brackets
+    def bins(series, edges, labels):
+        out=[0]*len(labels)
+        for v in series:
+            for i,e in enumerate(edges):
+                if v<e: out[i]+=1; break
+            else: out[-1]+=1
+        return [{"label":l,"n":c} for l,c in zip(labels,out)]
+    income_bins=bins(vals['bg_median_hh_income'],[50000,70000,90000,120000],
+        ['Low','Low-Mid','Mid','Mid-High','High'])
     return dict(n_parcels_with_acs=n,
         median_income=avg('bg_median_hh_income'), median_home_value=avg('bg_median_home_value'),
         pct_renter=avg('bg_pct_renter_occupied'), pct_poverty=avg('bg_pct_poverty'), pct_vacant=avg('bg_pct_vacant'),
-        pct_black=avg('bg_pct_black'), pct_white=avg('bg_pct_white'), pct_hispanic=avg('bg_pct_hispanic'), pct_asian=avg('bg_pct_asian'))
+        pct_black=avg('bg_pct_black'), pct_white=avg('bg_pct_white'), pct_hispanic=avg('bg_pct_hispanic'), pct_asian=avg('bg_pct_asian'),
+        income_bins=income_bins)
 
 # --- Comper property detail per parcel (sale, value, beds/baths, sqft, year, acres) ---
 COMPER="/Users/nataliebaldacci/Master_Data/Nashville/00_ORGANIZED/08_Reference_Library/Favorite_Data_Sets/Comper_Pull_AllResidential_2026-06-29/Comper_County_MASTER_Enriched_WithOwnership_2026-06-30.csv"
-_ccols=['ParID','SalePrice','SaleDate','MarketValue','spatialest_value','NumofBedrooms','FullBath','HalfBath','NetFinishedArea','EffYearBlt','YearBlt','Acreage']
+_ccols=['ParID','APN','STANPAR','AccountNumber','account_number','SalePrice','SaleDate','MarketValue','spatialest_value','NumofBedrooms','FullBath','HalfBath','NetFinishedArea','EffYearBlt','YearBlt','Acreage','StructureType_1','Land_Use','LUDesc']
 _cp=pd.read_csv(COMPER,usecols=lambda c:c in _ccols,dtype=str).fillna('')
 _cp['pk']=pd.to_numeric(_cp['ParID'],errors='coerce').astype('Int64').astype(str)
 comper_map=_cp.drop_duplicates('pk').set_index('pk').to_dict('index')
 def _num(x):
     try: return float(str(x).replace(',',''))
     except: return None
+def _apn(r):
+    # 11-char Davidson APN; numeric parcels zero-pad to 11 (condos keep CO suffix)
+    a=(r.get('APN') or r.get('STANPAR') or '').strip()
+    a=''.join(ch for ch in a if ch.isalnum())
+    if a.isdigit(): a=a.zfill(11)
+    return a
 def comper_of(p):
     r=comper_map.get(pk(p))
     if not r: return {}
     yb=r.get('EffYearBlt') or r.get('YearBlt')
-    return dict(sale_price=_num(r.get('SalePrice')), sale_date=r.get('SaleDate',''),
+    return dict(apn=_apn(r), account_number=(r.get('AccountNumber') or r.get('account_number') or '').strip(),
+        sale_price=_num(r.get('SalePrice')), sale_date=r.get('SaleDate',''),
         market_value=_num(r.get('MarketValue')) or _num(r.get('spatialest_value')),
         beds=_num(r.get('NumofBedrooms')), bath=(_num(r.get('FullBath')) or 0)+(_num(r.get('HalfBath')) or 0)*0.5,
-        sqft=_num(r.get('NetFinishedArea')), year_built=yb, acres=_num(r.get('Acreage')))
+        sqft=_num(r.get('NetFinishedArea')), year_built=yb, acres=_num(r.get('Acreage')),
+        structure_type=(r.get('StructureType_1') or '').strip(),
+        land_use=(r.get('Land_Use') or r.get('LUDesc') or '').strip())
 
 clusters=[]; leaderboard=[]
 for cid,names in enumerate(comp,1):
@@ -146,12 +166,24 @@ for cid,names in enumerate(comp,1):
     brands=[name_brand[n] for n in names if name_brand.get(n) and name_brand[n]!='nan']
     canon=max(names,key=lambda n:len(name_parcels.get(n,[])))
     parcels=[]; tot_value=0.0; tot_acres=0.0
+    vbin_lbls=['<$150k','$150-300k','$300-500k','$500k+']; vbin=[0,0,0,0]
     for p in pids:
         info=rgmap.get(pk(p),{}); c=comper_of(p)
-        if c.get('market_value'): tot_value+=c['market_value']
+        mv=c.get('market_value')
+        if mv:
+            tot_value+=mv
+            vbin[0 if mv<150000 else 1 if mv<300000 else 2 if mv<500000 else 3]+=1
         if c.get('acres'): tot_acres+=c['acres']
         if len(parcels)<2000:
             parcels.append(dict(parcel_id=p,address=info.get('address',''),lat=info.get('lat',''),lon=info.get('lon',''),**c))
+    value_bins=[{"label":l,"n":n} for l,n in zip(vbin_lbls,vbin)]
+    # per-entity parcel lists (for click-to-highlight on the map)
+    pset={pp['parcel_id'] for pp in parcels}
+    entity_parcels={}
+    for n in names:
+        disp=name_raw.get(n,n)
+        ids=[p for p in name_parcels.get(n,[]) if p in pset]
+        if ids: entity_parcels[disp]=ids
     rec=dict(cluster_id=cid, name=name_raw.get(canon,canon),
         entity_count=len(names), parcel_count=len(pids),
         total_market_value=round(tot_value), total_acres=round(tot_acres,1),
@@ -162,7 +194,8 @@ for cid,names in enumerate(comp,1):
         brand=Counter(brands).most_common(1)[0][0] if brands else '',
         opencorporates=opencorporates_url(name_raw.get(canon,canon), formeds[0] if formeds else None),
         primary_type=Counter([sos[n].get('formed','') for n in names if n in sos]).most_common(1)[0][0] if any(n in sos for n in names) else '',
-        portfolio=portfolio(pids),
+        portfolio={**portfolio(pids),'value_bins':value_bins},
+        entity_parcels=entity_parcels,
         related=sorted([{'owner':name_raw.get(n,n),'parcels':len(name_parcels.get(n,[])),
                          'via':('principal office' if (n in sos and sos[n]['po']) else 'mailing address')}
                         for n in names if n!=canon], key=lambda x:-x['parcels'])[:40],
@@ -173,6 +206,18 @@ for cid,names in enumerate(comp,1):
 
 leaderboard.sort(key=lambda r:r['parcel_count'],reverse=True)
 json.dump(leaderboard, open(f"{OUTD}/_leaderboard.json","w"))
+
+# Owner/operator search index: every name + alias -> cluster id (who-owns-atlanta style)
+seen=set(); search=[]
+for r in clusters:
+    for nm in [r['name']]+r['owner_names']:
+        key=(nm.upper(),r['cluster_id'])
+        if key in seen: continue
+        seen.add(key)
+        search.append({'n':nm,'id':r['cluster_id'],'p':r['parcel_count'],'b':r.get('brand','')})
+search.sort(key=lambda x:-x['p'])
+json.dump(search, open(f"{OUTD}/../owner_search.json","w"), separators=(',',':'))
+print("owner_search.json entries:",len(search))
 print("clusters emitted:",len(clusters))
 print("multi-entity clusters (de-fragmented):",sum(1 for c in clusters if c['entity_count']>1))
 print()

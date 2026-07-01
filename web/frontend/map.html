@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Who Owns Nashville? — Parcel Map</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%231f3a5f'/%3E%3Cpath d='M16 6 L26 14 L23 14 L23 25 L18 25 L18 18 L14 18 L14 25 L9 25 L9 14 L6 14 Z' fill='%23e07a33'/%3E%3C/svg%3E"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#1f3a5f;--navy-dk:#152a45;--orange:#e07a33;--panel:#e5eaf1;--bd:#cdd6e3;--ink:#1f3a5f}
+  html,body{height:100dvh;width:100vw;margin:0;padding:0;font-family:'Open Sans','Inter',sans-serif;overflow:hidden;color:#20303f}
+  #header{height:60px;display:flex;align-items:center;gap:16px;background:var(--navy);color:#fff;padding:0 18px;border-bottom:3px solid var(--orange);box-sizing:border-box}
+  #header .brand{font-family:'Source Serif 4',Georgia,serif;font-size:20px;font-weight:700;white-space:nowrap}
+  #header .brand small{font-family:'Inter';font-size:10px;font-weight:400;opacity:.8;letter-spacing:1px;text-transform:uppercase;display:block}
+  #searchWrap{flex:1;max-width:520px;display:flex;gap:6px;position:relative}
+  #acDrop{position:absolute;top:40px;left:0;right:62px;background:#fff;border:1px solid var(--bd);border-radius:4px;z-index:1200;max-height:300px;overflow:auto;display:none;box-shadow:0 6px 16px #0003}
+  #acDrop .ac{padding:7px 10px;font-size:12.5px;color:#20303f;cursor:pointer;display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #eef0f3}
+  #acDrop .ac:last-child{border-bottom:none}
+  #acDrop .ac:hover{background:#eef2f8}
+  #acDrop .ac .nm{font-weight:600}
+  #acDrop .ac .p{color:#6b7683;font-variant-numeric:tabular-nums;white-space:nowrap}
+  #tractLegend{position:absolute;bottom:26px;left:8px;background:#fffe;border:1px solid var(--bd);border-radius:4px;padding:7px 9px;font-size:10.5px;color:#20303f;z-index:500;display:none;line-height:1.5}
+  #tractLegend b{display:block;margin-bottom:3px;color:var(--navy)}
+  #tractLegend i{display:inline-block;width:14px;height:10px;margin-right:4px;vertical-align:middle}
+  #q{flex:1;padding:8px 12px;border:none;border-radius:4px;font-size:13px}
+  #go{padding:8px 14px;border:none;border-radius:4px;background:var(--orange);color:#fff;font-weight:700;cursor:pointer}
+  #hint{font-size:11px;opacity:.75;white-space:nowrap}
+  #mainWindow{display:flex;height:calc(100% - 60px)}
+  #leftPane{flex:0 0 300px;max-width:300px;overflow:auto;background:var(--panel);border-right:1px solid var(--bd);box-sizing:border-box;padding:12px 14px}
+  #viewDiv{flex:1;position:relative}
+  #map{position:absolute;inset:0}
+  h2{font-size:11.5px;color:var(--navy);text-transform:uppercase;letter-spacing:1px;font-weight:700;border-bottom:2px solid var(--orange);padding-bottom:4px;display:inline-block;margin:4px 0 8px}
+  .leg{display:flex;align-items:center;gap:8px;font-size:12px;padding:3px 0;cursor:pointer;user-select:none}
+  .leg .sw{width:12px;height:12px;border-radius:50%;flex:0 0 auto;border:1px solid #0003}
+  .leg .n{margin-left:auto;color:#6b7683;font-variant-numeric:tabular-nums}
+  .leg.off{opacity:.35}
+  .tog{display:flex;align-items:center;gap:8px;font-size:12.5px;margin:6px 0 12px;cursor:pointer}
+  .stat{font-size:12px;color:#4a5560;margin:2px 0}
+  .stat b{color:var(--navy)}
+  #status{position:absolute;bottom:8px;right:8px;background:#fffd;border:1px solid var(--bd);border-radius:4px;padding:4px 10px;font-size:11px;color:#4a5560;z-index:500}
+  .pp{font-family:'Open Sans','Inter',sans-serif;font-size:12px;line-height:1.45;max-width:360px}
+  .pp-h{font-weight:700;color:var(--navy);font-size:13px}
+  .pp-s{color:#4a5560;margin:2px 0 6px}
+  .pp-s code{background:#eef2f8;padding:0 4px;border-radius:2px}
+  .pp-img{width:100%;max-height:150px;object-fit:cover;border-radius:3px;margin:2px 0 6px;border:1px solid var(--bd)}
+  .pp-l{margin:3px 0;border-top:1px solid #eef0f3;padding-top:3px}
+  .pp-l b{color:var(--navy)}
+  .pp-l a{color:var(--navy);text-decoration:none;font-weight:600}
+  .pp-l a:hover{color:var(--orange);text-decoration:underline}
+  .pp-own{display:block;margin-top:6px;background:var(--navy);color:#fff!important;text-align:center;padding:6px;border-radius:3px;font-weight:700;text-decoration:none}
+  .pp-own:hover{background:var(--orange)}
+</style>
+</head>
+<body>
+<div id="header">
+  <div class="brand">Who Owns Nashville?<small>Parcel Map · Davidson County</small></div>
+  <div id="searchWrap"><input id="q" placeholder="Search owner, address, or APN…" autocomplete="off"/><button id="go">Find</button><div id="acDrop"></div></div>
+  <div id="hint">238,961 parcels · 47,319 corporate</div>
+</div>
+<div id="mainWindow">
+  <div id="leftPane">
+    <h2>Operators</h2>
+    <div id="legend"></div>
+    <label class="tog"><input type="checkbox" id="showBase"/> Show all parcels (gray, zoom in)</label>
+    <div class="stat" id="sel"></div>
+  </div>
+  <div id="viewDiv"><div id="map"></div><div id="status">loading…</div><div id="tractLegend"></div></div>
+</div>
+<script>
+const status=document.getElementById('status');
+const PATRIOT="5D050659143EB96630FB38B91DE12E40&SECRETKEY=A92169630C9BC3C00A1C0F9F140E6DAEC21C8E62DCFF9FC443FB1BE70DDF6AA4268527B9DDE2ECC2C7EE9BB5BF728C06F0DF4019BBECDEBD2A6DD0BBE28A419D8F929E1F3E8DF478E56619995BEFCA8E369276689D791197DC1284F14B3252DBFB2A19A2E451EEA832D6D96488DDC673EBA4B37BD741223B656A793D93209C0F";
+const esc=s=>String(s==null?'':s);
+function toolkit(o){ // {apn,parid,acct,lat,lon,address,brand,owner,cid,market_value}
+  const apn=esc(o.apn).replace(/[^0-9A-Za-z]/g,''), acct=esc(o.acct), lat=esc(o.lat), lon=esc(o.lon), pid=esc(o.parid);
+  const A=(u,t)=>'<a href="'+u+'" target="_blank" rel="noopener">'+t+'</a>';
+  const card=acct?("https://portal.padctn.org/OFS/WP/Print/"+acct):("https://maps.nashville.gov/ParcelViewer/PrintRecord.html?pin="+apn);
+  let h='<div class="pp"><div class="pp-h">'+esc(o.address||apn)+'</div>';
+  h+='<div class="pp-s">APN <code>'+apn+'</code>'+(o.brand?(' · '+esc(o.brand)):'')+'</div>';
+  if(apn) h+='<img class="pp-img" src="https://image-cdn.spatialest.com/image/tn-davidson-images/med/Images/'+apn+'_1.jpg" onerror="this.style.display=\'none\'" loading="lazy"/>';
+  h+='<div class="pp-l">'+[A("https://maps.nashville.gov/ParcelViewer/?parcelID="+apn,'Parcel Viewer'),
+      A(card,'Property Card'),A("https://davidson-tn-citizen.comper.info/template.aspx?propertyID="+apn,'Comper'),
+      A("https://portal.patriotproperties.com/?APIKEY="+PATRIOT+"&LAT="+lat+"&LONG="+lon,'Aerial'),
+      A("https://www.google.com/maps?q&layer=c&cbll="+lat+","+lon,'Street View')].join(' · ')+'</div>';
+  h+='<div class="pp-l"><b>Permits:</b> '+[A("https://epermits.nashville.gov/#/search?searchCode=APN&page=1&searchText="+apn+"&searchType=permit",'ePermit'),
+      A("https://documents.nashville.gov/Request/Form/PermitCodes?parcelnumber="+apn,'Docs'),
+      A("https://maps.nashville.gov/ParcelService/Search.asmx/GetPermitHistory?apn="+apn,'API')].join(' · ')+'</div>';
+  h+='<div class="pp-l"><b>History:</b> '+[A("https://maps.nashville.gov/ParcelService/Search.asmx/GetOwnerHistory?onlyactive=false&pin="+pid,'Owner'),
+      A("https://maps.nashville.gov/ParcelService/Search.asmx/GetPropertyHistory?onlyactive=false&pin="+pid,'Property'),
+      A("https://maps.nashville.gov/ParcelService/Search.asmx/GetAssessmentHistory?onlyactive=false&pin="+pid,'Assess'),
+      A("https://davidsonportal.com/landrecords/",'Land Records')].join(' · ')+'</div>';
+  if(o.cid!=null && o.cid>=0) h+='<a class="pp-own" href="owner.html?id='+o.cid+'">View owner profile: '+esc(o.owner)+' →</a>';
+  return h+'</div>';
+}
+
+const m=L.map('map',{preferCanvas:true,zoomControl:true}).setView([36.166,-86.784],11);
+const gray=L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap, © CARTO'}).addTo(m);
+const aerial=L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'Esri'});
+const streets=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'});
+// ---- overlays (toggle) ----
+m.createPane('tractPane'); m.getPane('tractPane').style.zIndex=360;
+const RAMP=[['#cc4c02',130000],['#fe9929',100000],['#fec44f',80000],['#fee391',60000],['#ffffd4',0]];
+function incColor(v){if(v==null||isNaN(v))return '#e0e0e0';for(const [c,t] of RAMP)if(v>=t)return c;return '#ffffd4';}
+const tracts=L.geoJSON(null,{pane:'tractPane',style:f=>({color:'#fff',weight:.6,fillColor:incColor(f.properties.median_hh_income_Y2024),fillOpacity:.55}),
+  onEachFeature:(f,l)=>l.bindTooltip((f.properties.NAME||'Tract')+': $'+Math.round(f.properties.median_hh_income_Y2024||0).toLocaleString()+' median income',{sticky:true})});
+fetch('data/overlays/tracts_acs.geojson').then(r=>r.json()).then(gj=>tracts.addData(gj)).catch(()=>{});
+const tl=document.getElementById('tractLegend');
+tl.innerHTML='<b>Median HH income (2024)</b>'+[['#ffffd4','<$60k'],['#fee391','$60–80k'],['#fec44f','$80–100k'],['#fe9929','$100–130k'],['#cc4c02','$130k+']].map(x=>`<div><i style="background:${x[0]}"></i>${x[1]}</div>`).join('');
+tracts.on('add',()=>tl.style.display='block'); tracts.on('remove',()=>tl.style.display='none');
+const council=L.geoJSON(null,{style:{color:'#7a3908',weight:1.3,fill:false},onEachFeature:(f,l)=>l.bindTooltip('Council District '+(f.properties.DISTRICT||''),{sticky:true})});
+fetch("https://services2.arcgis.com/HdTo6HJqh92wn4D8/arcgis/rest/services/2022_Council_Districts_(Future)_view/FeatureServer/0/query?where=1%3D1&outFields=DISTRICT&returnGeometry=true&outSR=4326&f=geojson").then(r=>r.json()).then(gj=>council.addData(gj)).catch(()=>{});
+const zips=L.geoJSON(null,{style:{color:'#406a64',weight:1,fill:false,dashArray:'3,3'},onEachFeature:(f,l)=>l.bindTooltip('Zip '+(f.properties.ZipCode||''),{sticky:true})});
+fetch("https://services2.arcgis.com/HdTo6HJqh92wn4D8/arcgis/rest/services/Zip_Code_Boundaries_Vw/FeatureServer/0/query?where=1%3D1&outFields=ZipCode&returnGeometry=true&outSR=4326&f=geojson").then(r=>r.json()).then(gj=>zips.addData(gj)).catch(()=>{});
+L.control.layers({'Gray':gray,'Aerial':aerial,'Streets':streets},
+  {'Census tracts (income)':tracts,'Council districts':council,'Zip codes':zips},
+  {position:'topright',collapsed:false}).addTo(m);
+
+// ---- owner / operator autocomplete search ----
+let OWNERS=[];
+fetch('data/owner_search.json').then(r=>r.json()).then(j=>OWNERS=j).catch(()=>{});
+const qEl=document.getElementById('q'), drop=document.getElementById('acDrop');
+qEl.addEventListener('input',()=>{
+  const s=qEl.value.trim().toUpperCase();
+  if(s.length<2||!OWNERS.length){drop.style.display='none';return;}
+  const hits=OWNERS.filter(o=>o.n.toUpperCase().includes(s)).slice(0,8);
+  if(!hits.length){drop.style.display='none';return;}
+  drop.innerHTML=hits.map(o=>`<div class="ac" data-id="${o.id}"><span class="nm">${o.n}${o.b?' · '+o.b.replace(/ \(.*\)/,''):''}</span><span class="p">${o.p.toLocaleString()} parcels</span></div>`).join('');
+  drop.style.display='block';
+});
+drop.addEventListener('click',e=>{const el=e.target.closest('.ac');if(el)location.href='owner.html?id='+el.getAttribute('data-id');});
+document.addEventListener('click',e=>{if(!e.target.closest('#searchWrap'))drop.style.display='none';});
+m.createPane('mask'); const _mp=m.getPane('mask'); _mp.style.zIndex=350; _mp.style.pointerEvents='none';
+fetch('https://nataliebaldacci.github.io/SFR_Nashville/data/Davidson_County_Boundary.geojson').then(r=>r.json())
+  .then(gj=>{const f=gj.features.find(x=>x.properties.OBJECTID===4); if(!f) return;
+    L.geoJSON(f,{style:{color:'#1f3a5f',weight:2,fillOpacity:0,dashArray:'4,4'},interactive:false}).addTo(m);
+    const outer=[[85,-180],[85,180],[-85,180],[-85,-180]];
+    const polys=f.geometry.type==='Polygon'?[f.geometry.coordinates]:f.geometry.coordinates;
+    const holes=polys.map(pl=>pl[0].map(c=>[c[1],c[0]]));
+    L.polygon([outer,...holes],{pane:'mask',stroke:false,fillColor:'#e9edf1',fillOpacity:.85,interactive:false}).addTo(m);
+  }).catch(()=>{});
+
+const baseCanvas=L.canvas({padding:.5});
+let BASE=null, CORP=null, corpLayer=L.layerGroup().addTo(m), baseLayer=L.layerGroup(), off=new Set();
+
+// ---- corporate layer (colored, clickable) ----
+function drawCorp(){
+  corpLayer.clearLayers();
+  const idx={}; CORP.cols.forEach((c,i)=>idx[c]=i);
+  CORP.rows.forEach(r=>{
+    const brand=r[idx.brand]; if(off.has(brand)) return;
+    const mk=L.circleMarker([r[idx.lat],r[idx.lon]],{radius:3.5,color:'#fff',weight:.4,fillColor:r[idx.color],fillOpacity:.9});
+    mk.on('click',()=>mk.bindPopup(toolkit({lat:r[idx.lat],lon:r[idx.lon],apn:r[idx.apn],parid:r[idx.parid],
+        acct:r[idx.acct],brand:brand,owner:r[idx.owner],cid:r[idx.cid]}),{maxWidth:380}).openPopup());
+    corpLayer.addLayer(mk);
+  });
+  status.textContent=CORP.rows.length.toLocaleString()+' corporate parcels';
+}
+// ---- base layer (gray, viewport-culled, click-nearest) ----
+function drawBase(){
+  baseLayer.clearLayers();
+  if(!document.getElementById('showBase').checked || m.getZoom()<14){status.textContent=(CORP?CORP.rows.length.toLocaleString()+' corporate parcels':'');return;}
+  const b=m.getBounds(); let n=0;
+  for(let i=0;i<BASE.lat.length;i++){
+    const la=BASE.lat[i], lo=BASE.lon[i];
+    if(la<b.getSouth()||la>b.getNorth()||lo<b.getWest()||lo>b.getEast()) continue;
+    baseLayer.addLayer(L.circleMarker([la,lo],{renderer:baseCanvas,radius:2,color:'#8f9aa6',weight:0,fillColor:'#8f9aa6',fillOpacity:.5,interactive:false}));
+    if(++n>40000) break;
+  }
+  baseLayer.addTo(m);
+  status.textContent=n.toLocaleString()+' parcels shown · click any for details';
+}
+// click-nearest over base parcels
+m.on('click',e=>{
+  if(!BASE||!document.getElementById('showBase').checked||m.getZoom()<14) return;
+  const p=e.latlng; let best=-1,bd=1e9;
+  for(let i=0;i<BASE.lat.length;i++){const dx=BASE.lat[i]-p.lat,dy=BASE.lon[i]-p.lng,dd=dx*dx+dy*dy;if(dd<bd){bd=dd;best=i;}}
+  if(best<0||bd>2e-7) return;
+  const idx={}; if(CORP) CORP.cols.forEach((c,i)=>idx[c]=i);
+  L.popup({maxWidth:380}).setLatLng([BASE.lat[best],BASE.lon[best]])
+    .setContent(toolkit({lat:BASE.lat[best],lon:BASE.lon[best],apn:BASE.apn[best],parid:BASE.parid[best],acct:BASE.acct[best]})).openOn(m);
+});
+m.on('moveend',()=>{if(document.getElementById('showBase').checked) drawBase();});
+document.getElementById('showBase').addEventListener('change',drawBase);
+
+// ---- legend ----
+function buildLegend(){
+  const L2=document.getElementById('legend');
+  L2.innerHTML=CORP.legend.map(g=>`<div class="leg" data-b="${esc(g.brand)}"><span class="sw" style="background:${g.color}"></span>${esc(g.brand).replace(/ \(.*\)/,'')}<span class="n">${g.n.toLocaleString()}</span></div>`).join('');
+  L2.querySelectorAll('.leg').forEach(el=>el.onclick=()=>{const b=el.getAttribute('data-b');if(off.has(b)){off.delete(b);el.classList.remove('off');}else{off.add(b);el.classList.add('off');}drawCorp();});
+}
+// ---- search: APN or address ----
+async function search(){
+  const q=document.getElementById('q').value.trim(); if(!q) return;
+  const digits=q.replace(/\D/g,'');
+  if(digits.length>=9 && digits.length<=11){ // APN lookup in base
+    const apn=digits.padStart(11,'0'); let hit=-1;
+    for(let i=0;i<BASE.apn.length;i++){if(BASE.apn[i]===apn){hit=i;break;}}
+    if(hit>=0){m.setView([BASE.lat[hit],BASE.lon[hit]],18);
+      L.popup({maxWidth:380}).setLatLng([BASE.lat[hit],BASE.lon[hit]]).setContent(toolkit({lat:BASE.lat[hit],lon:BASE.lon[hit],apn:BASE.apn[hit],parid:BASE.parid[hit],acct:BASE.acct[hit]})).openOn(m);
+      return;}
+    status.textContent='APN '+apn+' not found';
+  }
+  // address via Metro Comp Pro geocoder
+  const url="https://maps.nashville.gov/arcgis2/rest/services/Locators/Metro_Comp_Pro/GeocodeServer/findAddressCandidates?SingleLine="+encodeURIComponent(q)+"&f=json&outSR=4326&maxLocations=1";
+  try{const r=await fetch(url); const j=await r.json();
+    if(j.candidates&&j.candidates.length){const c=j.candidates[0]; m.setView([c.location.y,c.location.x],18);
+      L.marker([c.location.y,c.location.x]).addTo(m).bindPopup(c.address).openPopup();}
+    else status.textContent='Address not found';
+  }catch(err){status.textContent='Geocoder unavailable';}
+}
+document.getElementById('go').onclick=search;
+document.getElementById('q').addEventListener('keydown',e=>{if(e.key==='Enter')search();});
+
+// ---- load ----
+status.textContent='loading corporate parcels…';
+fetch('data/citywide_corp.json').then(r=>r.json()).then(j=>{CORP=j;buildLegend();drawCorp();
+  status.textContent='loading all parcels…';
+  return fetch('data/citywide_base.json');
+}).then(r=>r.json()).then(j=>{BASE=j;status.textContent=CORP.rows.length.toLocaleString()+' corporate · '+BASE.lat.length.toLocaleString()+' total parcels';})
+.catch(e=>{status.textContent='load error';});
+</script>
+</body>
+</html>

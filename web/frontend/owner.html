@@ -3,45 +3,88 @@
 <head>
 <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Owner Profile — Who Owns Nashville?</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%233A5566'/%3E%3Cpath d='M16 6 L26 14 L23 14 L23 25 L18 25 L18 18 L14 18 L14 25 L9 25 L9 14 L6 14 Z' fill='%23D4A54E'/%3E%3C/svg%3E"/>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%231f3a5f'/%3E%3Cpath d='M16 6 L26 14 L23 14 L23 25 L18 25 L18 18 L14 18 L14 25 L9 25 L9 14 L6 14 Z' fill='%23e07a33'/%3E%3C/svg%3E"/>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
 <style>
-  /* ParcelViewer app-shell, DADU-Homebody palette */
-  :root{--slate:#3A5566;--teal:#406A64;--terra:#B58676;--gold:#D4A54E;--cream:#F0EBE1;--sand:#E1D4BB;--ink:#3A5566}
-  html,body{height:100dvh;width:100vw;margin:0;padding:0;font-family:'Inter',-apple-system,'Segoe UI',sans-serif;overflow:hidden;color:#4a4a46}
-  #header{height:64px;width:100%;display:flex;align-items:center;justify-content:space-between;background:var(--slate);color:#fff;box-sizing:border-box;padding:0 22px;border-bottom:3px solid var(--gold)}
-  #header .brand{font-family:'Source Serif 4',Georgia,serif;font-size:21px;font-weight:700}
-  #header .brand small{display:block;font-family:'Inter',sans-serif;font-size:10.5px;font-weight:400;opacity:.8;letter-spacing:1px;text-transform:uppercase}
-  #header .sub{font-size:13px;opacity:.9}
+  /* ParcelViewer app-shell + Nashville Unified Housing Strategy palette */
+  :root{--navy:#1f3a5f;--navy-dk:#152a45;--orange:#e07a33;--green:#5b9d43;--ltblue:#6ba3d6;--teal:#134e4e;--midteal:#4f9c9a;--panel:#e5eaf1;--bd:#cdd6e3;--ink:#1f3a5f;--rowhi:#eef2f8}
+  html,body{height:100dvh;width:100vw;margin:0;padding:0;font-family:'Open Sans','Inter',-apple-system,'Segoe UI',sans-serif;overflow:hidden;color:#20303f}
+  #header{height:64px;width:100%;display:flex;align-items:center;justify-content:space-between;background:var(--navy);color:#fff;box-sizing:border-box;padding:0 22px;border-bottom:3px solid var(--orange)}
+  #header .brand{font-family:'Open Sans','Inter',sans-serif;font-size:22px;font-weight:700;letter-spacing:.2px}
+  #header .brand small{display:block;font-size:10.5px;font-weight:400;opacity:.85;letter-spacing:1px;text-transform:uppercase}
+  #header .sub{font-size:13px;opacity:.92}
   #mainWindow{display:flex;flex-direction:row;height:calc(100% - 64px)}
-  #leftPane{flex:0 0 35%;max-width:490px;overflow:auto;background:var(--cream);border-right:1px solid #d8cfbe;box-sizing:border-box}
+  #leftPane{flex:0 0 35%;max-width:490px;overflow:auto;background:var(--panel);border-right:1px solid var(--bd);box-sizing:border-box}
   #viewDiv{flex:1;position:relative}
   #map{position:absolute;inset:0}
-  .pname{padding:16px 18px 8px;background:#fff;border-bottom:1px solid #e6ddcd}
-  .pname h1{margin:0;font-family:'Source Serif 4',Georgia,serif;font-size:23px;font-weight:700;color:var(--slate)}
-  .pname .brandlbl{font-size:12px;color:var(--teal);font-weight:600;margin-top:3px}
-  .statrow{display:flex;flex-wrap:wrap;background:#fff;border-bottom:1px solid #e6ddcd}
-  .stat{flex:1 0 33%;padding:10px 14px;border-top:1px solid #f3ede2;box-sizing:border-box}
-  .stat b{display:block;font-size:20px;color:var(--slate);font-weight:700}
-  .stat b.accent{color:var(--gold)}
-  .stat span{font-size:10px;color:#918A83;text-transform:uppercase;letter-spacing:.5px}
-  .sec{background:#fff;margin:8px 0 0;padding:12px 16px;border-bottom:1px solid #e6ddcd}
-  .sec h2{margin:0 0 8px;font-size:11.5px;color:var(--teal);text-transform:uppercase;letter-spacing:1px;font-weight:700}
-  .sec h3{margin:10px 0 2px;font-size:12px;color:var(--slate);font-weight:600}
+  .pname{padding:14px 18px 10px;background:#fff;border-bottom:1px solid var(--bd)}
+  .pname h1{margin:0;font-size:22px;font-weight:700;color:var(--navy)}
+  .pname .brandlbl{font-size:12px;color:var(--orange);font-weight:700;margin-top:3px}
+  .statrow{display:flex;flex-wrap:wrap;background:#fff;border-bottom:1px solid var(--bd)}
+  .stat{flex:1 0 33%;padding:10px 14px;border-top:1px solid #eef0f3;box-sizing:border-box}
+  .stat b{display:block;font-size:20px;color:var(--navy);font-weight:700}
+  .stat b.accent{color:var(--orange)}
+  .stat span{font-size:10px;color:#6b7683;text-transform:uppercase;letter-spacing:.5px}
+  .sec{background:#fff;margin:8px 8px 0;border:1px solid var(--bd);border-radius:2px;padding:12px 16px}
+  .sec h2{margin:0 0 8px;font-size:11.5px;color:var(--navy);text-transform:uppercase;letter-spacing:1px;font-weight:700;border-bottom:2px solid var(--orange);padding-bottom:4px;display:inline-block}
+  .sec h3{margin:10px 0 2px;font-size:12px;color:var(--teal);font-weight:700}
   .sec p{margin:2px 0;font-size:13px;line-height:1.5}
-  .big{font-size:17px;color:var(--terra);font-weight:700}
-  .kv{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;border-bottom:1px solid #f3ede2}
-  .kv b{color:var(--slate)}
-  .chip{display:inline-block;background:var(--cream);border:1px solid var(--sand);border-radius:3px;padding:2px 8px;margin:2px;font-size:11.5px;color:#6b5a45}
-  .lnk{display:inline-block;margin:6px 8px 2px 0;padding:6px 12px;background:var(--teal);color:#fff;border-radius:3px;text-decoration:none;font-size:12px;font-weight:600}
-  .lnk:hover{background:#345650}
+  .big{font-size:17px;color:var(--orange);font-weight:700}
+  .kv{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;border-bottom:1px solid #eef0f3}
+  .kv b{color:var(--navy)}
+  .chip{display:inline-block;background:#eef2f8;border:1px solid var(--bd);border-radius:3px;padding:2px 8px;margin:2px;font-size:11.5px;color:#2a4462}
+  .lnk{display:inline-block;margin:6px 8px 2px 0;padding:6px 12px;background:var(--navy);color:#fff;border-radius:3px;text-decoration:none;font-size:12px;font-weight:600}
+  .lnk:hover{background:var(--navy-dk)}
   table{width:100%;border-collapse:collapse;font-size:12px}
-  th,td{text-align:left;padding:4px 6px;border-bottom:1px solid #f0ebe1}
-  th{color:var(--slate);border-bottom:2px solid var(--sand)}
-  .muted{color:#918A83;font-size:12px}
-  a{color:var(--teal)}
+  th,td{text-align:left;padding:4px 6px;border-bottom:1px solid #eef0f3}
+  th{color:var(--navy);border-bottom:2px solid var(--bd)}
+  tbody tr:hover{background:var(--rowhi)}
+  .muted{color:#6b7683;font-size:12px}
+  a{color:var(--navy)}
+  .pp{font-family:'Open Sans','Inter',sans-serif;font-size:12px;line-height:1.45;max-width:360px}
+  .pp-h{font-weight:700;color:var(--navy);font-size:13px}
+  .pp-s{color:#4a5560;margin:2px 0 6px}
+  .pp-s code{background:#eef2f8;padding:0 4px;border-radius:2px}
+  .pp-img{width:100%;max-height:150px;object-fit:cover;border-radius:3px;margin:2px 0 6px;border:1px solid var(--bd)}
+  .pp-l{margin:3px 0;border-top:1px solid #eef0f3;padding-top:3px}
+  .pp-l b{color:var(--navy)}
+  .pp-l a{color:var(--navy);text-decoration:none;font-weight:600}
+  .pp-l a:hover{color:var(--orange);text-decoration:underline}
+  .pp-d{display:grid;grid-template-columns:1fr 1fr;gap:2px 12px;margin:2px 0 6px;border-top:1px solid #eef0f3;border-bottom:1px solid #eef0f3;padding:5px 0}
+  .pp-d>div{display:flex;justify-content:space-between;font-size:11.5px}
+  .pp-d span{color:#6b7683}
+  .pp-d b{color:var(--navy)}
+  /* Datawrapper-style portfolio cards */
+  .pcards{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .pcard{background:#f7f9fc;border:1px solid var(--bd);border-radius:5px;padding:11px 12px}
+  .pcard h4{margin:0 0 5px;font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--navy)}
+  .pcard .lede{margin:0 0 9px;font-size:12px;line-height:1.4;color:#3a4652}
+  .pcard .lede b{color:var(--navy)}
+  .dwrow{display:flex;align-items:center;gap:7px;margin:3px 0;font-size:11px}
+  .dwlab{flex:0 0 60px;text-align:right;color:#5a6672}
+  .dwtrack{flex:1;height:8px;background:#e2e8f1;border-radius:5px;overflow:hidden}
+  .dwbar{display:block;height:100%;background:var(--navy);border-radius:5px}
+  .dwval{flex:0 0 34px;color:#6b7683;font-variant-numeric:tabular-nums;text-align:right}
+  .race{display:flex;height:12px;border-radius:6px;overflow:hidden;margin:2px 0 7px}
+  .race i{display:block;height:100%}
+  .rleg{font-size:10px;color:#5a6672;display:flex;flex-wrap:wrap;gap:7px}
+  .rleg span::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:3px;vertical-align:middle;background:var(--c)}
+  .vuln{display:flex;gap:16px;margin-top:8px;border-top:1px solid #e2e8f1;padding-top:7px}
+  .vuln b{display:block;font-size:16px;color:var(--navy)}
+  .vuln span{font-size:10px;color:#6b7683}
+  .ptbl-wrap{overflow-x:auto}
+  .acqrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:8px;margin:0 0 10px}
+  .acqrow>div{background:#f7f9fc;border:1px solid var(--bd);border-radius:5px;padding:8px 10px}
+  .acqrow b{display:block;font-size:15px;color:var(--navy);font-weight:700;line-height:1.15}
+  .acqrow span{font-size:9.5px;color:#6b7683;text-transform:uppercase;letter-spacing:.4px}
+  @media(max-width:520px){.acqrow{grid-template-columns:1fr 1fr}}
+  .hllink{cursor:pointer;color:var(--navy);text-decoration:none;font-weight:600}
+  .hllink:hover{color:var(--orange);text-decoration:underline}
+  .chip.hllink{font-weight:400}
+  .homeMarker{background:none;border:none}
+  .homeMarker svg{filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.35))}
 </style>
 </head>
 <body>
@@ -57,6 +100,69 @@
 const id=new URLSearchParams(location.search).get('id')||'1';
 const D=v=>v==null?'—':'$'+Number(v).toLocaleString();
 const P=v=>v==null?'—':v+'%';
+// Datawrapper small-multiple distribution bars
+function bars(bins){
+  if(!bins||!bins.length) return '';
+  const mx=Math.max(...bins.map(b=>b.n),1);
+  return bins.map(b=>`<div class="dwrow"><span class="dwlab">${b.label}</span><span class="dwtrack"><span class="dwbar" style="width:${(100*b.n/mx).toFixed(1)}%"></span></span><span class="dwval">${b.n.toLocaleString()}</span></div>`).join('');
+}
+// Acquisition summary stats
+function acqStats(parcels){
+  const rows=[];
+  parcels.forEach(p=>{
+    if(!p.sale_date) return;
+    const t=Date.parse(p.sale_date); const mm=String(p.sale_date).match(/(19|20)\d\d/);
+    const yr=mm?parseInt(mm[0]):null;
+    if(yr) rows.push({t:isNaN(t)?null:t, yr, built:parseInt(p.year_built)||null});
+  });
+  if(!rows.length) return null;
+  const fmt=t=>new Date(t).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  const withT=rows.filter(r=>r.t!=null).sort((a,b)=>a.t-b.t);
+  let first,last;
+  if(withT.length){first=fmt(withT[0].t);last=fmt(withT[withT.length-1].t);}
+  else{const ys=rows.map(r=>r.yr).sort((a,b)=>a-b);first=ys[0];last=ys[ys.length-1];}
+  const CUR=2026;
+  const avgHold=(rows.reduce((s,r)=>s+(CUR-r.yr),0)/rows.length).toFixed(1);
+  const nb=rows.filter(r=>r.built&&Math.abs(r.yr-r.built)<=1).length;
+  const built=parcels.map(p=>parseInt(p.year_built)).filter(y=>y>=1800&&y<=CUR);
+  const avgAge=built.length?Math.round(built.reduce((s,y)=>s+(CUR-y),0)/built.length):null;
+  return {first,last,avgHold,newPct:Math.round(100*nb/rows.length),avgAge,n:rows.length};
+}
+// Scatter: year acquired (x) vs year built (y). Diagonal = bought new.
+function scatterSVG(parcels){
+  const pts=[];
+  parcels.forEach(p=>{
+    const by=parseInt(p.year_built);
+    let py=null; if(p.sale_date){const mm=String(p.sale_date).match(/(19|20)\d\d/); if(mm) py=parseInt(mm[0]);}
+    if(by>=1900&&by<=2026&&py>=1985&&py<=2026) pts.push([by,py,p.address||p.apn||'']);
+  });
+  if(pts.length<3) return '<div class="muted">Not enough dated parcels for a scatter.</div>';
+  // p = [built, acquired, label]; X = acquired, Y = built
+  const W=440,H=280,L=42,B=30,T=10,R=12;
+  let x0=Math.min(...pts.map(p=>p[1])), x1=Math.max(...pts.map(p=>p[1]));  // acquired
+  let y0=Math.min(...pts.map(p=>p[0])), y1=Math.max(...pts.map(p=>p[0]));  // built
+  x0=Math.floor(x0/5)*5; x1=Math.ceil(x1/5)*5; y0=Math.floor(y0/5)*5; y1=Math.ceil(y1/5)*5;
+  const sx=v=>L+(v-x0)/((x1-x0)||1)*(W-L-R), sy=v=>H-B-(v-y0)/((y1-y0)||1)*(H-B-T);
+  const ticks=(a,b,n)=>{const out=[],step=Math.max(5,Math.ceil((b-a)/n/5)*5);for(let v=a;v<=b;v+=step)out.push(v);return out;};
+  let g='<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto;font-family:Inter,sans-serif;font-size:9.5px">';
+  g+='<rect x="'+L+'" y="'+T+'" width="'+(W-L-R)+'" height="'+(H-B-T)+'" fill="#f7f9fc" stroke="#cdd6e3"/>';
+  // diagonal (acquired==built) where ranges overlap
+  const d0=Math.max(x0,y0), d1=Math.min(x1,y1);
+  if(d1>d0) g+='<line x1="'+sx(d0)+'" y1="'+sy(d0)+'" x2="'+sx(d1)+'" y2="'+sy(d1)+'" stroke="#b58676" stroke-dasharray="4,3" stroke-width="1"/>';
+  ticks(x0,x1,5).forEach(v=>{g+='<line x1="'+sx(v)+'" y1="'+(H-B)+'" x2="'+sx(v)+'" y2="'+(H-B+3)+'" stroke="#9aa5b1"/><text x="'+sx(v)+'" y="'+(H-B+13)+'" text-anchor="middle" fill="#6b7683">'+v+'</text>';});
+  ticks(y0,y1,5).forEach(v=>{g+='<line x1="'+(L-3)+'" y1="'+sy(v)+'" x2="'+L+'" y2="'+sy(v)+'" stroke="#9aa5b1"/><text x="'+(L-5)+'" y="'+(sy(v)+3)+'" text-anchor="end" fill="#6b7683">'+v+'</text>';});
+  pts.forEach(p=>{g+='<circle cx="'+sx(p[1]).toFixed(1)+'" cy="'+sy(p[0]).toFixed(1)+'" r="3" fill="#e07a33" fill-opacity="0.55" stroke="#b3560f" stroke-width="0.4"><title>'+p[2]+' — acquired '+p[1]+', built '+p[0]+'</title></circle>';});
+  g+='<text x="'+((L+W-R)/2)+'" y="'+(H-2)+'" text-anchor="middle" fill="#4a5560" font-weight="600">Year acquired →</text>';
+  g+='<text transform="translate(11,'+((T+H-B)/2)+') rotate(-90)" text-anchor="middle" fill="#4a5560" font-weight="600">Year built →</text>';
+  return g+'</svg>';
+}
+function raceBar(pf){
+  const seg=[['Black',pf.pct_black,'#6a51a3'],['White',pf.pct_white,'#9aa5b1'],['Hispanic',pf.pct_hispanic,'#e07a33'],['Asian',pf.pct_asian,'#5b9d43']];
+  const known=seg.reduce((s,x)=>s+(x[1]||0),0); const other=Math.max(0,100-known);
+  const all=seg.concat([['Other',other,'#cdd6e3']]);
+  return '<div class="race">'+all.map(x=>`<i style="width:${Math.max(0,x[1]||0)}%;background:${x[2]}"></i>`).join('')+'</div>'
+    +'<div class="rleg">'+all.map(x=>`<span style="--c:${x[2]}">${x[0]}</span>`).join('')+'</div>';
+}
 fetch(`data/owners/${id}.json`).then(r=>r.json()).then(d=>{
   const pf=d.portfolio||{}, po=d.principal_offices||[], ra=d.registered_agents||[];
   document.getElementById('hdrSub').textContent=d.parcel_count.toLocaleString()+' parcels · Davidson County, TN';
@@ -85,34 +191,136 @@ fetch(`data/owners/${id}.json`).then(r=>r.json()).then(d=>{
    </div>
 
    <div class="sec"><h2>Nashville Portfolio Analysis</h2>
-     <h3>Neighborhood income</h3>
-     <p>Across their ${pf.n_parcels_with_acs||d.parcel_count} parcels, avg neighborhood median income is <span class="big">${D(pf.median_income)}</span>.</p>
-     <h3>Tenure &amp; concentration</h3>
-     <p><b>${P(pf.pct_renter)}</b> of households in their neighborhoods are renters.</p>
-     <h3>Racial composition</h3>
-     <p><b>${P(pf.pct_black)} Black</b>, ${P(pf.pct_white)} White, ${P(pf.pct_hispanic)} Hispanic, ${P(pf.pct_asian)} Asian.</p>
-     <h3>Home values &amp; vulnerability</h3>
-     <p>Median home value <span class="big">${D(pf.median_home_value)}</span> · ${P(pf.pct_poverty)} below poverty · ${P(pf.pct_vacant)} vacant.</p>
+     <div class="pcards">
+       <div class="pcard">
+         <h4>Neighborhood income</h4>
+         <div class="lede">Across their <b>${(pf.n_parcels_with_acs||d.parcel_count).toLocaleString()}</b> parcels, avg neighborhood median income is <b>${D(pf.median_income)}</b>.</div>
+         ${bars(pf.income_bins)}
+       </div>
+       <div class="pcard">
+         <h4>Racial composition</h4>
+         <div class="lede">Their neighborhoods average <b>${P(pf.pct_black)} Black</b>, ${P(pf.pct_white)} White, ${P(pf.pct_hispanic)} Hispanic, ${P(pf.pct_asian)} Asian.</div>
+         ${raceBar(pf)}
+       </div>
+       <div class="pcard">
+         <h4>Home values</h4>
+         <div class="lede">Median home value <b>${D(pf.median_home_value)}</b> across the portfolio.</div>
+         ${bars(pf.value_bins)}
+       </div>
+       <div class="pcard">
+         <h4>Tenure &amp; vulnerability</h4>
+         <div class="lede"><b>${P(pf.pct_renter)}</b> of households in their neighborhoods are renters.</div>
+         <div class="vuln"><div><b>${P(pf.pct_poverty)}</b><span>below poverty</span></div><div><b>${P(pf.pct_vacant)}</b><span>housing vacant</span></div></div>
+       </div>
+     </div>
+   </div>
+
+   <div class="sec"><h2>Acquisition vs. construction year</h2>
+     ${(()=>{const s=acqStats(d.parcels);return s?`<div class="acqrow"><div><b>${s.first}</b><span>First acquired</span></div><div><b>${s.last}</b><span>Most recent purchase</span></div><div><b>${s.avgHold} yrs</b><span>Avg holding time</span></div><div><b>${s.avgAge!=null?s.avgAge+' yrs':'—'}</b><span>Avg building age</span></div><div><b>${s.newPct}%</b><span>Bought new (≤1 yr)</span></div></div>`:'';})()}
+     <p class="muted" style="margin:0 0 6px">Each dot is one parcel: when this owner acquired it (x) against when it was built (y). Dots on the dashed diagonal were bought the year they were built; dots far below are older homes bought recently.</p>
+     ${scatterSVG(d.parcels)}
    </div>
 
    <div class="sec"><h2>Related owners (${(d.related||[]).length})</h2>
+     <div id="hlNote" class="muted" style="margin:0 0 6px"></div>
      <table><thead><tr><th>Owner</th><th>Via</th><th style="text-align:right;">Parcels</th></tr></thead>
-     <tbody>${(d.related||[]).map(r=>`<tr><td>${r.owner}</td><td class="muted">${r.via}</td><td style="text-align:right;">${r.parcels}</td></tr>`).join('')}</tbody></table>
+     <tbody>${(d.related||[]).map(r=>`<tr><td><a href="#" class="hllink" data-hl="${encodeURIComponent(r.owner)}">${r.owner}</a></td><td class="muted">${r.via}</td><td style="text-align:right;">${r.parcels}</td></tr>`).join('')}</tbody></table>
    </div>
 
    <div class="sec"><h2>Owner names on record (${d.owner_names.length})</h2>
-     ${d.owner_names.map(n=>'<div class="chip">'+n+'</div>').join('')}
+     <p class="muted" style="margin:0 0 6px">Click any name to highlight its holdings on the map.</p>
+     ${d.owner_names.map(n=>'<span class="chip hllink" data-hl="'+encodeURIComponent(n)+'">'+n+'</span>').join('')}
    </div>
 
    <div class="sec"><h2>Parcels held (${d.parcel_count.toLocaleString()})</h2>
-     <table><thead><tr><th>Address</th><th style="text-align:right;">Bd/Ba</th><th style="text-align:right;">Sq ft</th><th style="text-align:right;">Value</th></tr></thead>
-     <tbody>${d.parcels.map(p=>`<tr><td>${p.address||p.parcel_id}</td><td style="text-align:right;">${p.beds!=null?(p.beds+'/'+(p.bath||'—')):'—'}</td><td style="text-align:right;">${p.sqft?Number(p.sqft).toLocaleString():'—'}</td><td style="text-align:right;">${p.market_value?('$'+Number(p.market_value).toLocaleString()):'—'}</td></tr>`).join('')}</tbody></table>
+     <div class="ptbl-wrap"><table><thead><tr><th>Address</th><th>Type</th><th>Land use</th><th style="text-align:right;">Built</th><th style="text-align:right;">Bd/Ba</th><th style="text-align:right;">Sq ft</th><th style="text-align:right;">Value</th></tr></thead>
+     <tbody>${d.parcels.map(p=>`<tr><td>${p.address||p.parcel_id}</td><td class="muted">${p.structure_type||'—'}</td><td class="muted">${p.land_use||'—'}</td><td style="text-align:right;">${p.year_built||'—'}</td><td style="text-align:right;">${p.beds!=null?(p.beds+'/'+(p.bath||'—')):'—'}</td><td style="text-align:right;">${p.sqft?Number(p.sqft).toLocaleString():'—'}</td><td style="text-align:right;">${p.market_value?('$'+Number(p.market_value).toLocaleString()):'—'}</td></tr>`).join('')}</tbody></table></div>
    </div>`;
 
-  const m=L.map('map').setView([36.166,-86.784],10);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap, © CARTO'}).addTo(m);
-  const pts=d.parcels.filter(p=>p.lat&&p.lon).map(p=>L.circleMarker([+p.lat,+p.lon],{radius:5,fillColor:'#406A64',color:'#fff',weight:.6,fillOpacity:.85}).bindPopup((p.address||p.parcel_id)+(p.market_value?('<br>$'+Number(p.market_value).toLocaleString()):'')));
-  if(pts.length){const g=L.featureGroup(pts).addTo(m);try{m.fitBounds(g.getBounds().pad(0.06));}catch(e){}}
+  const m=L.map('map',{zoomControl:true}).setView([36.166,-86.784],10);
+  // ParcelViewer-style basemap toggle: Nashville Gray (default) / Aerial / Streets
+  const nashGray=L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap, © CARTO'}).addTo(m);
+  const aerial=L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'Esri World Imagery'});
+  const streets=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'});
+  L.control.layers({'Gray (Nashville)':nashGray,'Aerial':aerial,'Streets':streets},null,{position:'topright',collapsed:false}).addTo(m);
+  // Davidson County boundary + inverse mask to hide everything outside the county
+  m.createPane('mask'); const _mp=m.getPane('mask'); _mp.style.zIndex=350; _mp.style.pointerEvents='none';
+  fetch('https://nataliebaldacci.github.io/SFR_Nashville/data/Davidson_County_Boundary.geojson')
+    .then(r=>r.json()).then(gj=>{
+      const f=gj.features.find(x=>x.properties.OBJECTID===4); if(!f) return;
+      L.geoJSON(f,{style:{color:'#1f3a5f',weight:2,fillOpacity:0,dashArray:'4,4'},interactive:false}).addTo(m);
+      const outer=[[85,-180],[85,180],[-85,180],[-85,-180]];
+      const polys=f.geometry.type==='Polygon'?[f.geometry.coordinates]:f.geometry.coordinates;
+      const holes=polys.map(pl=>pl[0].map(c=>[c[1],c[0]]));
+      L.polygon([outer,...holes],{pane:'mask',stroke:false,fillColor:'#e9edf1',fillOpacity:.85,interactive:false}).addTo(m);
+    }).catch(()=>{});
+
+  // Full Nashville URL toolkit popup (house-style canonical, keyed by APN + lat/lon)
+  const PATRIOT="5D050659143EB96630FB38B91DE12E40&SECRETKEY=A92169630C9BC3C00A1C0F9F140E6DAEC21C8E62DCFF9FC443FB1BE70DDF6AA4268527B9DDE2ECC2C7EE9BB5BF728C06F0DF4019BBECDEBD2A6DD0BBE28A419D8F929E1F3E8DF478E56619995BEFCA8E369276689D791197DC1284F14B3252DBFB2A19A2E451EEA832D6D96488DDC673EBA4B37BD741223B656A793D93209C0F";
+  const esc=s=>String(s==null?'':s);
+  function popupHTML(p){
+    const apn=esc(p.apn).replace(/[^0-9A-Za-z]/g,'');
+    const acct=esc(p.account_number);
+    const lat=esc(p.lat), lon=esc(p.lon);
+    const pv="https://maps.nashville.gov/ParcelViewer/?parcelID="+apn;
+    const comper="https://davidson-tn-citizen.comper.info/template.aspx?propertyID="+apn;
+    const photo="https://image-cdn.spatialest.com/image/tn-davidson-images/med/Images/"+apn+"_1.jpg";
+    const aerialV="https://portal.patriotproperties.com/?APIKEY="+PATRIOT+"&LAT="+lat+"&LONG="+lon;
+    const street="https://www.google.com/maps?q&layer=c&cbll="+lat+","+lon;
+    const card=acct?("https://portal.padctn.org/OFS/WP/Print/"+acct):("https://maps.nashville.gov/ParcelViewer/PrintRecord.html?pin="+apn);
+    const eperm="https://epermits.nashville.gov/#/search?searchCode=APN&page=1&searchText="+apn+"&searchType=permit";
+    const permDoc="https://documents.nashville.gov/Request/Form/PermitCodes?parcelnumber="+apn;
+    const permAPI="https://maps.nashville.gov/ParcelService/Search.asmx/GetPermitHistory?apn="+apn;
+    const own="https://maps.nashville.gov/ParcelService/Search.asmx/GetOwnerHistory?onlyactive=false&pin="+p.parcel_id;
+    const prop="https://maps.nashville.gov/ParcelService/Search.asmx/GetPropertyHistory?onlyactive=false&pin="+p.parcel_id;
+    const zon="https://maps.nashville.gov/ParcelService/Search.asmx/GetZoningHistory?onlyactive=false&pin="+p.parcel_id;
+    const assr="https://maps.nashville.gov/ParcelService/Search.asmx/GetAssessmentHistory?onlyactive=false&pin="+p.parcel_id;
+    const land="https://davidsonportal.com/landrecords/";
+    const A=(u,t)=>'<a href="'+u+'" target="_blank" rel="noopener">'+t+'</a>';
+    let h='<div class="pp"><div class="pp-h">'+esc(p.address||apn)+'</div>';
+    h+='<div class="pp-s">APN <code>'+apn+'</code></div>';
+    if(apn){h+='<img class="pp-img" src="'+photo+'" onerror="this.style.display=\'none\'" loading="lazy"/>';}
+    const dd=[];
+    if(p.year_built) dd.push(['Year built',esc(p.year_built)]);
+    if(p.structure_type) dd.push(['Type',esc(p.structure_type)]);
+    if(p.land_use) dd.push(['Land use',esc(p.land_use)]);
+    if(p.beds!=null) dd.push(['Beds / Baths',esc(p.beds)+' / '+esc(p.bath||'—')]);
+    if(p.sqft) dd.push(['Sq ft',Number(p.sqft).toLocaleString()]);
+    if(p.acres) dd.push(['Acres',esc(p.acres)]);
+    if(p.market_value) dd.push(['Appraised value','$'+Number(p.market_value).toLocaleString()]);
+    if(p.sale_price) dd.push(['Last sale','$'+Number(p.sale_price).toLocaleString()+(p.sale_date?(' · '+esc(p.sale_date)):'')]);
+    if(dd.length) h+='<div class="pp-d">'+dd.map(x=>'<div><span>'+x[0]+'</span><b>'+x[1]+'</b></div>').join('')+'</div>';
+    h+='<div class="pp-l">'+[A(pv,'Parcel Viewer'),A(card,'Property Card'),A(comper,'Comper'),A(aerialV,'Aerial'),A(street,'Street View')].join(' · ')+'</div>';
+    h+='<div class="pp-l"><b>Permits:</b> '+[A(eperm,'ePermit'),A(permDoc,'Permit Docs'),A(permAPI,'Permit API')].join(' · ')+'</div>';
+    h+='<div class="pp-l"><b>History APIs:</b> '+[A(own,'Owner'),A(prop,'Property'),A(zon,'Zoning'),A(assr,'Assessment'),A(land,'Land Records')].join(' · ')+'</div>';
+    return h+'</div>';
+  }
+  // Little house markers, one per parcel (orange default, navy when highlighted)
+  const house=(f,s,w,h)=>"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='"+w+"' height='"+h+"'><path d='M12 3 L21 11 L18.5 11 L18.5 20 L14 20 L14 14 L10 14 L10 20 L5.5 20 L5.5 11 L3 11 Z' fill='"+f+"' stroke='"+s+"' stroke-width='1'/></svg>";
+  const homeIcon=L.divIcon({html:house('#e07a33','#7a3908',18,18),className:'homeMarker',iconSize:[18,18],iconAnchor:[9,16],popupAnchor:[0,-14]});
+  const homeIconHi=L.divIcon({html:house('#1f3a5f','#0d1c30',24,24),className:'homeMarker hi',iconSize:[24,24],iconAnchor:[12,21],popupAnchor:[0,-18]});
+  const markers=[];
+  d.parcels.filter(p=>p.lat&&p.lon).forEach(p=>{const mk=L.marker([+p.lat,+p.lon],{icon:homeIcon}).bindPopup(popupHTML(p),{maxWidth:380});mk._pid=String(p.parcel_id);markers.push(mk);});
+  if(markers.length){const g=L.featureGroup(markers).addTo(m);try{m.fitBounds(g.getBounds().pad(0.06));}catch(e){}}
+  // click an owner name → highlight only that entity's holdings
+  const EP=d.entity_parcels||{};
+  window.highlightEntity=function(name){
+    const ids=new Set((EP[name]||[]).map(String));
+    let hl=[];
+    markers.forEach(mk=>{
+      const on=ids.size===0||ids.has(mk._pid);
+      mk.setIcon(ids.size&&ids.has(mk._pid)?homeIconHi:homeIcon);
+      mk.setOpacity(ids.size? (ids.has(mk._pid)?1:0.15):1);
+      if(ids.size&&ids.has(mk._pid)) hl.push(mk);
+    });
+    document.getElementById('hlNote').innerHTML = ids.size
+      ? 'Showing <b>'+name+'</b> ('+ids.size+' parcels) · <a href="#" onclick="highlightEntity(\'\');return false;">show all</a>' : '';
+    if(hl.length){const g=L.featureGroup(hl);try{m.fitBounds(g.getBounds().pad(0.12));}catch(e){}}
+  };
+  document.getElementById('leftPane').addEventListener('click',e=>{
+    const el=e.target.closest('[data-hl]'); if(!el) return; e.preventDefault();
+    highlightEntity(decodeURIComponent(el.getAttribute('data-hl')));
+  });
 }).catch(e=>{document.getElementById('panel').textContent='Owner '+id+' not found';});
 </script>
 </body>

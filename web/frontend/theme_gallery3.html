@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/>
+<title>Theme Gallery 3 — palettes from the Datawrapper guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;font-family:'Inter',system-ui,sans-serif;background:#e9e6df;color:#222}
+  .lead{max-width:920px;margin:0 auto;padding:26px 20px 6px}
+  .lead h2{margin:0;font-family:'Source Serif 4',Georgia,serif}
+  .lead p{color:#555;margin:6px 0 16px;font-size:14px;line-height:1.5}
+  .theme{max-width:920px;margin:0 auto 30px;border-radius:10px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.12)}
+  .th-label{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#666;max-width:920px;margin:0 auto;padding:2px 22px 4px}
+  .th-label .src{color:#999;text-transform:none;letter-spacing:0;font-size:11.5px}
+  .hd{padding:18px 24px}
+  .kick{font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700}
+  .hd h1{margin:3px 0 0;font-size:24px;font-family:'Source Serif 4',Georgia,serif}
+  .body{padding:15px 24px 20px}
+  .stats{display:flex;gap:26px;flex-wrap:wrap;margin-bottom:12px}
+  .stat b{display:block;font-size:24px;font-weight:800}
+  .stat span{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#8a8378}
+  .h2{font-size:12px;letter-spacing:1px;text-transform:uppercase;font-weight:700;margin:6px 0 6px;padding-bottom:4px}
+  .p{font-size:13.5px;margin:2px 0;line-height:1.5}
+  .chip{display:inline-block;border-radius:12px;padding:2px 10px;margin:2px;font-size:12px}
+  .ramp{display:flex;height:14px;border-radius:3px;overflow:hidden;margin-top:8px;width:260px}
+  .ramp div{flex:1}
+  .keeper{outline:3px solid #D4A54E;outline-offset:2px}
+</style></head>
+<body>
+<div class="lead">
+  <h2>Palettes pulled straight from the Datawrapper guide</h2>
+  <p>Every one below is a real, named palette the article cites, with its actual hex codes — applied to your Yamasa owner card so you can compare apples to apples. The gold-outlined first card is your <b>current DADU brand palette</b>, which is the "fewer hues, more shades" brand-ist approach the guide recommends most highly. Tell me the name under the one you want, or say "keep DADU."</p>
+</div>
+<div id="gallery"></div>
+<script>
+const THEMES=[
+ {name:"DADU brand (your current) — KEEPER", src:"Your DADU-Homebody site · the guide's “brand-ist” approach",
+  bg:"#F0EBE1", text:"#4a4a46", ink:"#3A5566", accent:"#D4A54E", head:"#3A5566", headText:"#fff", chip:"#E1D4BB", chipText:"#6b5a45",
+  ramp:["#F0EBE1","#E1D4BB","#B58676","#406A64","#3A5566"], keeper:true},
+ {name:"The Economist", src:"Guide § brand-ists — business dark-blue + turquoise + red, warm grays",
+  bg:"#f6f6f2", text:"#33332e", ink:"#1a476f", accent:"#e3120b", head:"#1a476f", headText:"#fff", chip:"#e7e7de", chipText:"#3a3a30",
+  ramp:["#cfd8e3","#7fa8c9","#3d7ba8","#1a476f","#0d2c46"]},
+ {name:"Financial Times", src:"Guide § background color — iconic FT pink ground, dark-blue + magenta",
+  bg:"#fff1e5", text:"#3a2f28", ink:"#0f5499", accent:"#990f3d", head:"#0f5499", headText:"#fff", chip:"#f6e2cf", chipText:"#66594a",
+  ramp:["#fde6d3","#f2a49a","#cd4f6c","#990f3d","#66082a"]},
+ {name:"Urban Institute", src:"Guide § collection of style guides — cyan + yellow, the go-to think-tank palette",
+  bg:"#ffffff", text:"#353535", ink:"#12719e", accent:"#fdbf11", head:"#1696d2", headText:"#fff", chip:"#e7f3f9", chipText:"#0a4c6a",
+  ramp:["#cfe8f3","#73bfe2","#1696d2","#12719e","#0a4c6a"]},
+ {name:"McKinsey (minimalist blues)", src:"Guide § minimalists — one hue family, shades only, very corporate-serious",
+  bg:"#f5f7fa", text:"#2b3138", ink:"#051c2c", accent:"#00a9f4", head:"#051c2c", headText:"#fff", chip:"#e6edf3", chipText:"#1b3d52",
+  ramp:["#d6e4ee","#82b6d9","#3a7ca8","#1b4f72","#051c2c"]},
+ {name:"Mailchimp (warm retro)", src:"Guide § logo-vibe — desaturated pastels, warm & approachable",
+  bg:"#fdf9ee", text:"#3a352b", ink:"#2c9aa0", accent:"#e8794a", head:"#2c9aa0", headText:"#fff", chip:"#f3ead6", chipText:"#5c503a",
+  ramp:["#f5ead1","#e8c96a","#e8944a","#d76b52","#8a4b3c"]},
+];
+document.getElementById('gallery').innerHTML=THEMES.map(t=>`
+ <div class="th-label">${t.name}<br><span class="src">${t.src}</span></div>
+ <div class="theme${t.keeper?' keeper':''}" style="background:${t.bg};color:${t.text}">
+   <div class="hd" style="background:${t.head};color:${t.headText};border-bottom:4px solid ${t.accent}">
+     <div class="kick" style="color:${t.accent}">Who Owns Nashville? · Owner Profile</div>
+     <h1>Yamasa Co., Ltd</h1></div>
+   <div class="body">
+     <div class="stats">
+       <div class="stat"><b style="color:${t.ink}">1,440</b><span>Parcels</span></div>
+       <div class="stat"><b style="color:${t.accent}">$533.8M</b><span>Total value</span></div>
+       <div class="stat"><b style="color:${t.ink}">135.5</b><span>Acres</span></div>
+       <div class="stat"><b style="color:${t.ink}">148</b><span>Entities</span></div>
+     </div>
+     <div class="h2" style="color:${t.accent};border-bottom:1px solid ${'#e3ddd3'}">Nashville Portfolio Analysis</div>
+     <div class="p">Across their 1,408 parcels, avg neighborhood median income is <b style="color:${t.accent}">$86,951</b>.</div>
+     <div class="p">Their neighborhoods average <b>33% Black</b>, 45% White, 16% Hispanic. Home value <b style="color:${t.accent}">$334,744</b>.</div>
+     <div class="p">${["FREO Tennessee, LLC","Progress Nashville, LLC","PR Borrower 26, LLC"].map(n=>`<span class="chip" style="background:${t.chip};color:${t.chipText}">${n}</span>`).join('')}</div>
+     <div class="ramp">${t.ramp.map(c=>`<div style="background:${c}"></div>`).join('')}</div>
+   </div>
+ </div>`).join('');
+</script>
+</body></html>
