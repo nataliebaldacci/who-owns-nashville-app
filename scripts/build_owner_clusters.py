@@ -116,6 +116,24 @@ def portfolio(pids):
         pct_renter=avg('bg_pct_renter_occupied'), pct_poverty=avg('bg_pct_poverty'), pct_vacant=avg('bg_pct_vacant'),
         pct_black=avg('bg_pct_black'), pct_white=avg('bg_pct_white'), pct_hispanic=avg('bg_pct_hispanic'), pct_asian=avg('bg_pct_asian'))
 
+# --- Comper property detail per parcel (sale, value, beds/baths, sqft, year, acres) ---
+COMPER="/Users/nataliebaldacci/Master_Data/Nashville/00_ORGANIZED/08_Reference_Library/Favorite_Data_Sets/Comper_Pull_AllResidential_2026-06-29/Comper_County_MASTER_Enriched_WithOwnership_2026-06-30.csv"
+_ccols=['ParID','SalePrice','SaleDate','MarketValue','spatialest_value','NumofBedrooms','FullBath','HalfBath','NetFinishedArea','EffYearBlt','YearBlt','Acreage']
+_cp=pd.read_csv(COMPER,usecols=lambda c:c in _ccols,dtype=str).fillna('')
+_cp['pk']=pd.to_numeric(_cp['ParID'],errors='coerce').astype('Int64').astype(str)
+comper_map=_cp.drop_duplicates('pk').set_index('pk').to_dict('index')
+def _num(x):
+    try: return float(str(x).replace(',',''))
+    except: return None
+def comper_of(p):
+    r=comper_map.get(pk(p))
+    if not r: return {}
+    yb=r.get('EffYearBlt') or r.get('YearBlt')
+    return dict(sale_price=_num(r.get('SalePrice')), sale_date=r.get('SaleDate',''),
+        market_value=_num(r.get('MarketValue')) or _num(r.get('spatialest_value')),
+        beds=_num(r.get('NumofBedrooms')), bath=(_num(r.get('FullBath')) or 0)+(_num(r.get('HalfBath')) or 0)*0.5,
+        sqft=_num(r.get('NetFinishedArea')), year_built=yb, acres=_num(r.get('Acreage')))
+
 clusters=[]; leaderboard=[]
 for cid,names in enumerate(comp,1):
     names=list(names)
@@ -127,12 +145,16 @@ for cid,names in enumerate(comp,1):
     formeds=[sos[n]['formed'] for n in names if n in sos and sos[n]['formed']]
     brands=[name_brand[n] for n in names if name_brand.get(n) and name_brand[n]!='nan']
     canon=max(names,key=lambda n:len(name_parcels.get(n,[])))
-    parcels=[]
-    for p in pids[:2000]:
-        info=rgmap.get(pk(p),{})
-        parcels.append(dict(parcel_id=p,address=info.get('address',''),lat=info.get('lat',''),lon=info.get('lon','')))
+    parcels=[]; tot_value=0.0; tot_acres=0.0
+    for p in pids:
+        info=rgmap.get(pk(p),{}); c=comper_of(p)
+        if c.get('market_value'): tot_value+=c['market_value']
+        if c.get('acres'): tot_acres+=c['acres']
+        if len(parcels)<2000:
+            parcels.append(dict(parcel_id=p,address=info.get('address',''),lat=info.get('lat',''),lon=info.get('lon',''),**c))
     rec=dict(cluster_id=cid, name=name_raw.get(canon,canon),
         entity_count=len(names), parcel_count=len(pids),
+        total_market_value=round(tot_value), total_acres=round(tot_acres,1),
         owner_names=[name_raw.get(n,n) for n in sorted(names)],
         registered_agents=ras, principal_offices=pos,
         primary_sos_status=Counter(statuses).most_common(1)[0][0] if statuses else '',

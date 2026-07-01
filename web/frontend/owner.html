@@ -47,6 +47,8 @@ fetch(`data/owners/${id}.json`).then(r=>r.json()).then(d=>{
   document.getElementById('wrap').innerHTML=`
    <div class="stats">
      <div class="stat"><b>${d.parcel_count.toLocaleString()}</b><span>Parcels</span></div>
+     <div class="stat"><b>${d.total_market_value?('$'+(d.total_market_value/1e6).toFixed(1)+'M'):'—'}</b><span>Total market value</span></div>
+     <div class="stat"><b>${d.total_acres?d.total_acres.toLocaleString():'—'}</b><span>Acres</span></div>
      <div class="stat"><b>${d.entity_count}</b><span>Corporate entities</span></div>
      <div class="stat"><b>${po.length}</b><span>Principal offices</span></div>
      <div class="stat"><b>${d.brand||'—'}</b><span>Operator brand</span></div>
@@ -94,8 +96,16 @@ fetch(`data/owners/${id}.json`).then(r=>r.json()).then(d=>{
    </div>
 
    <div class="card"><h2>Parcels held (${d.parcel_count.toLocaleString()})</h2>
-     <div style="max-height:340px;overflow:auto;"><table><thead><tr><th>Parcel ID</th><th>Property address</th></tr></thead>
-     <tbody>${d.parcels.map(p=>`<tr><td>${p.parcel_id}</td><td>${p.address||''}</td></tr>`).join('')}</tbody></table></div>
+     <div style="max-height:420px;overflow:auto;"><table><thead><tr>
+       <th>Property address</th><th style="text-align:right;">Bd/Ba</th><th style="text-align:right;">Sq ft</th>
+       <th style="text-align:right;">Built</th><th style="text-align:right;">Last sale</th><th style="text-align:right;">Market value</th></tr></thead>
+     <tbody>${d.parcels.map(p=>`<tr>
+       <td>${p.address||p.parcel_id}</td>
+       <td style="text-align:right;">${p.beds!=null?(p.beds+'/'+(p.bath||'—')):'—'}</td>
+       <td style="text-align:right;">${p.sqft?Number(p.sqft).toLocaleString():'—'}</td>
+       <td style="text-align:right;">${p.year_built||'—'}</td>
+       <td style="text-align:right;">${p.sale_price?('$'+Number(p.sale_price).toLocaleString()+(p.sale_date?(' · '+p.sale_date):'')):'—'}</td>
+       <td style="text-align:right;">${p.market_value?('$'+Number(p.market_value).toLocaleString()):'—'}</td></tr>`).join('')}</tbody></table></div>
    </div>`;
 
   const m=L.map('map').setView([36.166,-86.784],10);
