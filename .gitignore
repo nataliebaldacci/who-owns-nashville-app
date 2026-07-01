@@ -1,5 +1,8 @@
 # data & builds (kept local)
 data/
+!web/frontend/data/
+!web/frontend/data/**
+web/frontend/data/json/
 dumps/*.dump
 dumps/*.json
 libpostal-master/
@@ -12,4 +15,3 @@ __pycache__/
 .DS_Store
 # scraper session profile
 **/chrome_profile/
-web/frontend/data/owners/

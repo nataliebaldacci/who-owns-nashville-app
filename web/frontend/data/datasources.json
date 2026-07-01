@@ -1,0 +1,28 @@
+{
+  "davidson_parcels": {
+    "name": "Metro Nashville / Davidson County Parcels (Regrid-enriched)",
+    "description": "Current-parcel snapshot: owner, mailing address, land use, homestead, APN/ParID crosswalk",
+    "file_path": "/Users/nataliebaldacci/Master_Data/Nashville/00_ORGANIZED/08_Reference_Library/Favorite_Data_Sets/Parcels_Enriched/Regrid_Parcels_Nashville.csv",
+    "format": "csv",
+    "note": "CSV (point lat/lon, no polygons). Polygon geometry can be joined later from a Davidson cadastral GeoJSON on ParID.",
+    "source_url": "https://maps.nashville.gov/arcgis/rest/services/Cadastral/Cadastral_Layers/MapServer/4"
+  },
+  "davidson_parcels_geom": {
+    "name": "Davidson Ownership Parcels (ArcGIS polygons)",
+    "description": "Polygon geometry + owner + mailing (APN, ParID, Owner, OwnAddr1-3, OwnCity/State/Zip, IsActive, ParType). Source for the map/tiles; join use code from davidson_use_codes.",
+    "service_url": "https://maps.nashville.gov/arcgis/rest/services/Cadastral/Parcels/MapServer/0",
+    "query_hint": "?where=IsActive='Y'&outFields=*&f=geojson (paginate resultOffset/resultRecordCount)"
+  },
+  "davidson_use_codes": {
+    "name": "Davidson land-use codes (from Metro ParcelViewer GetUseCodes)",
+    "description": "94 use codes; 18 flagged residential (is_residential=Y). Drives the residential filter.",
+    "file_path": "/Users/nataliebaldacci/Master_Data/Nashville/who-owns-nashville/Attributes_Parcelviewer/Davidson_UseCodes_lookup.csv"
+  },
+  "davidson_sos_lookup": {
+    "name": "TN Secretary of State business-entity lookup (TNBear scrape)",
+    "description": "Per-entity control#, registered agent, principal office address, mailing address, status",
+    "file_path": "/Users/nataliebaldacci/Master_Data/Nashville/TN_Bus_Lookup/_scraper/TNSOS_Resolved_2026-06-30.csv",
+    "format": "csv",
+    "note": "TN has no bulk officer data; principal_office_address is the shell-linking bridge (TN Code 48-208-101 bars PO box for RA)."
+  }
+}
