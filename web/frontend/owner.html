@@ -5,32 +5,36 @@
 <title>Owner Profile — Who Owns Nashville?</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-  :root{--navy:#1c458c;--gold:#f0af1e}
-  body{margin:0;font-family:Garamond,'EB Garamond',Georgia,serif;color:#222;background:#f7f5f1}
-  header{background:var(--navy);color:#fff;padding:18px 26px;border-bottom:4px solid var(--gold)}
-  header .kick{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700}
-  header h1{margin:3px 0 0;font-size:26px}
-  .wrap{max-width:1120px;margin:0 auto;padding:18px 22px}
-  .stats{display:flex;gap:30px;flex-wrap:wrap;background:#fff;border:1px solid #e3ddd3;border-radius:8px;padding:14px 22px;margin-bottom:16px}
-  .stat b{display:block;font-size:28px;color:var(--navy);font-weight:800}
-  .stat span{font-size:11px;color:#777;text-transform:uppercase;letter-spacing:1px}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  .card{background:#fff;border:1px solid #e3ddd3;border-radius:8px;padding:14px 18px;margin-bottom:16px}
-  .card h2{margin:0 0 4px;font-size:13px;color:var(--navy);text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid #eee;padding-bottom:5px}
-  .card h3{margin:12px 0 2px;font-size:13px;color:#333}
-  .card p{margin:2px 0;font-size:13.5px;line-height:1.5}
-  .big{font-size:20px;color:var(--navy);font-weight:700}
-  .chip{display:inline-block;background:#eef4fb;border:1px solid #d5e2f2;border-radius:12px;padding:2px 10px;margin:2px;font-size:12px}
-  .lnk{display:inline-block;margin:6px 10px 2px 0;padding:6px 12px;background:var(--navy);color:#fff;border-radius:5px;text-decoration:none;font-size:12px;font-weight:600}
-  a{color:var(--navy)}
-  #map{height:440px;border-radius:8px;border:1px solid #e3ddd3;margin-bottom:16px}
-  table{width:100%;border-collapse:collapse;font-size:12px}
-  th,td{text-align:left;padding:4px 8px;border-bottom:1px solid #eee}
-  th{color:var(--navy)}
-  .muted{color:#888;font-size:12px}
-  .kv{display:flex;justify-content:space-between;font-size:13px;padding:2px 0;border-bottom:1px solid #f2efe9}
-  .kv b{color:var(--navy)}
+  /* Datawrapper / Urban Institute clean: white bg, bold black sans headline, cyan data */
+  :root{--cyan:#1696d2;--navy:#1696d2;--gold:#1696d2;--line:#e6e6e6}
+  body{margin:0;font-family:'Roboto',-apple-system,'Helvetica Neue',Arial,sans-serif;color:#333;background:#fff}
+  header{max-width:1120px;margin:0 auto;background:#fff;color:#111;padding:26px 26px 6px}
+  header .kick{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#8a8a8a;font-weight:700}
+  header h1{margin:2px 0 0;font-size:31px;font-weight:900;letter-spacing:-.5px;color:#111}
+  .wrap{max-width:1120px;margin:0 auto;padding:12px 22px 40px}
+  .stats{display:flex;gap:36px;flex-wrap:wrap;padding:14px 2px 18px;margin-bottom:14px;border-top:2px solid #111;border-bottom:1px solid var(--line)}
+  .stat b{display:block;font-size:30px;color:#111;font-weight:900;letter-spacing:-.5px}
+  .stat b.accent{color:var(--cyan)}
+  .stat span{font-size:11px;color:#8a8a8a;text-transform:uppercase;letter-spacing:.5px;font-weight:500}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+  .card{background:#fff;border:none;padding:6px 0 10px;margin-bottom:8px}
+  .card h2{margin:0 0 8px;font-size:12px;color:#111;text-transform:uppercase;letter-spacing:1px;font-weight:700;border-bottom:1px solid var(--line);padding-bottom:6px}
+  .card h3{margin:12px 0 2px;font-size:13px;color:#111;font-weight:700}
+  .card p{margin:2px 0;font-size:14px;line-height:1.55}
+  .big{font-size:20px;color:var(--cyan);font-weight:900}
+  .chip{display:inline-block;background:#eaf4fb;border:none;border-radius:3px;padding:3px 9px;margin:2px;font-size:12px;color:#0f6a99}
+  .lnk{display:inline-block;margin:6px 8px 2px 0;padding:7px 13px;background:var(--cyan);color:#fff;border-radius:3px;text-decoration:none;font-size:12px;font-weight:700}
+  .lnk:hover{background:#127bb0}
+  a{color:var(--cyan)}
+  #map{height:440px;border-radius:2px;border:1px solid var(--line);margin:8px 0 20px}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th,td{text-align:left;padding:5px 8px;border-bottom:1px solid #efefef}
+  th{color:#111;font-weight:700;border-bottom:2px solid #111}
+  .muted{color:#8a8a8a;font-size:12px}
+  .kv{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid #f2f2f2}
+  .kv b{color:#111}
 </style>
 </head>
 <body>
@@ -110,7 +114,7 @@ fetch(`data/owners/${id}.json`).then(r=>r.json()).then(d=>{
 
   const m=L.map('map').setView([36.166,-86.784],10);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap, © CARTO'}).addTo(m);
-  const pts=d.parcels.filter(p=>p.lat&&p.lon).map(p=>L.circleMarker([+p.lat,+p.lon],{radius:4,fillColor:'#cf307a',color:'#333',weight:.4,fillOpacity:.8}).bindPopup(p.address||p.parcel_id));
+  const pts=d.parcels.filter(p=>p.lat&&p.lon).map(p=>L.circleMarker([+p.lat,+p.lon],{radius:4,fillColor:'#1696d2',color:'#333',weight:.4,fillOpacity:.8}).bindPopup(p.address||p.parcel_id));
   if(pts.length){const g=L.featureGroup(pts).addTo(m);try{m.fitBounds(g.getBounds().pad(0.08));}catch(e){}}
 }).catch(e=>{document.getElementById('ownerName').textContent='Owner '+id+' not found';});
 </script>
