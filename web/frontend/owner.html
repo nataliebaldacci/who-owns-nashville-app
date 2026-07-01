@@ -5,118 +5,113 @@
 <title>Owner Profile — Who Owns Nashville?</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-  /* Datawrapper / Urban Institute clean: white bg, bold black sans headline, cyan data */
-  :root{--cyan:#1696d2;--navy:#1696d2;--gold:#1696d2;--line:#e6e6e6}
-  body{margin:0;font-family:'Roboto',-apple-system,'Helvetica Neue',Arial,sans-serif;color:#333;background:#fff}
-  header{max-width:1120px;margin:0 auto;background:#fff;color:#111;padding:26px 26px 6px}
-  header .kick{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#8a8a8a;font-weight:700}
-  header h1{margin:2px 0 0;font-size:31px;font-weight:900;letter-spacing:-.5px;color:#111}
-  .wrap{max-width:1120px;margin:0 auto;padding:12px 22px 40px}
-  .stats{display:flex;gap:36px;flex-wrap:wrap;padding:14px 2px 18px;margin-bottom:14px;border-top:2px solid #111;border-bottom:1px solid var(--line)}
-  .stat b{display:block;font-size:30px;color:#111;font-weight:900;letter-spacing:-.5px}
-  .stat b.accent{color:var(--cyan)}
-  .stat span{font-size:11px;color:#8a8a8a;text-transform:uppercase;letter-spacing:.5px;font-weight:500}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:26px}
-  .card{background:#fff;border:none;padding:6px 0 10px;margin-bottom:8px}
-  .card h2{margin:0 0 8px;font-size:12px;color:#111;text-transform:uppercase;letter-spacing:1px;font-weight:700;border-bottom:1px solid var(--line);padding-bottom:6px}
-  .card h3{margin:12px 0 2px;font-size:13px;color:#111;font-weight:700}
-  .card p{margin:2px 0;font-size:14px;line-height:1.55}
-  .big{font-size:20px;color:var(--cyan);font-weight:900}
-  .chip{display:inline-block;background:#eaf4fb;border:none;border-radius:3px;padding:3px 9px;margin:2px;font-size:12px;color:#0f6a99}
-  .lnk{display:inline-block;margin:6px 8px 2px 0;padding:7px 13px;background:var(--cyan);color:#fff;border-radius:3px;text-decoration:none;font-size:12px;font-weight:700}
-  .lnk:hover{background:#127bb0}
-  a{color:var(--cyan)}
-  #map{height:440px;border-radius:2px;border:1px solid var(--line);margin:8px 0 20px}
-  table{width:100%;border-collapse:collapse;font-size:12.5px}
-  th,td{text-align:left;padding:5px 8px;border-bottom:1px solid #efefef}
-  th{color:#111;font-weight:700;border-bottom:2px solid #111}
-  .muted{color:#8a8a8a;font-size:12px}
-  .kv{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid #f2f2f2}
-  .kv b{color:#111}
+  /* ParcelViewer app-shell: blue header + left detail panel + full-height map */
+  :root{--blue:#0076ce;--ink:#111}
+  html,body{height:100dvh;width:100vw;margin:0;padding:0;font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif;overflow:hidden}
+  #header{height:64px;width:100%;display:flex;align-items:center;justify-content:space-between;background:var(--blue);color:#fff;box-sizing:border-box;padding:0 20px}
+  #header .brand{font-size:20px;font-weight:700}
+  #header .brand small{display:block;font-size:11px;font-weight:400;opacity:.85;letter-spacing:.5px}
+  #header .sub{font-size:13px;opacity:.9}
+  #mainWindow{display:flex;flex-direction:row;height:calc(100% - 64px)}
+  #leftPane{flex:0 0 34%;max-width:480px;overflow:auto;background:#eef0f2;border-right:1px solid #bdbdbd;box-sizing:border-box}
+  #viewDiv{flex:1;position:relative}
+  #map{position:absolute;inset:0}
+  /* panel content */
+  .pname{padding:16px 18px 6px;background:#fff;border-bottom:1px solid #e2e2e2}
+  .pname h1{margin:0;font-size:22px;font-weight:700;color:var(--ink)}
+  .pname .brandlbl{font-size:12px;color:var(--blue);font-weight:600;margin-top:2px}
+  .statrow{display:flex;flex-wrap:wrap;gap:0;background:#fff;border-bottom:1px solid #e2e2e2}
+  .stat{flex:1 0 33%;padding:10px 14px;border-top:1px solid #f0f0f0;box-sizing:border-box}
+  .stat b{display:block;font-size:20px;color:var(--ink);font-weight:700}
+  .stat b.accent{color:var(--blue)}
+  .stat span{font-size:10px;color:#777;text-transform:uppercase;letter-spacing:.5px}
+  .sec{background:#fff;margin:8px 0 0;padding:12px 16px;border-bottom:1px solid #e2e2e2}
+  .sec h2{margin:0 0 8px;font-size:12px;color:var(--blue);text-transform:uppercase;letter-spacing:.8px;font-weight:700}
+  .sec h3{margin:10px 0 2px;font-size:12px;color:var(--ink);font-weight:700}
+  .sec p{margin:2px 0;font-size:13px;line-height:1.5}
+  .big{font-size:17px;color:var(--blue);font-weight:700}
+  .kv{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;border-bottom:1px solid #f2f2f2}
+  .kv b{color:var(--ink)}
+  .chip{display:inline-block;background:#e7f1fa;border:1px solid #cfe2f2;border-radius:3px;padding:2px 8px;margin:2px;font-size:11.5px;color:#0f5f9e}
+  .lnk{display:inline-block;margin:6px 8px 2px 0;padding:6px 12px;background:var(--blue);color:#fff;border-radius:3px;text-decoration:none;font-size:12px;font-weight:600}
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  th,td{text-align:left;padding:4px 6px;border-bottom:1px solid #eee}
+  th{color:var(--ink);border-bottom:2px solid #ccc}
+  .muted{color:#888;font-size:12px}
+  a{color:var(--blue)}
 </style>
 </head>
 <body>
-<header><div class="kick">Who Owns Nashville? &middot; Owner Profile</div><h1 id="ownerName">Loading…</h1></header>
-<div class="wrap" id="wrap"></div>
+<div id="header">
+  <div class="brand">Who Owns Nashville?<small>Corporate Ownership Explorer</small></div>
+  <div class="sub" id="hdrSub"></div>
+</div>
+<div id="mainWindow">
+  <div id="leftPane"><div id="panel">Loading…</div></div>
+  <div id="viewDiv"><div id="map"></div></div>
+</div>
 <script>
 const id=new URLSearchParams(location.search).get('id')||'1';
 const D=v=>v==null?'—':'$'+Number(v).toLocaleString();
 const P=v=>v==null?'—':v+'%';
 fetch(`data/owners/${id}.json`).then(r=>r.json()).then(d=>{
-  document.getElementById('ownerName').textContent=d.name;
   const pf=d.portfolio||{}, po=d.principal_offices||[], ra=d.registered_agents||[];
-  const status=(d.primary_sos_status||'—'), foreign=(d.primary_foreign_state||'—');
-  document.getElementById('wrap').innerHTML=`
-   <div class="stats">
+  document.getElementById('hdrSub').textContent=d.parcel_count.toLocaleString()+' parcels · Davidson County, TN';
+  document.getElementById('panel').innerHTML=`
+   <div class="pname"><h1>${d.name}</h1><div class="brandlbl">${d.brand||''}</div></div>
+   <div class="statrow">
      <div class="stat"><b>${d.parcel_count.toLocaleString()}</b><span>Parcels</span></div>
-     <div class="stat"><b>${d.total_market_value?('$'+(d.total_market_value/1e6).toFixed(1)+'M'):'—'}</b><span>Total market value</span></div>
+     <div class="stat"><b class="accent">${d.total_market_value?('$'+(d.total_market_value/1e6).toFixed(1)+'M'):'—'}</b><span>Market value</span></div>
      <div class="stat"><b>${d.total_acres?d.total_acres.toLocaleString():'—'}</b><span>Acres</span></div>
-     <div class="stat"><b>${d.entity_count}</b><span>Corporate entities</span></div>
+     <div class="stat"><b>${d.entity_count}</b><span>Entities</span></div>
      <div class="stat"><b>${po.length}</b><span>Principal offices</span></div>
-     <div class="stat"><b>${d.brand||'—'}</b><span>Operator brand</span></div>
+     <div class="stat"><b>${ra.length}</b><span>Reg. agents</span></div>
    </div>
 
-   <div class="grid">
-     <div class="card"><h2>Tennessee Secretary of State</h2>
-       <div class="kv"><span>Status</span><b>${status}</b></div>
-       <div class="kv"><span>Formed in</span><b>${foreign}</b></div>
-       <div class="kv"><span>Registered agents</span><b>${ra.length}</b></div>
-       <h3>Principal office(s)</h3>
-       ${po.map(p=>'<div class="chip">'+p+'</div>').join('')||'<span class="muted">not yet resolved (SOS pull in progress)</span>'}
-       <h3>Registered agent(s)</h3>
-       ${ra.map(p=>'<div class="chip">'+p+'</div>').join('')||'<span class="muted">—</span>'}
-       <div style="margin-top:8px;">
-         <a class="lnk" href="${d.opencorporates}" target="_blank" rel="noopener">OpenCorporates ↗</a>
-         <a class="lnk" href="https://tncab.tnsos.gov/portal/business-entity-search" target="_blank" rel="noopener">TN SOS search ↗</a>
-       </div>
-     </div>
-
-     <div class="card"><h2>Nashville Portfolio Analysis</h2>
-       <h3>Neighborhood income</h3>
-       <p>Across their ${pf.n_parcels_with_acs||d.parcel_count} parcels, the average neighborhood median income is <span class="big">${D(pf.median_income)}</span>.</p>
-       <h3>Tenure &amp; concentration</h3>
-       <p>On average, their portfolio sits in neighborhoods where <b>${P(pf.pct_renter)}</b> of households are renters.</p>
-       <h3>Racial composition</h3>
-       <p>Their neighborhoods average <b>${P(pf.pct_black)} Black</b>, ${P(pf.pct_white)} White, ${P(pf.pct_hispanic)} Hispanic, ${P(pf.pct_asian)} Asian.</p>
-       <h3>Home values &amp; vulnerability</h3>
-       <p>Avg neighborhood median home value is <span class="big">${D(pf.median_home_value)}</span>.<br>
-          ${P(pf.pct_poverty)} households below poverty &middot; ${P(pf.pct_vacant)} housing units vacant.</p>
+   <div class="sec"><h2>Tennessee Secretary of State</h2>
+     <div class="kv"><span>Status</span><b>${d.primary_sos_status||'—'}</b></div>
+     <div class="kv"><span>Formed in</span><b>${d.primary_foreign_state||'—'}</b></div>
+     <h3>Principal office(s)</h3>
+     ${po.map(p=>'<div class="chip">'+p+'</div>').join('')||'<span class="muted">SOS pull in progress</span>'}
+     <h3>Registered agent(s)</h3>
+     ${ra.map(p=>'<div class="chip">'+p+'</div>').join('')||'<span class="muted">—</span>'}
+     <div style="margin-top:8px;">
+       <a class="lnk" href="${d.opencorporates}" target="_blank" rel="noopener">OpenCorporates ↗</a>
+       <a class="lnk" href="https://tncab.tnsos.gov/portal/business-entity-search" target="_blank" rel="noopener">TN SOS ↗</a>
      </div>
    </div>
 
-   <div id="map"></div>
-
-   <div class="grid">
-     <div class="card"><h2>Related owners (${(d.related||[]).length})</h2>
-       <p class="muted">Shell entities merged into this owner via shared registered agent or mailing address.</p>
-       <table><thead><tr><th>Owner</th><th>Via</th><th style="text-align:right;">Parcels</th></tr></thead>
-       <tbody>${(d.related||[]).map(r=>`<tr><td>${r.owner}</td><td class="muted">${r.via}</td><td style="text-align:right;">${r.parcels}</td></tr>`).join('')}</tbody></table>
-     </div>
-     <div class="card"><h2>Owner names on record (${d.owner_names.length})</h2>
-       <div style="max-height:340px;overflow:auto;">${d.owner_names.map(n=>'<div class="chip">'+n+'</div>').join('')}</div>
-     </div>
+   <div class="sec"><h2>Nashville Portfolio Analysis</h2>
+     <h3>Neighborhood income</h3>
+     <p>Across their ${pf.n_parcels_with_acs||d.parcel_count} parcels, avg neighborhood median income is <span class="big">${D(pf.median_income)}</span>.</p>
+     <h3>Tenure &amp; concentration</h3>
+     <p><b>${P(pf.pct_renter)}</b> of households in their neighborhoods are renters.</p>
+     <h3>Racial composition</h3>
+     <p><b>${P(pf.pct_black)} Black</b>, ${P(pf.pct_white)} White, ${P(pf.pct_hispanic)} Hispanic, ${P(pf.pct_asian)} Asian.</p>
+     <h3>Home values &amp; vulnerability</h3>
+     <p>Median home value <span class="big">${D(pf.median_home_value)}</span> · ${P(pf.pct_poverty)} below poverty · ${P(pf.pct_vacant)} vacant.</p>
    </div>
 
-   <div class="card"><h2>Parcels held (${d.parcel_count.toLocaleString()})</h2>
-     <div style="max-height:420px;overflow:auto;"><table><thead><tr>
-       <th>Property address</th><th style="text-align:right;">Bd/Ba</th><th style="text-align:right;">Sq ft</th>
-       <th style="text-align:right;">Built</th><th style="text-align:right;">Last sale</th><th style="text-align:right;">Market value</th></tr></thead>
-     <tbody>${d.parcels.map(p=>`<tr>
-       <td>${p.address||p.parcel_id}</td>
-       <td style="text-align:right;">${p.beds!=null?(p.beds+'/'+(p.bath||'—')):'—'}</td>
-       <td style="text-align:right;">${p.sqft?Number(p.sqft).toLocaleString():'—'}</td>
-       <td style="text-align:right;">${p.year_built||'—'}</td>
-       <td style="text-align:right;">${p.sale_price?('$'+Number(p.sale_price).toLocaleString()+(p.sale_date?(' · '+p.sale_date):'')):'—'}</td>
-       <td style="text-align:right;">${p.market_value?('$'+Number(p.market_value).toLocaleString()):'—'}</td></tr>`).join('')}</tbody></table></div>
+   <div class="sec"><h2>Related owners (${(d.related||[]).length})</h2>
+     <table><thead><tr><th>Owner</th><th>Via</th><th style="text-align:right;">Parcels</th></tr></thead>
+     <tbody>${(d.related||[]).map(r=>`<tr><td>${r.owner}</td><td class="muted">${r.via}</td><td style="text-align:right;">${r.parcels}</td></tr>`).join('')}</tbody></table>
+   </div>
+
+   <div class="sec"><h2>Owner names on record (${d.owner_names.length})</h2>
+     ${d.owner_names.map(n=>'<div class="chip">'+n+'</div>').join('')}
+   </div>
+
+   <div class="sec"><h2>Parcels held (${d.parcel_count.toLocaleString()})</h2>
+     <table><thead><tr><th>Address</th><th style="text-align:right;">Bd/Ba</th><th style="text-align:right;">Sq ft</th><th style="text-align:right;">Value</th></tr></thead>
+     <tbody>${d.parcels.map(p=>`<tr><td>${p.address||p.parcel_id}</td><td style="text-align:right;">${p.beds!=null?(p.beds+'/'+(p.bath||'—')):'—'}</td><td style="text-align:right;">${p.sqft?Number(p.sqft).toLocaleString():'—'}</td><td style="text-align:right;">${p.market_value?('$'+Number(p.market_value).toLocaleString()):'—'}</td></tr>`).join('')}</tbody></table>
    </div>`;
 
   const m=L.map('map').setView([36.166,-86.784],10);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap, © CARTO'}).addTo(m);
-  const pts=d.parcels.filter(p=>p.lat&&p.lon).map(p=>L.circleMarker([+p.lat,+p.lon],{radius:4,fillColor:'#1696d2',color:'#333',weight:.4,fillOpacity:.8}).bindPopup(p.address||p.parcel_id));
-  if(pts.length){const g=L.featureGroup(pts).addTo(m);try{m.fitBounds(g.getBounds().pad(0.08));}catch(e){}}
-}).catch(e=>{document.getElementById('ownerName').textContent='Owner '+id+' not found';});
+  const pts=d.parcels.filter(p=>p.lat&&p.lon).map(p=>L.circleMarker([+p.lat,+p.lon],{radius:5,fillColor:'#0076ce',color:'#fff',weight:.6,fillOpacity:.85}).bindPopup((p.address||p.parcel_id)+(p.market_value?('<br>$'+Number(p.market_value).toLocaleString()):'')));
+  if(pts.length){const g=L.featureGroup(pts).addTo(m);try{m.fitBounds(g.getBounds().pad(0.06));}catch(e){}}
+}).catch(e=>{document.getElementById('panel').textContent='Owner '+id+' not found';});
 </script>
 </body>
 </html>
