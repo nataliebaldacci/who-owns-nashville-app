@@ -89,6 +89,33 @@ def pk(x):
     try: return str(int(float(x)))
     except: return str(x)
 
+# --- ACS block-group metrics per parcel (for Portfolio Analysis) ---
+ACS="/Users/nataliebaldacci/Master_Data/Nashville/00_ORGANIZED/08_Reference_Library/Favorite_Data_Sets/Parcel_Ownership_Assessment_ACS_FULL_FLATTENED_2026-06-29.parquet"
+_acols=['bg_median_hh_income','bg_median_home_value','bg_pct_white','bg_pct_black','bg_pct_asian','bg_pct_hispanic','bg_pct_poverty','bg_pct_renter_occupied','bg_pct_vacant']
+_acs=pd.read_parquet(ACS,columns=['parcelid']+_acols)
+_acs['pk']=_acs['parcelid'].astype('Int64').astype(str)
+acs_map=_acs.drop_duplicates('pk').set_index('pk')[_acols].to_dict('index')
+def portfolio(pids):
+    import statistics
+    vals={c:[] for c in _acols}
+    for p in pids:
+        r=acs_map.get(pk(p))
+        if not r: continue
+        for c in _acols:
+            v=r.get(c)
+            if v is None or v!=v: continue
+            v=float(v)
+            if 'pct_' in c:
+                if 0<=v<=100: vals[c].append(v)
+            else:  # income / home value: drop Census null sentinels (negative)
+                if 0<v<10_000_000: vals[c].append(v)
+    def avg(c): return round(sum(vals[c])/len(vals[c])) if vals[c] else None
+    n=len(vals['bg_median_hh_income'])
+    return dict(n_parcels_with_acs=n,
+        median_income=avg('bg_median_hh_income'), median_home_value=avg('bg_median_home_value'),
+        pct_renter=avg('bg_pct_renter_occupied'), pct_poverty=avg('bg_pct_poverty'), pct_vacant=avg('bg_pct_vacant'),
+        pct_black=avg('bg_pct_black'), pct_white=avg('bg_pct_white'), pct_hispanic=avg('bg_pct_hispanic'), pct_asian=avg('bg_pct_asian'))
+
 clusters=[]; leaderboard=[]
 for cid,names in enumerate(comp,1):
     names=list(names)
@@ -112,6 +139,11 @@ for cid,names in enumerate(comp,1):
         primary_foreign_state=Counter(formeds).most_common(1)[0][0] if formeds else '',
         brand=Counter(brands).most_common(1)[0][0] if brands else '',
         opencorporates=opencorporates_url(name_raw.get(canon,canon), formeds[0] if formeds else None),
+        primary_type=Counter([sos[n].get('formed','') for n in names if n in sos]).most_common(1)[0][0] if any(n in sos for n in names) else '',
+        portfolio=portfolio(pids),
+        related=sorted([{'owner':name_raw.get(n,n),'parcels':len(name_parcels.get(n,[])),
+                         'via':('principal office' if (n in sos and sos[n]['po']) else 'mailing address')}
+                        for n in names if n!=canon], key=lambda x:-x['parcels'])[:40],
         parcels=parcels)
     json.dump(rec, open(f"{OUTD}/{cid}.json","w"))
     clusters.append(rec)
