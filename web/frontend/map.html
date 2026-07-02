@@ -98,10 +98,13 @@
 </div>
 <script>
 const status=document.getElementById('status');
-// house glyph (used when a single operator is isolated)
-const houseSVG=f=>"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='11' height='11'><path d='M12 3 L21 11 L18.5 11 L18.5 20 L14 20 L14 14 L10 14 L10 20 L5.5 20 L5.5 11 L3 11 Z' fill='"+f+"' stroke='rgba(0,0,0,.45)' stroke-width='1.4'/></svg>";
+// tiny house glyph for every corporate-owned parcel
+const houseSVG=f=>"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='9' height='9'><path d='M12 3 L21 11 L18.5 11 L18.5 20 L14 20 L14 14 L10 14 L10 20 L5.5 20 L5.5 11 L3 11 Z' fill='"+f+"' stroke='rgba(0,0,0,.5)' stroke-width='1.5'/></svg>";
 const _iconCache={};
-function houseIcon(color){if(!_iconCache[color])_iconCache[color]=L.divIcon({html:houseSVG(color),className:'homeMarker',iconSize:[18,18],iconAnchor:[9,12],popupAnchor:[0,-11]});return _iconCache[color];}
+function houseIcon(color){if(!_iconCache[color])_iconCache[color]=L.divIcon({html:houseSVG(color),className:'homeMarker',iconSize:[12,12],iconAnchor:[6,9],popupAnchor:[0,-8]});return _iconCache[color];}
+// per-operator color overrides (win over the color baked into the data)
+const COLOR_OVERRIDE=[[/progress/i,'#d7263d'],[/american homes|\bamh\b/i,'#1f6fb2']];
+function opColor(brand,fallback){for(const o of COLOR_OVERRIDE){if(o[0].test(brand||''))return o[1];}return fallback;}
 const PATRIOT="5D050659143EB96630FB38B91DE12E40&SECRETKEY=A92169630C9BC3C00A1C0F9F140E6DAEC21C8E62DCFF9FC443FB1BE70DDF6AA4268527B9DDE2ECC2C7EE9BB5BF728C06F0DF4019BBECDEBD2A6DD0BBE28A419D8F929E1F3E8DF478E56619995BEFCA8E369276689D791197DC1284F14B3252DBFB2A19A2E451EEA832D6D96488DDC673EBA4B37BD741223B656A793D93209C0F";
 const esc=s=>String(s==null?'':s);
 function toolkit(o){ // {apn,parid,acct,lat,lon,address,brand,owner,cid,market_value}
@@ -236,7 +239,7 @@ function drawCorp(){
     const other=(brand==='Other corporate');
     const mk = other
       ? L.circleMarker([r[idx.lat],r[idx.lon]],{radius:1.7,color:r[idx.color],weight:0,fillColor:r[idx.color],fillOpacity:.22})
-      : L.marker([r[idx.lat],r[idx.lon]],{icon:houseIcon(r[idx.color])});
+      : L.marker([r[idx.lat],r[idx.lon]],{icon:houseIcon(opColor(brand,r[idx.color]))});
     mk.on('click',()=>mk.bindPopup(toolkit({lat:r[idx.lat],lon:r[idx.lon],apn:r[idx.apn],parid:r[idx.parid],
         acct:r[idx.acct],brand:brand,owner:r[idx.owner],cid:r[idx.cid],address:r[idx.address],value:r[idx.value],
         beds:r[idx.beds],bath:r[idx.bath],sqft:r[idx.sqft],year_built:r[idx.year_built],
@@ -285,7 +288,7 @@ function buildLegend(){
   const order=['Landlord','Builder','iBuyer','Other'];
   const label={Landlord:'Landlords',Builder:'Builders',iBuyer:'iBuyers',Other:'Other'};
   const byType={}; CORP.legend.forEach(g=>{(byType[g.type]=byType[g.type]||[]).push(g); brandType[g.brand]=g.type;});
-  const sw=g=>`<div class="sw2" data-b="${esc(g.brand)}" title="${g.n.toLocaleString()} parcels"><div class="bar" style="background:${g.color}"></div><div class="lab">${esc(g.brand)} <span class="cnt">(${g.n.toLocaleString()})</span></div></div>`;
+  const sw=g=>`<div class="sw2" data-b="${esc(g.brand)}" title="${g.n.toLocaleString()} parcels"><div class="bar" style="background:${opColor(g.brand,g.color)}"></div><div class="lab">${esc(g.brand)} <span class="cnt">(${g.n.toLocaleString()})</span></div></div>`;
   let html='';
   order.forEach(t=>{ if(!byType[t]) return;
     const off=hiddenTypes.has(t);
