@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Who Owns Nashville? — Parcel Map</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%231f3a5f'/%3E%3Cpath d='M16 6 L26 14 L23 14 L23 25 L18 25 L18 18 L14 18 L14 25 L9 25 L9 14 L6 14 Z' fill='%23e07a33'/%3E%3C/svg%3E"/>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%231c458c'/%3E%3Cpath d='M16 6 L26 14 L23 14 L23 25 L18 25 L18 18 L14 18 L14 25 L9 25 L9 14 L6 14 Z' fill='%23f0af1e'/%3E%3C/svg%3E"/>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root{--navy:#1f3a5f;--navy-dk:#152a45;--orange:#e07a33;--panel:#e5eaf1;--bd:#cdd6e3;--ink:#1f3a5f}
-  html,body{height:100dvh;width:100vw;margin:0;padding:0;font-family:'Open Sans','Inter',sans-serif;overflow:hidden;color:#20303f}
-  #header{height:60px;display:flex;align-items:center;gap:16px;background:var(--navy);color:#fff;padding:0 18px;border-bottom:3px solid var(--orange);box-sizing:border-box}
-  #header .brand{font-family:'Source Serif 4',Georgia,serif;font-size:20px;font-weight:700;white-space:nowrap}
-  #header .brand small{font-family:'Inter';font-size:10px;font-weight:400;opacity:.8;letter-spacing:1px;text-transform:uppercase;display:block}
+  :root{--navy:#1c458c;--navy-dk:#16357a;--gold:#f0af1e;--orange:#f0af1e;--lightblue:#4fa0bd;--panel:#eef4fb;--bd:#d6ddea;--ink:#1c458c}
+  html,body{height:100dvh;width:100vw;margin:0;padding:0;font-family:'Montserrat','Helvetica Neue',Arial,sans-serif;overflow:hidden;color:#20303f}
+  #header{height:60px;display:flex;align-items:center;gap:16px;background:var(--navy);color:#fff;padding:0 18px;border-bottom:4px solid var(--gold);box-sizing:border-box}
+  #header .brand{font-family:'Montserrat',sans-serif;font-size:20px;font-weight:800;white-space:nowrap;letter-spacing:-.2px}
+  #header .brand small{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;opacity:1;color:var(--gold);letter-spacing:2px;text-transform:uppercase;display:block}
   #searchWrap{flex:1;max-width:520px;display:flex;gap:6px;position:relative}
   #acDrop{position:absolute;top:40px;left:0;right:62px;background:#fff;border:1px solid var(--bd);border-radius:4px;z-index:1200;max-height:300px;overflow:auto;display:none;box-shadow:0 6px 16px #0003}
   #acDrop .ac{padding:7px 10px;font-size:12.5px;color:#20303f;cursor:pointer;display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #eef0f3}
@@ -24,16 +24,17 @@
   #tractLegend b{display:block;margin-bottom:3px;color:var(--navy)}
   #tractLegend i{display:inline-block;width:14px;height:10px;margin-right:4px;vertical-align:middle}
   #q{flex:1;padding:8px 12px;border:none;border-radius:4px;font-size:13px}
-  #go{padding:8px 14px;border:none;border-radius:4px;background:var(--orange);color:#fff;font-weight:700;cursor:pointer}
+  #go{padding:8px 14px;border:none;border-radius:4px;background:var(--gold);color:var(--navy);font-weight:800;cursor:pointer}
+  #go:hover{background:#d99a12}
   #hint{font-size:11px;opacity:.75;white-space:nowrap}
   #mainWindow{position:relative;height:calc(100% - 60px)}
   #viewDiv{position:absolute;inset:0}
   #map{position:absolute;inset:0}
   /* Security-for-Sale style legend card */
   /* vertical operator legend, right side */
-  #legendCard{position:absolute;top:184px;right:10px;z-index:600;background:#fff;border:1px solid var(--bd);border-radius:6px;box-shadow:0 4px 14px #0002;padding:10px 12px 9px;width:184px;max-height:calc(100% - 200px);overflow:auto}
-  #legendTitle{font-family:'Source Serif 4',Georgia,serif;font-weight:700;font-size:12.5px;color:var(--navy);margin:0 16px 8px 0;line-height:1.25}
-  #legendTitle small{display:block;font-family:'Inter';font-size:9.5px;font-weight:400}
+  #legendCard{position:absolute;top:184px;right:10px;z-index:600;background:#fff;border:1px solid var(--bd);border-left:4px solid var(--gold);border-radius:6px;box-shadow:0 4px 14px rgba(28,69,140,.28);padding:10px 12px 9px;width:184px;max-height:calc(100% - 200px);overflow:auto}
+  #legendTitle{font-family:'Montserrat',sans-serif;font-weight:800;font-size:12.5px;color:var(--navy);margin:0 16px 8px 0;line-height:1.25}
+  #legendTitle small{display:block;font-family:'Montserrat',sans-serif;font-size:9.5px;font-weight:400}
   #legendSwatches{display:flex;flex-direction:column;gap:4px}
   .legGroup{font-size:9px;text-transform:uppercase;letter-spacing:.7px;color:var(--navy);font-weight:700;margin:8px 0 2px;border-bottom:1px solid #eef0f3;padding-bottom:2px}
   .legGroup:first-child{margin-top:0}
@@ -43,11 +44,11 @@
   .sw2.faded{opacity:.28}
   #legendNote{font-size:9.5px;color:#8a94a0;margin-top:8px}
   #legendSwatches .cnt{color:#8a94a0;font-weight:400;font-variant-numeric:tabular-nums}
-  #zipBox{position:absolute;top:12px;left:12px;z-index:600;background:#fff;border:1px solid var(--bd);border-radius:6px;box-shadow:0 2px 8px #0002;padding:6px 8px}
+  #zipBox{position:absolute;top:12px;left:12px;z-index:600;background:#fff;border:1px solid var(--bd);border-top:3px solid var(--gold);border-radius:6px;box-shadow:0 2px 8px rgba(28,69,140,.25);padding:6px 8px}
   #zipBox input{border:none;font-size:12.5px;padding:3px 4px;width:150px;outline:none}
   #baseTog{position:absolute;bottom:8px;left:8px;z-index:600;background:#fffe;border:1px solid var(--bd);border-radius:4px;padding:5px 8px;font-size:11px;color:#4a5560;display:flex;align-items:center;gap:6px;cursor:pointer}
   #status{position:absolute;bottom:8px;right:8px;background:#fffd;border:1px solid var(--bd);border-radius:4px;padding:4px 10px;font-size:11px;color:#4a5560;z-index:500}
-  .pp{font-family:'Open Sans','Inter',sans-serif;font-size:12px;line-height:1.45;max-width:360px}
+  .pp{font-family:'Montserrat',sans-serif;font-size:12px;line-height:1.45;max-width:360px}
   .pp-h{font-weight:700;color:var(--navy);font-size:13px}
   .pp-s{color:#4a5560;margin:2px 0 6px}
   .pp-s code{background:#eef2f8;padding:0 4px;border-radius:2px}
