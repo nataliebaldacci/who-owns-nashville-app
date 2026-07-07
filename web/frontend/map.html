@@ -111,7 +111,7 @@ const esc=s=>String(s==null?'':s);
 function toolkit(o){ // {apn,parid,acct,lat,lon,address,brand,owner,cid,market_value}
   const apn=esc(o.apn).replace(/[^0-9A-Za-z]/g,''), acct=esc(o.acct), lat=esc(o.lat), lon=esc(o.lon), pid=esc(o.parid);
   const A=(u,t)=>'<a href="'+u+'" target="_blank" rel="noopener">'+t+'</a>';
-  const card=acct?("https://portal.padctn.org/OFS/WP/Print/"+acct):("https://maps.nashville.gov/ParcelViewer/PrintRecord.html?pin="+apn);
+  const card=acct?("https://portal.padctn.org/OFS/WP/Print/"+acct):("https://maps.nashville.gov/ParcelViewer/PrintRecord.html?pin="+pid);
   let h='<div class="pp"><div class="pp-h">'+esc(o.address||apn)+'</div>';
   h+='<div class="pp-s">APN <code>'+apn+'</code>'+(o.brand?(' · '+esc(o.brand)):'')+'</div>';
   if(apn) h+='<img class="pp-img" src="https://image-cdn.spatialest.com/image/tn-davidson-images/med/Images/'+apn+'_1.jpg" onerror="this.style.display=\'none\'" loading="lazy"/>';
